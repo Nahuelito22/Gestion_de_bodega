@@ -65,7 +65,7 @@ python app.py
   - SQLAlchemy
   - PyMySQL
   - python-dotenv
-  - **HTML/CSS**
+- **HTML/CSS**
   - Jinga
   - Bootstrap
 - **MySQL**
