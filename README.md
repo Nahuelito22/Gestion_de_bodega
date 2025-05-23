@@ -48,7 +48,7 @@ Pasos:
 1. Clonar el repositorio:
 
 ```bash
-git clone https://github.com/Nahuelito22/Programacion_2-Taller_Mecanico.git
+git clone https://github.com/Nahuelito22/Gestion_de_bodega.git
 ```
 
 2. Configurar la conexión a la base de datos en el archivo `.env` (ver `example.env`).
