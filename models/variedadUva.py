@@ -2,7 +2,7 @@ import uuid
 from models.db import db
 
 class VariedadUva(db.Model):
-    __tablename__ = 'variedades_de_uva'
+    __tablename__ = 'variedad_uva'
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))#uuid especifico de cada Variedad
     nombre= db.Column (db.String(40), unique=True, nullable=False)    
