@@ -46,7 +46,7 @@ def crear_variedad():
         return jsonify({"error": "El campo 'nombre' es obligatorio"}), 400
 
     nueva_variedad = VariedadUva(
-        nombre=data["nombre"],
+        nombre=data.get["nombre"],
         origen=data.get("origen"),
         foto_ruta=data.get("foto_ruta")
     )
