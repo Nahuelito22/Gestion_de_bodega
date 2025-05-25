@@ -48,3 +48,101 @@ def get_fermentacion(id):
         'tipo_levadura':res.tipo_levadura,
         'notas':res.notas
     }),200
+
+@fermentacion_bp.route('/', methods=['POST'])
+def crear_fermentacion():
+    data= request.get_json()
+
+    #algunas validaciones
+    if not data or "lote_vino_id" not in data or "fecha_inicio" not in data or "fecha_fin" not in data or "temperatura_control_c" not in data or "densidad_inicial" not in data or "densidad_final" not in data or "ph_medicion" not in data or "acidez_volatil_g_l" not in data or "tipo_levadura" not in data:
+        return jsonify ({'Error': 'Faltan campos requeridos'}),400
+    
+    try:
+        fecha_recepcion = datetime.fromisoformat(data['fecha_inicio']) 
+        fecha_final= datetime.fromisoformat(data['fecha_fin']) # conversión importante
+    except ValueError:
+        return jsonify({'error': 'Formato de fecha inválido'}), 400
+    
+    nueva_fermentacion= FermentacionAlcoholica(
+        lote_vino_id=data['lote_vino_id'],
+        fecha_inicio=fecha_recepcion,
+        fecha_fin= fecha_final,
+        temperatura_control_c=data['temperatura_control_c'],
+        densidad_inicial=data['densidad_inicial'],
+        densidad_final=data['densidad_final'],
+        ph_medicion=data['ph_medicion'],
+        acidez_volatil_g_l=data['acidez_volatil_g_l'],
+        tipo_levadura=data['tipo_levadura'],
+        notas=data.get('notas')  # devuelve None si no está
+    )
+
+    db.session.add(nueva_fermentacion)
+    db.session.commit()
+
+    return jsonify({
+        'id':nueva_fermentacion.id,
+        'lote_vino_id' : nueva_fermentacion.lote_vino_id,
+        'fecha_inicio':nueva_fermentacion.fecha_inicio.isoformat(),
+        'fecha_fin': nueva_fermentacion.fecha_fin.isoformat(),
+        'temperatura_control_c':nueva_fermentacion.temperatura_control_c,            
+        'densidad_inicial':nueva_fermentacion.densidad_inicial,
+        'densidad_final':nueva_fermentacion.densidad_final,
+        'ph_medicion':nueva_fermentacion.ph_medicion,
+        'acidez_volatil_g_l':nueva_fermentacion.acidez_volatil_g_l,
+        'tipo_levadura':nueva_fermentacion.tipo_levadura,
+        'notas':nueva_fermentacion.notas
+    }),201
+
+
+@fermentacion_bp.route('/<string:id>', methods=['PATCH'])
+def modificar_fermentacion(id):
+    fermentacion_cambio=FermentacionAlcoholica.query.get(id)
+    if not fermentacion_cambio:
+        return jsonify({'error': 'Fermentacion no encontrada'}),404
+
+    data=request.get_json()
+    if not data:
+        return ({'error' : ' no hay datos para actualizar'}),400
+
+    #validamos datos para ir actualizando
+
+     # Validamos y actualizamos campos individualmente
+    try:
+        if 'fecha_inicio' in data:
+            fermentacion_cambio.fecha_inicio = datetime.fromisoformat(data['fecha_inicio'])
+        if 'fecha_fin' in data:
+            fermentacion_cambio.fecha_fin = datetime.fromisoformat(data['fecha_fin'])
+    except ValueError:
+        return jsonify({'error': 'Formato de fecha inválido'}), 400
+
+    if 'temperatura_control_c' in data:
+        fermentacion_cambio.temperatura_control_c=data['temperatura_control_c']
+    if 'densidad_inicial' in data:
+        fermentacion_cambio.densidad_inicial=data['densidad_inicial']
+    if 'densidad_final' in data:
+        fermentacion_cambio.densidad_final= data['densidad_final']
+    if 'ph_medicion' in data:
+        fermentacion_cambio.ph_medicion=data['ph_medicion']
+    if 'acidez_volatil_g_l' in data:
+        fermentacion_cambio.acidez_volatil_g_l=data['acidez_volatil_g_l']
+    if 'tipo_levadura' in data:
+        fermentacion_cambio.tipo_levadura=data['tipo_levadura']
+    if 'notas' in data:
+        fermentacion_cambio.notas=data['notas']
+
+    db.session.commit()
+
+    return jsonify({
+        'id':fermentacion_cambio.id,
+        'lote_vino_id' : fermentacion_cambio.lote_vino_id,
+        'fecha_inicio':fermentacion_cambio.fecha_inicio.isoformat(),
+        'fecha_fin': fermentacion_cambio.fecha_fin.isoformat(),
+        'temperatura_control_c':fermentacion_cambio.temperatura_control_c,            
+        'densidad_inicial':fermentacion_cambio.densidad_inicial,
+        'densidad_final':fermentacion_cambio.densidad_final,
+        'ph_medicion':fermentacion_cambio.ph_medicion,
+        'acidez_volatil_g_l':fermentacion_cambio.acidez_volatil_g_l,
+        'tipo_levadura':fermentacion_cambio.tipo_levadura,
+        'notas':fermentacion_cambio.notas
+
+    }),200
