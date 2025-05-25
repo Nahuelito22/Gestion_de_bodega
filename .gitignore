@@ -1,5 +1,6 @@
 # Ignorar entorno virtual
 venv/
+venvGestionBodega/
 
 # Archivos de compilación de Python
 __pycache__/

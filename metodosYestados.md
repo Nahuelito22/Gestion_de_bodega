@@ -83,7 +83,7 @@ Puede haber múltiples por lote (si se trasiega). Importante para seguimiento.
 | VariedadUva           | ✅   | ✅    | ✅   | ✅     | ⚠️     | Solo borrar si no está usada             |
 | LoteVino              | ✅   | ✅    | ❌   | ✅     | ❌      | Nunca eliminar por trazabilidad          |
 | RecepcionUva          | ✅   | ✅    | ❌   | ✅     | ❌      | Parte inicial del proceso, no se elimina |
-| FermentacionAlcoolica | ✅   | ✅    | ❌   | ✅     | ❌      | Técnica y trazable, histórica            |
+|FermentacionAlcoholica | ✅   | ✅    | ❌   | ✅     | ❌      | Técnica y trazable, histórica            |
 | CrianzaAlmacenamiento | ✅   | ✅    | ❌   | ✅     | ❌      | Puede haber varias etapas, no se elimina |
 | Embotellado           | ✅   | ✅    | ❌   | ✅     | ❌      | Última etapa, no debería borrarse        |
 
