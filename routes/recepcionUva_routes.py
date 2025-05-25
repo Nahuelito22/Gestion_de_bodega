@@ -9,7 +9,7 @@ recepcionUva_bp = Blueprint('recepcionUva_bp', __name__)
 
 #GET / Obtener las recepciones de uva
 
-recepcionUva_bp.route('/', methods=['GET'])
+@recepcionUva_bp.route('/', methods=['GET'])
 def get_recepcionesUva():
     recepciones=RecepcionUva.query.all() #Traemos todas las Recepciones
     resultados= []
@@ -30,7 +30,7 @@ def get_recepcionesUva():
 # GET / Obtener Recepcion por ID
 
 
-recepcionUva_bp.route('/<string:id>', methods=['GET'] )
+@recepcionUva_bp.route('/<string:id>', methods=['GET'] )
 def get_recepcion(id):
     recepcion=RecepcionUva.query.get(id)
     if not recepcion:
@@ -45,7 +45,7 @@ def get_recepcion(id):
         'notas':recepcion.notas
     }),200
 
-recepcionUva_bp.route('/', methods=['POST'])
+@recepcionUva_bp.route('/', methods=['POST'])
 def crea_recepcion():
     data = request.get_json()
 
@@ -73,11 +73,51 @@ def crea_recepcion():
     return jsonify({
         'id': nueva_recepcion.id,
         'lote_vino_id':nueva_recepcion.lote_vino_id,
-        'fecha_recepcion': nueva_recepcion.fecha_recepcion,
-        'cantidad_kg':nueva_recepcion.cantidad_kg.isoformat(),
+        'fecha_recepcion': nueva_recepcion.fecha_recepcion.isoformat(),
+        'cantidad_kg':nueva_recepcion.cantidad_kg,
         'ph':nueva_recepcion.ph,
         'acidez_total_g_l': nueva_recepcion.acidez_total_g_l,
         'azucar_brix': nueva_recepcion.azucar_brix,
         'notas':nueva_recepcion.notas
     
     }), 201
+
+
+    #no se hace metodo PUT
+
+@recepcionUva_bp.route('/<string:id>', methods=['PATCH'])
+def modificar_recepcion (id):
+    recepcion_cambio= RecepcionUva.query.get(id)
+    if not recepcion_cambio:
+        return jsonify({'error': 'Recepcion de uva no encontrada'}),404
+    
+    data= request.get_json()
+    if not data:
+        return jsonify({'error':'No hay datos para actualizar'})
+
+    #chequeamos los datos para ir actualizando
+
+    if 'cantidad_kg' in data:
+        recepcion_cambio.cantidad_kg= data['cantidad_kg']
+    if 'ph' in data :
+        recepcion_cambio.ph = data['ph']
+    if 'acidez_total_g_l' in data:
+        recepcion_cambio.acidez_total_g_l = data['acidez_total_g_l']
+    if 'azucar_brix' in data:
+        recepcion_cambio.azucar_brix= data['azucar_brix']
+    if 'notas' in data:
+        recepcion_cambio.notas= data['notas']
+    
+    db.session.commit()
+
+    return jsonify({
+        'id': recepcion_cambio.id,
+        'lote_vino_id':recepcion_cambio.lote_vino_id,
+        'fecha_recepcion': recepcion_cambio.fecha_recepcion.isoformat(),
+        'cantidad_kg':recepcion_cambio.cantidad_kg,
+        'ph':recepcion_cambio.ph,
+        'acidez_total_g_l': recepcion_cambio.acidez_total_g_l,
+        'azucar_brix': recepcion_cambio.azucar_brix,
+        'notas':recepcion_cambio.notas
+
+    }),200
