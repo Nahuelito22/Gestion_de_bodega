@@ -29,8 +29,6 @@ def get_fermentaciones():
     return jsonify(resultados),200
 
 
-
-
 @fermentacion_bp.route('/<string:id>', methods=['GET'] )
 def get_fermentacion(id):
     res=FermentacionAlcoholica.query.get(id)
