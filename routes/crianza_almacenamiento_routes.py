@@ -41,7 +41,7 @@ def get_almacenamiento(id):
         'ph_medicion':res.ph_medicion,
         'acidez_medicion_g_l':res.acidez_medicion_g_l,
         'notas':res.notas
-    }),201
+    }),200
 
 @crianza_bp.route('/', methods=['POST'])
 def crear_almacenamiento():
@@ -123,4 +123,4 @@ def modificar_almacenamiento(id):
         'ph_medicion': almacenamiento_cambio.ph_medicion,
         'acidez_medicion_g_l': almacenamiento_cambio.acidez_medicion_g_l,
         'notas': almacenamiento_cambio.notas
-    }), 201
+    }), 200
