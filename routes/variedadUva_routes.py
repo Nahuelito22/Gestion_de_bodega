@@ -1,7 +1,7 @@
 import uuid
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, flash, redirect, request, jsonify, abort
+from flask import Blueprint, flash, redirect, render_template, request, jsonify, abort
 from models.variedadUva import VariedadUva
 from models.db import db
 
@@ -46,6 +46,16 @@ def get_variedad(id):
         "foto_ruta": variedad.foto_ruta
     }), 200
 
+
+
+#para obtener por html
+@variedadUva_bp.route('/listar', methods=['GET']) # Puse '/listar' como ejemplo de URL
+def get_variedadesHtml():
+    # Obtener todas las variedades de uva de la base de datos como objetos VariedadUva
+    variedades = VariedadUva.query.all()  
+    
+    # Renderiza la plantilla 'variedades.html' y pasa la lista de objetos 'variedades'
+    return render_template('/variedades/variedades.html', variedades=variedades), 200
 
 # POST / Crear nueva variedad
 @variedadUva_bp.route('/', methods=['POST'])
