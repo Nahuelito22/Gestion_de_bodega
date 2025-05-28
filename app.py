@@ -20,6 +20,7 @@ def create_app():
     db.init_app(app)
     
     with app.app_context():
+        #db.drop_all() #borra todo 
         db.create_all()  # Aquí se crean las tablas si no existen
     
     # Registramos los blueprints

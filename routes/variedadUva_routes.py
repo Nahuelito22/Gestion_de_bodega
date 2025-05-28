@@ -1,7 +1,18 @@
 import uuid
-from flask import Blueprint, request, jsonify, abort
+import os
+from werkzeug.utils import secure_filename
+from flask import Blueprint, flash, redirect, request, jsonify, abort
 from models.variedadUva import VariedadUva
 from models.db import db
+
+
+
+UPLOAD_FOLDER = 'static/images'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Creamos el blueprint para VariedadUva
 variedadUva_bp = Blueprint('variedadUva_bp', __name__)
@@ -39,16 +50,28 @@ def get_variedad(id):
 # POST / Crear nueva variedad
 @variedadUva_bp.route('/', methods=['POST'])
 def crear_variedad():
-    data = request.get_json()
+    nombre = request.form.get('nombre')
+    origen = request.form.get('origen')
+    foto_ruta = request.files.get('foto_ruta')
 
-    # Validar campos mínimos
-    if not data or "nombre" not in data:
+    if not nombre:
         return jsonify({"error": "El campo 'nombre' es obligatorio"}), 400
+    
+    filename = None
+
+    if foto_ruta and foto_ruta.filename != '':
+        if allowed_file(foto_ruta.filename):
+            filename = secure_filename(foto_ruta.filename)
+            image_path = os.path.join(UPLOAD_FOLDER, filename)
+            foto_ruta.save(image_path)
+        else:
+            flash('Formato de imagen no permitido. Solo png, jpg, jpeg, gif.', 'danger')
+            return redirect(request.referrer)
 
     nueva_variedad = VariedadUva(
-        nombre=data.get["nombre"],
-        origen=data.get("origen"),
-        foto_ruta=data.get("foto_ruta")
+        nombre=nombre,
+        origen=origen,
+        foto_ruta=filename
     )
 
     db.session.add(nueva_variedad)
