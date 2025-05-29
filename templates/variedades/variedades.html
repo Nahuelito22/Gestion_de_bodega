@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block title %} Listado de Variedades de Uva {% endblock %}
+
+{% block body %}
+<div class="row">
+  <div class="col-md-5 p-5">
+    {% include 'partials/_message.html' %}
+
+    </div>
+
+  <div class="col-md-7 p-5">
+    <h2 class="mb-4">Variedades de Uva Disponibles</h2>
+    <table class="table table-dark table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Imagen</th>
+          <th>Nombre</th>
+          <th>Origen</th>
+          <th>Acciones</th> {# Si añades botones de editar/eliminar #}
+        </tr>
+      </thead>
+      <tbody>
+        {% for variedad in variedades %} {# ¡Aquí es donde usas la variable 'variedades' pasada desde Flask! #}
+        <tr>
+          <td>
+            {% if variedad.foto_ruta %}
+              <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" alt="{{ variedad.nombre }}" width="80" height="80" class="rounded">
+            {% else %}
+              <span class="text-muted">Sin imagen</span>
+            {% endif %}
+          </td>
+          <td>{{ variedad.nombre }}</td>
+          <td>{{ variedad.origen }}</td>
+          <td>
+            {# Aquí irían tus botones de acción si los implementas #}
+            {# <a href="{{ url_for('variedadUva_bp.edit_variedad', id=variedad.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> #}
+            {# <form action="{{ url_for('variedadUva_bp.delete_variedad', id=variedad.id) }}" method="POST" style="display: inline" onsubmit="return confirm('¿Estás seguro que quieres eliminar esta variedad?');"> #}
+            {#   <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button> #}
+            {# </form> #}
+          </td>
+        </tr>
+        {% else %} {# Este bloque se ejecuta si 'variedades' está vacía #}
+        <tr>
+            <td colspan="4" class="text-center">No hay variedades de uva registradas.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

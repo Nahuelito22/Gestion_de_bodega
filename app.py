@@ -1,5 +1,5 @@
 # Importamos librerias, rutas y modelos
-from flask import Flask     
+from flask import Flask , render_template
 from config.config import Config 
 from models.db import db
 from routes.variedadUva_routes import variedadUva_bp
@@ -10,8 +10,9 @@ from routes.crianza_almacenamiento_routes import crianza_bp
 from routes.embotellado_routes import embotellado_bp
 
 # Creamos la app, configuraciones e importaciones
+app = Flask(__name__)
+
 def create_app():
-    app = Flask(__name__)
     
     # Cargamos la configuracion
     app.config.from_object(Config)
@@ -20,6 +21,7 @@ def create_app():
     db.init_app(app)
     
     with app.app_context():
+        #db.drop_all() #borra todo 
         db.create_all()  # Aquí se crean las tablas si no existen
     
     # Registramos los blueprints
@@ -31,6 +33,12 @@ def create_app():
     app.register_blueprint(embotellado_bp, url_prefix="/embotellado")
     
     return app
+#visualizamos index
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
 
 if __name__=="__main__":
     app= create_app()
