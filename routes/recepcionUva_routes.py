@@ -59,7 +59,7 @@ def crea_recepcion():
     
     nueva_recepcion= RecepcionUva(
         lote_vino_id=data['lote_vino_id'],
-        fecha_recepcion=fecha_recepcion ['fecha_recepcion'],
+        fecha_recepcion=fecha_recepcion,
         cantidad_kg= data ['cantidad_kg'],
         ph= data['ph'],
         acidez_total_g_l= data ['acidez_total_g_l'],
