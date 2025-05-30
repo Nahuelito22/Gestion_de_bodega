@@ -57,6 +57,11 @@ def get_variedadesHtml():
     # Renderiza la plantilla 'variedades.html' y pasa la lista de objetos 'variedades'
     return render_template('/variedades/variedades.html', variedades=variedades), 200
 
+@variedadUva_bp.route('/menu', methods=['GET'])
+def menu_variedades():
+    return render_template('variedades/menuVariedad.html')
+
+
 # POST / Crear nueva variedad
 @variedadUva_bp.route('/', methods=['POST'])
 def crear_variedad():
