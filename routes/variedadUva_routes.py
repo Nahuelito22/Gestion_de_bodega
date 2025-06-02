@@ -174,3 +174,53 @@ def eliminar_variedad(id):
 @variedadUva_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_variedad():
     return render_template('variedades/crear.html') 
+
+
+@variedadUva_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+def editar_variedad(id):
+    variedad = VariedadUva.query.get_or_404(id)
+
+    if request.method == 'POST':
+        variedad.nombre = request.form['nombre']
+        variedad.origen = request.form['origen']
+
+        foto = request.files.get('foto_ruta')
+        if foto and foto.filename != '':
+            if allowed_file(foto.filename):
+                # Borrar imagen vieja si existe
+                if variedad.foto_ruta:
+                    old_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)
+                    if os.path.exists(old_path):
+                        os.remove(old_path)
+                # Guardar nueva imagen
+                filename = secure_filename(foto.filename)
+                path = os.path.join(UPLOAD_FOLDER, filename)
+                foto.save(path)
+                variedad.foto_ruta = filename
+            else:
+                flash('Formato de imagen no permitido.', 'danger')
+                return redirect(request.referrer)
+
+        db.session.commit()
+        flash('Variedad actualizada correctamente.', 'success')
+        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
+
+    return render_template('variedades/editar.html', variedad=variedad)
+
+
+
+@variedadUva_bp.route('/delete/<string:id>', methods=['POST'])
+def borrar_variedad(id):
+    variedad = VariedadUva.query.get_or_404(id)
+
+    # Borrar imagen si existe
+    if variedad.foto_ruta:
+        image_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+    db.session.delete(variedad)
+    db.session.commit()
+    flash('Variedad eliminada exitosamente!', 'success')
+    return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
+
