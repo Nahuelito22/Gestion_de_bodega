@@ -1,7 +1,7 @@
 import uuid
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, abort
+from flask import Blueprint, flash, redirect, render_template, request, jsonify, abort, url_for
 from models.variedadUva import VariedadUva
 from models.db import db
 
@@ -92,12 +92,9 @@ def crear_variedad():
     db.session.add(nueva_variedad)
     db.session.commit()
 
-    return jsonify({
-        "id": nueva_variedad.id,
-        "nombre": nueva_variedad.nombre,
-        "origen": nueva_variedad.origen,
-        "foto_ruta": nueva_variedad.foto_ruta
-    }), 201
+   
+    flash("Variedad creada con éxito", "success")
+    return redirect(url_for('variedadUva_bp.get_variedadesHtml')), 201
 
 
 # PUT / Reemplazar variedad entera
@@ -173,7 +170,7 @@ def eliminar_variedad(id):
     return jsonify({"mensaje": f"Variedad {id} eliminada"}), 200
 
 
-
+#metodo para renderizar el formulario de html
 @variedadUva_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_variedad():
     return render_template('variedades/crear.html') 
