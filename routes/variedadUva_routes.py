@@ -63,7 +63,7 @@ def menu_variedades():
 
 
 # POST / Crear nueva variedad
-@variedadUva_bp.route('/', methods=['POST'])
+@variedadUva_bp.route('/nueva', methods=['POST'])
 def crear_variedad():
     nombre = request.form.get('nombre')
     origen = request.form.get('origen')
@@ -171,3 +171,9 @@ def eliminar_variedad(id):
     db.session.commit()
 
     return jsonify({"mensaje": f"Variedad {id} eliminada"}), 200
+
+
+
+@variedadUva_bp.route('/crear', methods=['GET'])
+def mostrar_formulario_variedad():
+    return render_template('variedades/crear.html') 
