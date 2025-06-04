@@ -213,6 +213,13 @@ def editar_variedad(id):
 def borrar_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
 
+
+    
+    """# Chequear si tiene lotes asociados
+    if variedad.lotes_vino:
+        flash('No se puede eliminar la variedad porque tiene lotes de vino asociados.', 'danger')
+"""
+
     # Borrar imagen si existe
     if variedad.foto_ruta:
         image_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)

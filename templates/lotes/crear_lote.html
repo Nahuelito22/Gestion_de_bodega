@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title%} Crear Lote{% endblock %}
+
+{% block body %}
+<div class="col-md-6 offset-md-3">
+  <div class="card card-body bg-dark text-white mt-5">
+    <h2 class="text-center mb-4">Crear Lote de Vino</h2>
+
+    <form 
+    action="{{ url_for('loteVino_bp.crear_lote') }}" 
+    method="POST"
+    enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="nombre_identificativo">Nombre del Lote:</label>
+        <input 
+          type="text" 
+          name="nombre_identificativo" 
+          class="form-control bg-dark text-white" 
+          placeholder="nombre"
+          required
+        >
+      </div>
+
+      <div class="mb-3">
+        <label for="variedad_uva_id">Variedad de Uva:</label>
+        <select name="variedad_uva_id" class="form-control bg-dark text-white" required>
+          {% for variedad in variedades %}
+            <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">Crear Lote</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
