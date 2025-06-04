@@ -1,7 +1,7 @@
 import uuid
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, abort, url_for
+from flask import Blueprint, current_app, flash, redirect, render_template, request, jsonify, abort, url_for
 from models.variedadUva import VariedadUva
 from models.db import db
 
@@ -207,19 +207,19 @@ def editar_variedad(id):
 
     return render_template('variedades/editar.html', variedad=variedad)
 
-
-
 @variedadUva_bp.route('/delete/<string:id>', methods=['POST'])
 def borrar_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
 
+    # Expira los atributos y relaciones de la instancia para que se recarguen desde la base
+    #db.session.expire(variedad, ['lotes_vino'])
+    db.session.refresh(variedad)
 
-    
-    """# Chequear si tiene lotes asociados
+    """# Vuelve a consultar si hay lotes asociados
     if variedad.lotes_vino:
         flash('No se puede eliminar la variedad porque tiene lotes de vino asociados.', 'danger')
+        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
 """
-
     # Borrar imagen si existe
     if variedad.foto_ruta:
         image_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)
@@ -230,4 +230,3 @@ def borrar_variedad(id):
     db.session.commit()
     flash('Variedad eliminada exitosamente!', 'success')
     return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
-

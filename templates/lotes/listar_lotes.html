@@ -35,10 +35,8 @@
                     <td>{{ lote.fecha_creacion.strftime('%Y-%m-%d %H:%M') }}</td>
                     <td>
                          {# Aquí irían tus botones de acción para cada lote #}
-                         {#<a href="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> #}
-                       {# <form action="{{ url_for('loteVino_bp.borrar_lote', id=lote.id) }}" method="POST" style="display: inline;" onsubmit="return confirm('¿Estás seguro que quieres eliminar este lote?');"> 
-                            <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button> 
-                        </form> #}
+                         <a href="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> 
+                        </form>
                     </td>
                 </tr>
                 {% else %} {# Este bloque se ejecuta si la lista 'lotes' está vacía #}
