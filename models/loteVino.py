@@ -14,7 +14,7 @@ class LoteVino(db.Model):
     variedad_uva_id = db.Column(db.String(36), db.ForeignKey('variedad_uva.id'), nullable=False)
 
     # Relación para poder acceder al objeto VariedadUva desde un LoteVino
-    variedad_uva = db.relationship('VariedadUva', backref=db.backref('lotes_vino', lazy=True))
+    variedad_uva = db.relationship('VariedadUva', backref=db.backref('lotes_vino', lazy='dynamic'))
 
     def __repr__(self):
         return f"<LoteVino {self.nombre_identificativo} (id={self.id}) - Variedad: {self.variedad_uva.nombre}>"

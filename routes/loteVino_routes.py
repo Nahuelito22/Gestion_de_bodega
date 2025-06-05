@@ -1,8 +1,9 @@
 from datetime import datetime
 import uuid
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, flash, redirect, render_template, request, jsonify, url_for
 from models.loteVino import LoteVino  # importamos el modelo
 from models.db import db
+from models.variedadUva import VariedadUva
 
 # Creamos el blueprint para LoteVino
 loteVino_bp = Blueprint('loteVino_bp', __name__)
@@ -34,7 +35,7 @@ def get_lote(id):
     }),200
 
 @loteVino_bp.route('/', methods=['POST'])
-def crear_lote():
+def añadir_lote():
     data= request.get_json()
 
     if not data or 'nombre_identificativo' not in data or 'fecha_creacion' not in data or 'variedad_uva_id' not in data:
@@ -92,3 +93,63 @@ def modificar_lote(id):
         'fecha_creacion':cambio_lote.fecha_creacion.isoformat(),
         'variedad_uva_id':cambio_lote.variedad_uva_id
     }),200
+
+#metodo para renderizar el formulario de html
+@loteVino_bp.route('/crear', methods=['GET'])
+def mostrar_formulario_crear_lote():
+    variedades = VariedadUva.query.all()
+
+    return render_template('lotes/crear_lote.html', variedades= variedades) 
+
+@loteVino_bp.route('/crear_lote', methods = ['POST'])
+def crear_lote():
+    nombre_identificatorio= request.form['nombre_identificativo']
+    variedad_uva_id = request.form['variedad_uva_id']
+    nuevo_lote = LoteVino(
+        nombre_identificativo=nombre_identificatorio,
+        variedad_uva_id=variedad_uva_id
+    )
+
+    db.session.add(nuevo_lote)
+    db.session.commit()
+
+    flash('Lote creado correctamente.', 'success')
+    return redirect(url_for('loteVino_bp.listar_lotes'))  # redirigí a donde muestres los lotes
+
+
+
+@loteVino_bp.route('/listar', methods=['GET']) # Puse '/listar' como ejemplo de URL
+def listar_lotes():
+    # Obtener todas las variedades de uva de la base de datos como objetos VariedadUva
+    lotes = LoteVino.query.all()  
+    
+    # Renderiza la plantilla 'variedades.html' y pasa la lista de objetos 'lotes'
+    return render_template('/lotes/listar_lotes.html', lotes=lotes), 200
+
+
+@loteVino_bp.route('/menu', methods=['GET'])
+def menu_variedades():
+    return render_template('lotes/lotes_menu.html')
+
+
+@loteVino_bp.route('/editar_lote/<string:id>', methods=['GET', 'POST'])
+def editar_lote(id):
+    lote = LoteVino.query.get_or_404(id)
+    variedades = VariedadUva.query.all()
+
+
+    if request.method == 'POST':
+        lote.nombre_identificativo = request.form['nombre_identificativo']
+        #lote.fecha_creacion = request.form['fecha_creacion']
+
+        try:
+            lote.variedad_uva_id = request.form['variedad_uva_id']
+        except Exception as e:
+            # En caso de cualquier error durante la actualización, deshaz la transacción
+            db.session.rollback()
+            flash(f'Error al actualizar el lote: {e}', 'danger')
+        db.session.commit()
+        flash('Variedad actualizada correctamente.', 'success')
+        return redirect(url_for('loteVino_bp.listar_lotes'))
+
+    return render_template('/lotes/editar_lotes.html', lote=lote, variedades=variedades), 200

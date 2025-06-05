@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block title %}Listado de Lotes de Vino{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-5 p-5">
+        {% include 'partials/_message.html' %}
+        {# Aquí podrías añadir un formulario o un botón para crear nuevos lotes si lo deseas #}
+    </div>
+
+    <div class="col-md-7 p-5">
+        <h2 class="mb-4">Lotes de Vino Disponibles</h2>
+        <table class="table table-dark table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Nombre Identificativo</th>
+                    <th>Variedad de Uva</th>
+                    <th>Fecha de Creación</th>
+                    <th>Acciones</th> {# Espacio para botones de editar/eliminar #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for lote in lotes %} {# Iteramos sobre la variable 'lotes' #}
+                <tr>
+                    <td>{{ lote.nombre_identificativo }}</td>
+                    <td>
+                        {# Accedemos a la variedad de uva a través de la relación #}
+                        {% if lote.variedad_uva %}
+                            {{ lote.variedad_uva.nombre }}
+                        {% else %}
+                            <span class="text-muted">Variedad no asignada</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ lote.fecha_creacion.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td>
+                         {# Aquí irían tus botones de acción para cada lote #}
+                         <a href="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> 
+                        </form>
+                    </td>
+                </tr>
+                {% else %} {# Este bloque se ejecuta si la lista 'lotes' está vacía #}
+                <tr>
+                    <td colspan="4" class="text-center">No hay lotes de vino registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

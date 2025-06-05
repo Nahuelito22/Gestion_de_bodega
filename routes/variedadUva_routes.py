@@ -1,7 +1,7 @@
 import uuid
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, flash, redirect, render_template, request, jsonify, abort
+from flask import Blueprint, current_app, flash, redirect, render_template, request, jsonify, abort, url_for
 from models.variedadUva import VariedadUva
 from models.db import db
 
@@ -57,8 +57,13 @@ def get_variedadesHtml():
     # Renderiza la plantilla 'variedades.html' y pasa la lista de objetos 'variedades'
     return render_template('/variedades/variedades.html', variedades=variedades), 200
 
+@variedadUva_bp.route('/menu', methods=['GET'])
+def menu_variedades():
+    return render_template('variedades/menuVariedad.html')
+
+
 # POST / Crear nueva variedad
-@variedadUva_bp.route('/', methods=['POST'])
+@variedadUva_bp.route('/nueva', methods=['POST'])
 def crear_variedad():
     nombre = request.form.get('nombre')
     origen = request.form.get('origen')
@@ -87,12 +92,9 @@ def crear_variedad():
     db.session.add(nueva_variedad)
     db.session.commit()
 
-    return jsonify({
-        "id": nueva_variedad.id,
-        "nombre": nueva_variedad.nombre,
-        "origen": nueva_variedad.origen,
-        "foto_ruta": nueva_variedad.foto_ruta
-    }), 201
+   
+    flash("Variedad creada con éxito", "success")
+    return redirect(url_for('variedadUva_bp.get_variedadesHtml')), 201
 
 
 # PUT / Reemplazar variedad entera
@@ -166,3 +168,65 @@ def eliminar_variedad(id):
     db.session.commit()
 
     return jsonify({"mensaje": f"Variedad {id} eliminada"}), 200
+
+
+#metodo para renderizar el formulario de html
+@variedadUva_bp.route('/crear', methods=['GET'])
+def mostrar_formulario_variedad():
+    return render_template('variedades/crear.html') 
+
+
+@variedadUva_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+def editar_variedad(id):
+    variedad = VariedadUva.query.get_or_404(id)
+
+    if request.method == 'POST':
+        variedad.nombre = request.form['nombre']
+        variedad.origen = request.form['origen']
+
+        foto = request.files.get('foto_ruta')
+        if foto and foto.filename != '':
+            if allowed_file(foto.filename):
+                # Borrar imagen vieja si existe
+                if variedad.foto_ruta:
+                    old_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)
+                    if os.path.exists(old_path):
+                        os.remove(old_path)
+                # Guardar nueva imagen
+                filename = secure_filename(foto.filename)
+                path = os.path.join(UPLOAD_FOLDER, filename)
+                foto.save(path)
+                variedad.foto_ruta = filename
+            else:
+                flash('Formato de imagen no permitido.', 'danger')
+                return redirect(request.referrer)
+
+        db.session.commit()
+        flash('Variedad actualizada correctamente.', 'success')
+        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
+
+    return render_template('variedades/editar.html', variedad=variedad)
+
+@variedadUva_bp.route('/delete/<string:id>', methods=['POST'])
+def borrar_variedad(id):
+    variedad = VariedadUva.query.get_or_404(id)
+
+    # Expira los atributos y relaciones de la instancia para que se recarguen desde la base
+    #db.session.expire(variedad, ['lotes_vino'])
+    db.session.refresh(variedad)
+
+    """# Vuelve a consultar si hay lotes asociados
+    if variedad.lotes_vino:
+        flash('No se puede eliminar la variedad porque tiene lotes de vino asociados.', 'danger')
+        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
+"""
+    # Borrar imagen si existe
+    if variedad.foto_ruta:
+        image_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+    db.session.delete(variedad)
+    db.session.commit()
+    flash('Variedad eliminada exitosamente!', 'success')
+    return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
