@@ -1,60 +1,75 @@
 {% extends "layout.html" %}
 
+{% block title %}Editar Variedad de Uva - Gestión de Bodega{% endblock %} 
+
 {% block body %}
-<div class="col-md-6 offset-md-3">
-  <div class="card card-body bg-dark text-white mt-5">
-    <h1 class="text-center">Editar Variedad</h1>
-
-    <form 
-      action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" 
-      method="POST" 
-      enctype="multipart/form-data"
-    >
-      <div class="mb-3">
-        <label for="nombre">Nombre Variedad:</label>
-        <input
-          type="text"
-          name="nombre"
-          value="{{ variedad.nombre }}"
-          class="form-control bg-dark text-white rounded-0"
-          required
-        />
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
+        <h2 class="card-title mb-0">Editar Variedad de Uva</h2>
       </div>
+      <div class="card-body p-4">
 
-      <div class="mb-3">
-        <label for="origen">Origen:</label>
-        <textarea
-          name="origen"
-          rows="3"
-          class="form-control bg-dark text-white rounded-0"
-          required
-        >{{ variedad.origen }}</textarea>
+        <form 
+          action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" 
+          method="POST" 
+          enctype="multipart/form-data">
+          
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de la Variedad:</label>
+            <input
+              type="text"
+              name="nombre"
+              value="{{ variedad.nombre }}"
+              class="form-control" 
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="origen" class="form-label">Origen / Descripción Corta:</label>
+            <textarea
+              name="origen"
+              rows="3"
+              class="form-control" 
+              required
+            >{{ variedad.origen }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="foto_ruta" class="form-label">Cambiar Imagen (opcional):</label> 
+            <input
+              type="file"
+              name="foto_ruta"
+              accept="image/*"
+              class="form-control" 
+            />
+          </div>
+
+          {% if variedad.foto_ruta %}
+          <div class="mb-3 text-center"> 
+            <label class="form-label d-block mb-2">Imagen actual:</label> 
+            <img 
+              src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
+              alt="{{ variedad.nombre }}" 
+              class="img-fluid rounded shadow-sm" 
+              style="max-width: 150px; height: auto;" 
+            >
+          </div>
+          {% endif %}
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-check-circle me-2"></i>Actualizar Variedad
+            </button>
+            <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary btn-lg"> {# <-- CORREGIDO AQUÍ #}
+              <i class="bi bi-arrow-left-circle me-2"></i>Volver al Listado
+            </a>
+          </div>
+        </form>
       </div>
-
-      <div class="mb-3">
-        <label for="foto_ruta">Imagen (opcional):</label>
-        <input
-          type="file"
-          name="foto_ruta"
-          accept="image/*"
-          class="form-control bg-dark text-white rounded-0"
-        />
-      </div>
-
-      {% if variedad.foto_ruta %}
-      <div class="mb-3">
-        <label>Imagen actual:</label><br>
-        <img 
-          src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
-          alt="{{ variedad.nombre }}" 
-          width="120" 
-          class="rounded"
-        >
-      </div>
-      {% endif %}
-
-      <button type="submit" class="btn btn-primary w-100">Actualizar</button>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}

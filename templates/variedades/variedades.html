@@ -1,52 +1,89 @@
 {% extends 'layout.html' %}
 
-{% block title %}Variedades de Uva {% endblock %}
+{% block title %}Listado de Variedades de Uva - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="row">
-  <div class="col-md-5 p-5">
-    {% include 'partials/_message.html' %}
+{# Fila para Título y Botón "Nueva Variedad" #}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0 text-primary">Variedades de Uva</h1> {# Usamos text-primary de tu main.css #}
+    <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-success"> {# Botón para crear con un ícono #}
+        <i class="bi bi-plus-circle me-2"></i>Nueva Variedad
+    </a>
+</div>
+
+{# Incluye los mensajes flash al inicio del contenido principal #}
+{% include 'partials/_message.html' %}
+
+<div class="card shadow-sm border-0 rounded-3"> {# Contenedor con estilo de tarjeta #}
+    <div class="card-body p-4">
+
+        {% if variedades %} {# Verifica si hay variedades para mostrar #}
+        <div class="table-responsive"> {# Hace la tabla scrollable en pantallas pequeñas #}
+            <table class="table table-striped table-hover align-middle"> {# Clases de Bootstrap #}
+                <thead class="table-dark"> {# Cabecera oscura para contraste #}
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Origen</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for variedad in variedades %} {# <-- Aquí empieza el bucle que define 'variedad' #}
+                    <tr>
+                        <td class="text-center"> {# Centra la imagen en la celda #}
+                            {% if variedad.foto_ruta %}
+                                {# Añadimos clases de Bootstrap para imágenes responsivas y circulares/redondeadas #}
+                                <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
+                                     alt="{{ variedad.nombre }}" 
+                                     class="img-fluid rounded-circle" {# img-fluid para responsividad, rounded-circle para forma circular #}
+                                     style="width: 60px; height: 60px; object-fit: cover;"> {# Tamaño fijo y object-fit para que la imagen se vea bien #}
+                            {% else %}
+                                <i class="bi bi-image-fill text-muted fs-4" title="Sin imagen"></i> {# Ícono si no hay imagen #}
+                                <span class="visually-hidden">Sin imagen</span> {# Texto oculto para accesibilidad #}
+                            {% endif %}
+                        </td>
+                        <td>{{ variedad.nombre }}</td>
+                        <td>{{ variedad.origen }}</td>
+                        <td>
+                            <div class="d-flex gap-2"> {# Usa flexbox para alinear botones y darles espacio #}
+                                {# Botón para Ver Detalles (si lo agregaste y lo tienes en tu ruta) #}
+                                {# Asegúrate de tener esta ruta en tu backend: @variedadUva_bp.route('/<string:id>/detalle') def detalle_variedad(id): #}
+                                {#
+{% if 'variedadUva_bp.detalle_variedad' in config.get('REGISTERED_BLUEPRINTS', []) %}
+    <a href="{{ url_for('variedadUva_bp.detalle_variedad', id=variedad.id) }}" class="btn btn-info btn-sm" title="Ver Detalles">
+        <i class="bi bi-eye"></i>
+    </a>
+{% endif %}
+#}
+
+                                {# Botón para Editar #}
+                                <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-warning btn-sm" title="Editar Variedad">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                {# Botón para Eliminar con confirmación #}
+                                <form action="{{ url_for('variedadUva_bp.borrar_variedad', id=variedad.id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Estás seguro que quieres eliminar la variedad {{ variedad.nombre }}? Esta acción no se puede deshacer.');">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar Variedad">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %} {# <-- Aquí termina el bucle de 'variedad' #}
+                </tbody>
+            </table>
+        </div>
+        {% else %} {# Mensaje si no hay variedades #}
+        <div class="alert alert-info text-center mt-3" role="alert">
+            <h4 class="alert-heading">¡No hay variedades de uva registradas!</h4>
+            <p>Parece que aún no tienes variedades en el sistema.</p>
+            <hr>
+            <p class="mb-0">Crea una para empezar a categorizar tus lotes.</p>
+            <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-info mt-3"><i class="bi bi-plus-circle me-2"></i>Crear Primera Variedad</a>
+        </div>
+        {% endif %}
 
     </div>
-
-  <div class="col-md-7 p-5">
-    <h2 class="mb-4">Variedades de Uva Disponibles</h2>
-    <table class="table table-dark table-striped align-middle">
-      <thead>
-        <tr>
-          <th>Imagen</th>
-          <th>Nombre</th>
-          <th>Origen</th>
-          <th>Acciones</th> {# Si añades botones de editar/eliminar #}
-        </tr>
-      </thead>
-      <tbody>
-        {% for variedad in variedades %} {# ¡Aquí es donde usas la variable 'variedades' pasada desde Flask! #}
-        <tr>
-          <td>
-            {% if variedad.foto_ruta %}
-              <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" alt="{{ variedad.nombre }}" width="80" height="80" class="rounded">
-            {% else %}
-              <span class="text-muted">Sin imagen</span>
-            {% endif %}
-          </td>
-          <td>{{ variedad.nombre }}</td>
-          <td>{{ variedad.origen }}</td>
-          <td>
-            {# Aquí irían tus botones de acción si los implementas #}
-            <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> 
-            <form action="{{ url_for('variedadUva_bp.borrar_variedad', id=variedad.id) }}" method="POST" style="display: inline" onsubmit="return confirm('¿Estás seguro que quieres eliminar esta variedad?');"> 
-             <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button> 
-            {# </form> #}
-          </td>
-        </tr>
-        {% else %} {# Este bloque se ejecuta si 'variedades' está vacía #}
-        <tr>
-            <td colspan="4" class="text-center">No hay variedades de uva registradas.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
 </div>
 {% endblock %}

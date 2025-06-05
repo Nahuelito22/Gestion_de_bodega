@@ -1,51 +1,65 @@
 {% extends 'layout.html' %}
 
-{% block title %}Crear Variedad{% endblock %}
+{% block title %}Crear Variedad de Uva - Gestión de Bodega{% endblock %} 
+
 {% block body %}
+<div class="row justify-content-center"> 
+  <div class="col-md-8 col-lg-6"> 
+    <div class="card shadow-lg border-0 rounded-3"> 
+      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3"> 
+        <h2 class="card-title mb-0">Registrar Nueva Variedad de Uva</h2> 
+      </div>
+      <div class="card-body p-4"> 
 
-<form
-  action="/variedades/nueva"
-  method="POST"
-  enctype="multipart/form-data"
-  class="card bg-black text-light"
->
-  <div class="card-body p-4">
-    <h1 class="h5 mb-4">agregar Variedad</h1>
+        <form 
+          action="{{ url_for('variedadUva_bp.crear_variedad') }}" 
+          method="POST"
+          enctype="multipart/form-data">
+          
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre de la Variedad:</label>
+            <input 
+              type="text" 
+              name="nombre" 
+              class="form-control" 
+              placeholder="Ej: Malbec"
+              autofocus
+              required
+            >
+          </div>
 
-    <div class="mb-3">
-      <label for="fullname">Nombre Variedad:</label>
-      <input
-        type="text"
-        name="nombre"
-        class="form-control rounded-0 bg-dark border-0 text-white"
-        placeholder="nombre Variedad"
-        autofocus
-      />
+          <div class="mb-3">
+            <label for="origen" class="form-label">Origen / Descripción Corta:</label>
+            <textarea 
+              name="origen" 
+              rows="3" 
+              class="form-control" 
+              placeholder="Ej: Burdeos, Francia. Uva de piel oscura..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="foto_ruta" class="form-label">Imagen de la Variedad (opcional):</label>
+            <input 
+              type="file" 
+              name="foto_ruta" 
+              class="form-control" 
+              accept="image/*" 
+            >
+          </div>
+
+          <div class="d-grid gap-2 mt-4"> 
+            <button type="submit" class="btn btn-primary btn-lg"> 
+              <i class="bi bi-save me-2"></i>Guardar Variedad
+            </button>
+            <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary btn-lg"> {# <-- CORREGIDO AQUÍ #}
+              <i class="bi bi-x-circle me-2"></i>Cancelar
+            </a>
+          </div>
+        </form>
+      </div>
     </div>
-
- 
-
-    <div class="mb-3">
-      <label for="description">origen:</label>
-      <textarea
-        name="origen"
-        rows="3"
-        class="form-control bg-dark text-white rounded-0"
-        required
-      ></textarea>
-    </div>
-
-
-    <div class="mb-3">
-      <label for="image">imagen:</label>
-      <input
-        type="file"
-        name="foto_ruta"
-        class="form-control rounded-0 bg-dark border-0 text-white"
-      />
-    </div>
-
-    <button class="btn btn-primary">Save</button>
   </div>
-</form>
+</div>
 {% endblock %}
