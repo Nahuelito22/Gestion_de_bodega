@@ -212,14 +212,14 @@ def borrar_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
 
     # Expira los atributos y relaciones de la instancia para que se recarguen desde la base
-    #db.session.expire(variedad, ['lotes_vino'])
+    db.session.expire(variedad, ['lotes_vino'])
     db.session.refresh(variedad)
 
-    """# Vuelve a consultar si hay lotes asociados
-    if variedad.lotes_vino:
+    # Vuelve a consultar si hay lotes asociados
+    """if variedad.lotes_vino:
         flash('No se puede eliminar la variedad porque tiene lotes de vino asociados.', 'danger')
-        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
-"""
+        return redirect(url_for('variedadUva_bp.get_variedadesHtml'))"""
+
     # Borrar imagen si existe
     if variedad.foto_ruta:
         image_path = os.path.join(UPLOAD_FOLDER, variedad.foto_ruta)

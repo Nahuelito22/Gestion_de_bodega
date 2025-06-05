@@ -8,6 +8,7 @@ class VariedadUva(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     origen = db.Column(db.String(100), nullable=True)
     foto_ruta = db.Column(db.String(200), nullable=True)
+    #estado=db.Column(db.String(20), nullable=False)
 
     def __repr__(self):
         # Método para mostrar una representación legible del objeto (útil para debug)

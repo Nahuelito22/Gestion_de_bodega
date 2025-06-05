@@ -33,11 +33,10 @@
           <td>{{ variedad.nombre }}</td>
           <td>{{ variedad.origen }}</td>
           <td>
-            {# Aquí irían tus botones de acción si los implementas #}
             <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-outline-primary btn-sm">Editar</a> 
             <form action="{{ url_for('variedadUva_bp.borrar_variedad', id=variedad.id) }}" method="POST" style="display: inline" onsubmit="return confirm('¿Estás seguro que quieres eliminar esta variedad?');"> 
              <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button> 
-            {# </form> #}
+            </form> 
           </td>
         </tr>
         {% else %} {# Este bloque se ejecuta si 'variedades' está vacía #}
