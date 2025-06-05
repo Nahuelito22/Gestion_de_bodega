@@ -1,7 +1,101 @@
 {% extends 'layout.html' %}
 
-{% block title %}Inicio Gestion{% endblock %}
+{% block title %}Inicio - Gestión de Bodega{% endblock %} {# Un título más descriptivo #}
 
 {% block body %}
-<h1> Bienvenido a Gestion de Bodega</h1>
+<div class="row mb-5 mt-4"> {# Margen inferior y superior #}
+    <div class="col-12 text-center">
+        <h1 class="display-4 text-primary">¡Bienvenido a tu Gestión de Bodega!</h1> {# display-4 para un título grande, text-primary para el color #}
+        <p class="lead text-muted">
+            La plataforma integral para la trazabilidad de tus vinos, desde la uva hasta la botella.
+        </p>
+        <hr class="my-4"> {# Línea divisoria #}
+        <p class="text-secondary">Explora las secciones para gestionar cada etapa del proceso de elaboración.</p>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> {# Grilla responsiva de tarjetas #}
+    {# Card para Variedades de Uva #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3"> {# Tarjeta con altura 100%, sombra y borde redondeado #}
+            <div class="card-body text-center">
+                <i class="bi bi-grape-fill text-primary fs-1 mb-3"></i> {# Ícono de uva de Bootstrap Icons #}
+                <h5 class="card-title text-primary">Variedades de Uva</h5>
+                <p class="card-text text-muted">Administra el catálogo de variedades de uva utilizadas en tu producción.</p>
+                <a href="/variedades/menu" class="btn btn-primary mt-3">
+                    <i class="bi bi-list-ul me-2"></i>Ver Variedades
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Card para Lotes de Vino #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-wine text-primary fs-1 mb-3"></i> {# Ícono de vino #}
+                <h5 class="card-title text-primary">Lotes de Vino</h5>
+                <p class="card-text text-muted">Gestiona y consulta el estado de cada lote de vino a lo largo de su ciclo.</p>
+                <a href="/lotes/menu" class="btn btn-primary mt-3">
+                    <i class="bi bi-box-seam me-2"></i>Ver Lotes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Ejemplo de una etapa de proceso: Recepción de Uva #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-truck-flatbed text-primary fs-1 mb-3"></i> {# Ícono de camión #}
+                <h5 class="card-title text-primary">Recepción de Uva</h5>
+                <p class="card-text text-muted">Registra los detalles de la uva al momento de su llegada a la bodega.</p>
+                <a href="/recepcion" class="btn btn-primary mt-3">
+                    <i class="bi bi-plus-circle me-2"></i>Registrar Recepción
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Puedes añadir más Cards aquí para Fermentación, Crianza, Embotellado, etc. #}
+    {# Por ejemplo: #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-thermometer text-primary fs-1 mb-3"></i>
+                <h5 class="card-title text-primary">Fermentación Alcohólica</h5>
+                <p class="card-text text-muted">Controla y documenta el proceso de fermentación de cada lote.</p>
+                <a href="/fermentacion" class="btn btn-primary mt-3">
+                    <i class="bi bi-clipboard-check me-2"></i>Ver Fermentaciones
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-barrel text-primary fs-1 mb-3"></i>
+                <h5 class="card-title text-primary">Crianza y Almacenamiento</h5>
+                <p class="card-text text-muted">Registra las fases de crianza, trasiegos y evolución en barricas o tanques.</p>
+                <a href="/crianza" class="btn btn-primary mt-3">
+                    <i class="bi bi-archive me-2"></i>Ver Crianza
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-bottle text-primary fs-1 mb-3"></i>
+                <h5 class="card-title text-primary">Embotellado</h5>
+                <p class="card-text text-muted">Documenta la etapa final de embotellado y control de stock.</p>
+                <a href="/embotellado" class="btn btn-primary mt-3">
+                    <i class="bi bi-boxes me-2"></i>Ver Embotellado
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
