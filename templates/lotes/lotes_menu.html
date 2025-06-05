@@ -1,14 +1,47 @@
 {% extends 'layout.html' %}
 
-{% block title %}Lotes menu{% endblock %}
+{% block title %}Menú de Lotes de Vino - Gestión de Bodega{% endblock %}
 
 
 {% block body %}
-<div class="container mt-4">
-    <h1>Lotes</h1>
-    <ul class="list-group">
-        <li class="list-group-item"><a href="/lotes/listar"">📄 Ver/Editar todas los lotes</a></li>
-        <li class="list-group-item"><a href="/lotes/crear">➕ Agregar nuevo</a></li>
-    </ul>
+<div class="row mb-5 mt-4"> {# Fila para el título principal #}
+    <div class="col-12 text-center">
+        <h1 class="display-4 text-primary">Gestión de Lotes de Vino</h1>
+        <p class="lead text-muted">
+            Administra los lotes a lo largo de todo el proceso de trazabilidad.
+        </p>
+    </div>
 </div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center"> {# Grilla de tarjetas centrada #}
+
+    {# Card para Ver/Editar Lotes #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-list-ol text-primary fs-1 mb-3"></i> {# Ícono de lista/orden #}
+                <h5 class="card-title text-primary">Ver / Editar Lotes</h5>
+                <p class="card-text text-muted">Explora el listado completo de lotes existentes y realiza modificaciones.</p>
+                <a href="/lotes/listar" class="btn btn-primary mt-3">
+                    <i class="bi bi-eye me-2"></i>Ver Todos los Lotes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Card para Agregar Nuevo Lote #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-box-seam-fill text-primary fs-1 mb-3"></i> {# Ícono de caja/lote #}
+                <h5 class="card-title text-primary">Agregar Nuevo Lote</h5>
+                <p class="card-text text-muted">Registra un nuevo lote de vino para iniciar su trazabilidad.</p>
+                <a href="/lotes/crear" class="btn btn-success mt-3"> {# Usamos btn-success para "Agregar" #}
+                    <i class="bi bi-plus-circle me-2"></i>Crear Nuevo Lote
+                </a>
+            </div>
+        </div>
+    </div>
+
+    </div>
 {% endblock %}

@@ -1,39 +1,36 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> {# Usamos navbar-dark y bg-dark (de tu main.css) #}
-  <div class="container-fluid"> {# Usar container-fluid para que ocupe todo el ancho o container si quieres centrarlo y limitar el ancho #}
-    <a class="navbar-brand" href="/">Gestión de Bodega</a> {# Título o logo principal #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Gestión de Bodega</a>
     
-    {# Botón para menú responsivo en móviles #}
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    {# Contenedor principal para los enlaces de navegación #}
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto"> {# ms-auto empuja los elementos de menú a la derecha #}
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/">Inicio</a> {# Home/Inicio, quitar active por defecto #}
+          <a class="nav-link" href="/">Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/variedades/menu">Variedad Uva</a>
+          <a class="nav-link" href="/variedades/menu">Variedad Uva</a> {# Puedes mantener este si es una sección "maestra" #}
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/lotes/menu">Lotes Vino</a>
+
+        {# Menú Desplegable para Etapas de Trazabilidad #}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProceso" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Trazabilidad del Vino
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownProceso"> {# dropdown-menu-dark para un fondo oscuro #}
+            <li><h6 class="dropdown-header">Proceso de Elaboración</h6></li> {# Título dentro del desplegable #}
+            <li><a class="dropdown-item" href="/lotes/menu">Lotes de Vino</a></li>
+            <li><hr class="dropdown-divider"></li> {# Separador #}
+            <li><a class="dropdown-item" href="/recepcion">Recepción de Uva</a></li>
+            <li><a class="dropdown-item" href="/fermentacion">Fermentación</a></li>
+            <li><a class="dropdown-item" href="/crianza">Crianza y Almacenamiento</a></li>
+            <li><a class="dropdown-item" href="/embotellado">Embotellado</a></li>
+          </ul>
         </li>
-        {# Aquí agregarías los enlaces para el resto de tus entidades #}
-        {# Por ejemplo: #}
-        <li class="nav-item">
-          <a class="nav-link" href="/recepcion">Recepción de Uva</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/fermentacion">Fermentación</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/crianza">Crianza y Almacenamiento</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/embotellado">Embotellado</a>
-        </li>
-        {# Separador opcional o grupo de enlaces al final #}
+
         <li class="nav-item">
           <a class="nav-link" href="/about">Acerca de</a>
         </li>

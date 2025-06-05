@@ -1,38 +1,64 @@
 {% extends "layout.html" %}
 
-{% block title%} Crear Lote{% endblock %}
+{% block title %}Crear Lote de Vino - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="col-md-6 offset-md-3">
-  <div class="card card-body bg-dark text-white mt-5">
-    <h2 class="text-center mb-4">Crear Lote de Vino</h2>
-
-    <form 
-    action="{{ url_for('loteVino_bp.crear_lote') }}" 
-    method="POST"
-    enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="nombre_identificativo">Nombre del Lote:</label>
-        <input 
-          type="text" 
-          name="nombre_identificativo" 
-          class="form-control bg-dark text-white" 
-          placeholder="nombre"
-          required
-        >
+<div class="row justify-content-center"> {# Centra la columna del formulario #}
+  <div class="col-md-8 col-lg-6"> {# Ancho para pantallas medianas y grandes #}
+    <div class="card shadow-lg border-0 rounded-3"> {# Tarjeta con sombra y bordes redondeados #}
+      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3"> {# Cabecera de la tarjeta con color primario #}
+        <h2 class="card-title mb-0">Registrar Nuevo Lote de Vino</h2>
       </div>
+      <div class="card-body p-4"> {# Padding dentro del cuerpo de la tarjeta #}
 
-      <div class="mb-3">
-        <label for="variedad_uva_id">Variedad de Uva:</label>
-        <select name="variedad_uva_id" class="form-control bg-dark text-white" required>
-          {% for variedad in variedades %}
-            <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
-          {% endfor %}
-        </select>
+        <form 
+          action="{{ url_for('loteVino_bp.crear_lote') }}" 
+          method="POST"
+          enctype="multipart/form-data">
+          
+          <div class="mb-3">
+            <label for="nombre_identificativo" class="form-label">Nombre del Lote:</label>
+            <input 
+              type="text" 
+              name="nombre_identificativo" 
+              class="form-control" {# Elimina bg-dark y text-white para usar los estilos por defecto claros de Bootstrap #}
+              placeholder="Ej: Malbec_2025_L001"
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="variedad_uva_id" class="form-label">Variedad de Uva:</label>
+            <select name="variedad_uva_id" class="form-select" required> {# Usa form-select para selects de Bootstrap #}
+              <option value="">Selecciona una variedad</option> {# Opción por defecto #}
+              {% for variedad in variedades %}
+                <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
+            <input 
+              type="date" 
+              name="fecha_creacion" 
+              class="form-control"
+              value="{{ today_date }}" {# Asumiendo que pasas 'today_date' desde Flask #}
+              required
+            >
+          </div>
+
+          <div class="d-grid gap-2 mt-4"> {# Botones de ancho completo y espaciados #}
+            <button type="submit" class="btn btn-primary btn-lg"> {# Botón más grande #}
+              <i class="bi bi-plus-circle me-2"></i>Crear Lote
+            </button>
+            <a href="/lotes/menu" class="btn btn-secondary btn-lg"> {# Botón de cancelar/volver #}
+              <i class="bi bi-x-circle me-2"></i>Cancelar
+            </a>
+          </div>
+        </form>
       </div>
-
-      <button type="submit" class="btn btn-primary w-100">Crear Lote</button>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}

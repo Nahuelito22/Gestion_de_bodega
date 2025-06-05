@@ -1,41 +1,66 @@
 {% extends "layout.html" %}
 
-{% block title%}Editar Lote{% endblock %}
+{% block title %}Editar Lote de Vino - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="col-md-6 offset-md-3">
-  <div class="card card-body bg-dark text-white mt-5">
-    <h2 class="text-center mb-4">Editar Lote</h2>
-
-    <form 
-    action="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" 
-    method="POST"
-    enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="nombre_identificativo">Nombre del Lote:</label>
-        <input 
-          type="text" 
-          name="nombre_identificativo" 
-          class="form-control bg-dark text-white" 
-          placeholder="nombre"
-          value="{{ lote.nombre_identificativo }}"
-          required
-        >
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
+        <h2 class="card-title mb-0">Editar Lote de Vino</h2>
       </div>
+      <div class="card-body p-4">
 
-      <div class="mb-3">
-        <label for="variedad_uva_id">Variedad de Uva:</label>
-        <select name="variedad_uva_id" class="form-control bg-dark text-white" required>
-          {% for variedad in variedades %}
-            <option value="{{ variedad.id }}" {% if lote.variedad_uva_id == variedad.id %}selected{% endif %}>
-              {{ variedad.nombre }}
-            </option>
-          {% endfor %}
-        </select>
+        <form 
+          action="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" 
+          method="POST"
+          enctype="multipart/form-data">
+          
+          <div class="mb-3">
+            <label for="nombre_identificativo" class="form-label">Nombre del Lote:</label>
+            <input 
+              type="text" 
+              name="nombre_identificativo" 
+              class="form-control" 
+              placeholder="nombre"
+              value="{{ lote.nombre_identificativo }}"
+              required
+            >
+          </div>
+
+          <div class="mb-3">
+            <label for="variedad_uva_id" class="form-label">Variedad de Uva:</label>
+            <select name="variedad_uva_id" class="form-select" required>
+              {% for variedad in variedades %}
+                <option value="{{ variedad.id }}" {% if lote.variedad_uva_id == variedad.id %}selected{% endif %}>
+                  {{ variedad.nombre }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
+            <input 
+              type="date" 
+              name="fecha_creacion" 
+              class="form-control"
+              value="{{ lote.fecha_creacion.strftime('%Y-%m-%d') }}" {# Formatear para input type="date" #}
+              required
+            >
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-save me-2"></i>Guardar Cambios
+            </button>
+            <a href="/lotes/menu" class="btn btn-secondary btn-lg">
+              <i class="bi bi-x-circle me-2"></i>Cancelar
+            </a>
+          </div>
+        </form>
       </div>
-
-      <button type="submit" class="btn btn-primary w-100">Guardar Cambios</button>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}
