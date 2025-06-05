@@ -30,3 +30,6 @@ Thumbs.db   # Windows
 # Otros archivos generados por el sistema
 *.bak
 *.swp
+
+# Archivos de documentacion generados
+estructura_directorio.txt
