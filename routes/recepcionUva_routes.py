@@ -8,11 +8,7 @@ from models.db import db # Asumiendo que tu objeto db está en models/db.py
 # Creamos el blueprint para recepcionUva
 recepcionUva_bp = Blueprint('recepcionUva_bp', __name__)
 
-# =====================================================================
-# RUTAS DE API (JSON) - Para Postman, otros servicios, etc.
-# Estas rutas devuelven JSON.
-# =====================================================================
-
+# RUTAS DE API (JSON) - Para Postman
 # GET /api/recepcion/ - Obtener todas las recepciones de uva (API)
 @recepcionUva_bp.route('/', methods=['GET'])
 def get_recepcionesUva_api(): # Renombrado para diferenciar de la HTML
@@ -160,12 +156,7 @@ def borrar_recepcion_api(id):
     db.session.commit()
     return jsonify({'message': 'Recepción de uva eliminada exitosamente'}), 200
 
-
-# =====================================================================
-# RUTAS PARA LA INTERFAZ DE USUARIO (HTML) - Para el navegador web
-# Estas rutas renderizan plantillas HTML o redirigen.
-# =====================================================================
-
+# RUTAS PARA LA INTERFAZ DE USUARIO (HTML) 
 # Ruta para el menú principal de Recepción
 # URL: /recepcion/menu
 @recepcionUva_bp.route('/menu', methods=['GET'])

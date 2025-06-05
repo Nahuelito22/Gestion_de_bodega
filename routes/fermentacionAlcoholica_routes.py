@@ -8,11 +8,7 @@ from models.db import db
 # Creamos el blueprint para fermentacionAlcoholica
 fermentacion_bp = Blueprint('fermentacion_bp', __name__)
 
-# =====================================================================
-# RUTAS DE API (JSON) - Para Postman, otros servicios, etc.
-# Estas rutas devuelven JSON.
-# =====================================================================
-
+# RUTAS DE API (JSON) - Para Postman
 # GET /api/fermentacion/ - Obtener todas las fermentaciones (API)
 @fermentacion_bp.route('/', methods=['GET'])
 def get_fermentaciones_api(): # Renombrado para diferenciar de la HTML
@@ -179,12 +175,8 @@ def borrar_fermentacion_api(id):
     db.session.commit()
     return jsonify({'message': 'Fermentacion de uva eliminada exitosamente'}), 200
 
-# =====================================================================
-# RUTAS PARA LA INTERFAZ DE USUARIO (HTML) - Para el navegador web
-# Estas rutas renderizan plantillas HTML o redirigen.
-# =====================================================================
 
-# Ruta para el menú principal de Fermentación
+# RUTAS PARA LA INTERFAZ DE USUARIO (HTML) 
 # URL: /fermentacion/menu
 @fermentacion_bp.route('/menu', methods=['GET'])
 def menu_fermentaciones():

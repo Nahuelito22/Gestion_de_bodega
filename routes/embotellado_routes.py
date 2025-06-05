@@ -8,11 +8,7 @@ from models.db import db
 # Creamos el blueprint para embotellado
 embotellado_bp = Blueprint('embotellado_bp', __name__)
 
-# =====================================================================
-# RUTAS DE API (JSON) - Para Postman, otros servicios, etc.
-# Estas rutas devuelven JSON.
-# =====================================================================
-
+# RUTAS DE API (JSON) - Para Postman
 # GET /api/embotellado/ - Obtener todos los embotellados (API)
 @embotellado_bp.route('/', methods=['GET'])
 def get_embotellamientos_api(): # Renombrado para diferenciar de la HTML
@@ -162,12 +158,8 @@ def borrar_embotellado_api(id):
     db.session.commit()
     return jsonify({'message': 'Embotellado eliminado exitosamente'}), 200
 
-# =====================================================================
-# RUTAS PARA LA INTERFAZ DE USUARIO (HTML) - Para el navegador web
-# Estas rutas renderizan plantillas HTML o redirigen.
-# =====================================================================
 
-# Ruta para el menú principal de Embotellado
+# RUTAS PARA LA INTERFAZ DE USUARIO (HTML)
 # URL: /embotellado/menu
 @embotellado_bp.route('/menu', methods=['GET'])
 def menu_embotellados():

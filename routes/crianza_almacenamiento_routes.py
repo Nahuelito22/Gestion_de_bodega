@@ -8,11 +8,7 @@ from models.db import db
 # Creamos el blueprint para crianza_almacenamiento
 crianza_bp = Blueprint('crianza_bp', __name__)
 
-# =====================================================================
-# RUTAS DE API (JSON) - Para Postman, otros servicios, etc.
-# Estas rutas devuelven JSON.
-# =====================================================================
-
+# RUTAS DE API (JSON) - Para Postman
 # GET /api/crianza/ - Obtener todas las crianzas/almacenamientos (API)
 @crianza_bp.route('/', methods=['GET'])
 def get_almacenamientos_api(): # Renombrado para diferenciar de la HTML
@@ -164,13 +160,7 @@ def borrar_almacenamiento_api(id):
     db.session.commit()
     return jsonify({'message': 'Crianza/Almacenamiento eliminada exitosamente'}), 200
 
-
-# =====================================================================
 # RUTAS PARA LA INTERFAZ DE USUARIO (HTML) - Para el navegador web
-# Estas rutas renderizan plantillas HTML o redirigen.
-# =====================================================================
-
-# Ruta para el menú principal de Crianza/Almacenamiento
 # URL: /crianza/menu
 @crianza_bp.route('/menu', methods=['GET'])
 def menu_crianzas():
