@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block title %}Editar Fermentación{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Editar Fermentación Alcohólica</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('fermentacion_bp.editar_fermentacion_html', id=fermentacion.id) }}">
+                        <div class="mb-3">
+                            <label for="lote_vino_id" class="form-label">Lote de Vino Asociado <span class="text-danger">*</span></label>
+                            <select class="form-select" id="lote_vino_id" name="lote_vino_id" required>
+                                <option value="">Selecciona un Lote de Vino</option>
+                                {% for lote in lotes %}
+                                <option value="{{ lote.id }}" {% if lote.id == fermentacion.lote_vino_id %}selected{% endif %}>
+                                    {{ lote.nombre_identificativo }} {# CAMBIADO: lote.nombre_lote a lote.nombre_identificativo #}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ fermentacion.fecha_inicio.strftime('%Y-%m-%d') }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fecha_fin" class="form-label">Fecha de Fin</label>
+                            <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ fermentacion.fecha_fin.strftime('%Y-%m-%d') if fermentacion.fecha_fin else '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="temperatura_control_c" class="form-label">Temperatura Control (°C)</label> {# CAMBIADO: temperatura_max a temperatura_control_c #}
+                            <input type="number" step="0.1" class="form-control" id="temperatura_control_c" name="temperatura_control_c" value="{{ fermentacion.temperatura_control_c if fermentacion.temperatura_control_c is not none else '' }}"> {# CAMBIADO: temperatura_max a temperatura_control_c #}
+                        </div>
+                        <div class="mb-3">
+                            <label for="densidad_inicial" class="form-label">Densidad Inicial</label>
+                            <input type="number" step="0.001" class="form-control" id="densidad_inicial" name="densidad_inicial" value="{{ fermentacion.densidad_inicial if fermentacion.densidad_inicial is not none else '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="densidad_final" class="form-label">Densidad Final</label>
+                            <input type="number" step="0.001" class="form-control" id="densidad_final" name="densidad_final" value="{{ fermentacion.densidad_final if fermentacion.densidad_final is not none else '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="ph_medicion" class="form-label">pH</label>
+                            <input type="number" step="0.01" class="form-control" id="ph_medicion" name="ph_medicion" value="{{ fermentacion.ph_medicion if fermentacion.ph_medicion is not none else '' }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="acidez_volatil_g_l" class="form-label">Acidez Volátil (g/L)</label> {# CAMBIADO: acidez_medicion_g_l a acidez_volatil_g_l #}
+                            <input type="number" step="0.1" class="form-control" id="acidez_volatil_g_l" name="acidez_volatil_g_l" value="{{ fermentacion.acidez_volatil_g_l if fermentacion.acidez_volatil_g_l is not none else '' }}"> {# CAMBIADO: acidez_medicion_g_l a acidez_volatil_g_l #}
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo_levadura" class="form-label">Tipo de Levadura</label> {# CAMBIADO: levadura_utilizada a tipo_levadura #}
+                            <input type="text" class="form-control" id="tipo_levadura" name="tipo_levadura" value="{{ fermentacion.tipo_levadura if fermentacion.tipo_levadura else '' }}"> {# CAMBIADO: levadura_utilizada a tipo_levadura #}
+                        </div>
+                        <div class="mb-3">
+                            <label for="notas" class="form-label">Notas</label>
+                            <textarea class="form-control" id="notas" name="notas" rows="3">{{ fermentacion.notas if fermentacion.notas else '' }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Actualizar Fermentación</button>
+                        <a href="{{ url_for('fermentacion_bp.listar_fermentaciones_html') }}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}Menú de Fermentación Alcohólica{% endblock %}
+
+{% block body %} {# CAMBIO AQUÍ: 'content' a 'body' #}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Gestión de Fermentación Alcohólica</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Registrar Nueva Fermentación</h5>
+                    <p class="card-text">Añade un nuevo registro de fermentación alcohólica.</p>
+                    <a href="{{ url_for('fermentacion_bp.mostrar_formulario_fermentacion') }}" class="btn btn-primary">Crear Fermentación</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Ver Fermentaciones Existentes</h5>
+                    <p class="card-text">Consulta y gestiona todos los registros de fermentación.</p>
+                    <a href="{{ url_for('fermentacion_bp.listar_fermentaciones_html') }}" class="btn btn-info">Listar Fermentaciones</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+
+{% block title %}Listado de Fermentaciones{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Listado de Fermentaciones Alcohólicas</h1>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{{ url_for('fermentacion_bp.mostrar_formulario_fermentacion') }}" class="btn btn-success">Registrar Nueva Fermentación</a>
+        <a href="{{ url_for('fermentacion_bp.menu_fermentaciones') }}" class="btn btn-secondary">Volver al Menú</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if fermentaciones %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Lote de Vino</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Temp. Control (°C)</th> {# CAMBIADO: Temp. Máx. (°C) a Temp. Control (°C) #}
+                    <th>Densidad Inicial</th>
+                    <th>Densidad Final</th>
+                    <th>pH</th>
+                    <th>Acidez Volátil (g/L)</th> {# CAMBIADO: Acidez (g/L) a Acidez Volátil (g/L) #}
+                    <th>Tipo Levadura</th> {# CAMBIADO: Levadura a Tipo Levadura #}
+                    <th>Notas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ferm in fermentaciones %}
+                <tr>
+                    <td>{{ ferm.lote_vino.nombre_identificativo if ferm.lote_vino else 'N/A' }}</td> {# CAMBIADO: ferm.lote_vino.nombre_lote a ferm.lote_vino.nombre_identificativo #}
+                    <td>{{ ferm.fecha_inicio.strftime('%Y-%m-%d') if ferm.fecha_inicio else 'N/A' }}</td>
+                    <td>{{ ferm.fecha_fin.strftime('%Y-%m-%d') if ferm.fecha_fin else 'N/A' }}</td>
+                    <td>{{ ferm.temperatura_control_c if ferm.temperatura_control_c is not none else 'N/A' }}</td> {# CAMBIADO: temperatura_max a temperatura_control_c #}
+                    <td>{{ ferm.densidad_inicial if ferm.densidad_inicial is not none else 'N/A' }}</td>
+                    <td>{{ ferm.densidad_final if ferm.densidad_final is not none else 'N/A' }}</td>
+                    <td>{{ ferm.ph_medicion if ferm.ph_medicion is not none else 'N/A' }}</td>
+                    <td>{{ ferm.acidez_volatil_g_l if ferm.acidez_volatil_g_l is not none else 'N/A' }}</td> {# CAMBIADO: acidez_medicion_g_l a acidez_volatil_g_l #}
+                    <td>{{ ferm.tipo_levadura if ferm.tipo_levadura else 'N/A' }}</td> {# CAMBIADO: levadura_utilizada a tipo_levadura #}
+                    <td>{{ ferm.notas if ferm.notas else 'N/A' }}</td>
+                    <td>
+                        <a href="{{ url_for('fermentacion_bp.editar_fermentacion_html', id=ferm.id) }}" class="btn btn-warning btn-sm me-2">Editar</a>
+                        <form action="{{ url_for('fermentacion_bp.borrar_fermentacion_html', id=ferm.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta fermentación?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-center">No hay registros de fermentación alcohólica para mostrar.</p>
+    {% endif %}
+</div>
+{% endblock body %}
