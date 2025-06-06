@@ -1,67 +1,117 @@
-/* Variables CSS*/
+/* Variables CSS (Asegúrate de que estén así) */
 :root {
-    --bs-font-sans-serif: 'Open Sans', sans-serif; 
-    --bs-primary: #800020; 
-    --bs-secondary: #D2B48C;
-    --bs-dark: #343a40; 
-    --bs-light: #f8f9fa; 
-    --bs-body-color: #333; 
-    --bs-heading-color: var(--bs-primary); 
+    --bs-font-sans-serif: 'Open Sans', sans-serif;
+    --bs-primary: #800020; /* Tu color borgoña/granate */
+    --bs-secondary: #D2B48C; /* Tu color beige/dorado */
+    --bs-dark: #343a40; /* Tu gris oscuro */
+    --bs-light: #f8f9fa; /* Tu blanco/gris claro */
+    --bs-body-color: #333; /* Color de texto general */
+    --bs-heading-color: var(--bs-primary); /* Color de encabezados por defecto */
 }
 
-/* Importar Google Fonts */
+/* Importar Google Fonts (Asegúrate de que esté) */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Merriweather:wght@400;700&display=swap');
 
 /* Estilos generales del body */
 body {
-    background-color: var(--bs-light); 
-    font-family: var(--bs-font-sans-serif); 
-    color: var(--bs-body-color); 
-    min-height: 100vh; 
+    background-color: var(--bs-light);
+    font-family: var(--bs-font-sans-serif);
+    color: var(--bs-body-color);
+    min-height: 100vh;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
-
+/* Navbar */
 .navbar {
-    background-color: var(--bs-dark) !important; 
+    background-color: var(--bs-dark) !important;
 }
 
 .navbar .nav-link,
 .navbar-brand {
-    color: var(--bs-light) !important; 
+    color: var(--bs-light) !important;
     transition: color 0.3s ease;
 }
 
 .navbar .nav-link:hover,
 .navbar-brand:hover {
-    color: var(--bs-secondary) !important; 
+    color: var(--bs-secondary) !important;
 }
 
+/* Footer */
 footer {
-    background-color: var(--bs-dark) !important; 
-    color: var(--bs-light) !important; 
-    padding: 1.5rem; 
+    background-color: var(--bs-dark) !important;
+    color: var(--bs-light) !important;
+    padding: 1.5rem;
     text-align: center;
-    margin-top: auto; 
+    margin-top: auto;
     font-size: 0.9rem;
 }
 
-
+/* Headings (h1, h2, etc.) */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Merriweather', serif; 
-    color: var(--bs-heading-color); 
-    margin-bottom: 1rem; 
+    font-family: 'Merriweather', serif;
+    color: var(--bs-heading-color);
+    margin-bottom: 1rem;
 }
 
-
-.container.p-4 {
-    flex-grow: 1; 
+/* Specific styles for the main title on index.html */
+.display-3 {
+    font-weight: 700; /* Hacer el título más fuerte */
+    letter-spacing: -0.05rem; /* Ajuste fino del espaciado entre letras */
 }
 
+/* Main content container for flex-grow */
+.container.mt-5 {
+    flex-grow: 1; /* Para que el contenedor principal ocupe el espacio restante */
+}
 
+/* Card styles */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Pequeña animación al pasar el ratón */
+    border-radius: 0.75rem !important; /* Bordes un poco más redondeados para las tarjetas */
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Ligeramente elevar la tarjeta al pasar el ratón */
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; /* Sombra un poco más pronunciada al hacer hover */
+}
+
+/* Button styles (outline-primary specific) */
+.btn-outline-primary {
+    color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bs-primary);
+    color: var(--bs-light) !important; /* Texto blanco sobre el fondo borgoña */
+    border-color: var(--bs-primary);
+}
+
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.5); /* Resaltado al enfocar */
+}
+
+/* Rounded buttons */
+.rounded-pill {
+    border-radius: 50rem !important; /* Hacer los botones muy redondeados */
+}
+
+/* Icon size and text size for cards */
+.fs-2 {
+    font-size: 1.75rem !important; /* Ligeramente más grandes los iconos */
+}
+
+.small {
+    font-size: 0.875rem; /* Texto de la descripción de la tarjeta un poco más pequeño */
+}
+
+/* Alert messages (ensure these are well-defined) */
 .alert {
     margin-top: 1rem;
+    border-radius: 0.5rem; /* Bordes ligeramente redondeados para las alertas */
 }
 
 .alert-success {

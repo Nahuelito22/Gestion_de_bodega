@@ -10,12 +10,13 @@ crianza_bp = Blueprint('crianza_bp', __name__)
 
 # RUTAS DE API (JSON) - Para Postman
 # GET /api/crianza/ - Obtener todas las crianzas/almacenamientos (API)
-@crianza_bp.route('/', methods=['GET'])
+@crianza_bp.route('/api/', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_almacenamientos_api(): # Renombrado para diferenciar de la HTML
     almacenamientos = CrianzaAlmacenamiento.query.all()
     resultados = []
     for res in almacenamientos:
-        lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+        # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+        lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
         resultados.append({
             'id': res.id,
             'lote_vino_id': res.lote_vino_id,
@@ -31,13 +32,14 @@ def get_almacenamientos_api(): # Renombrado para diferenciar de la HTML
     return jsonify(resultados), 200
 
 # GET /api/crianza/<id> - Obtener Crianza/Almacenamiento por ID (API)
-@crianza_bp.route('/<string:id>', methods=['GET'])
+@crianza_bp.route('/api/<string:id>', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_almacenamiento_api(id): # Renombrado para diferenciar de la HTML
     res = CrianzaAlmacenamiento.query.get(id)
     if not res:
         return jsonify({'error': 'Crianza/Almacenamiento no encontrado'}), 404 # Añadido 404
     
-    lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
     return jsonify({
         'id': res.id,
         'lote_vino_id': res.lote_vino_id,
@@ -52,7 +54,7 @@ def get_almacenamiento_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # POST /api/crianza/ - Crear nueva crianza/almacenamiento (API)
-@crianza_bp.route('/', methods=['POST'])
+@crianza_bp.route('/api/', methods=['POST']) # CAMBIO IMPORTANTE AQUÍ
 def crear_almacenamiento_api(): # Renombrado para diferenciar de la HTML
     data = request.get_json()
 
@@ -85,7 +87,8 @@ def crear_almacenamiento_api(): # Renombrado para diferenciar de la HTML
     db.session.add(nuevo_almacenamiento)
     db.session.commit()
 
-    lote_nombre = nuevo_almacenamiento.lote_vino.nombre_lote if nuevo_almacenamiento.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = nuevo_almacenamiento.lote_vino.nombre_identificativo if nuevo_almacenamiento.lote_vino else "N/A"
     return jsonify({
         'id': nuevo_almacenamiento.id,
         'lote_vino_id': nuevo_almacenamiento.lote_vino_id,
@@ -100,7 +103,7 @@ def crear_almacenamiento_api(): # Renombrado para diferenciar de la HTML
     }), 201
 
 # PATCH /api/crianza/<id> - Modificar parcialmente crianza/almacenamiento (API)
-@crianza_bp.route('/<string:id>', methods=['PATCH'])
+@crianza_bp.route('/api/<string:id>', methods=['PATCH']) # CAMBIO IMPORTANTE AQUÍ
 def modificar_almacenamiento_api(id): # Renombrado para diferenciar de la HTML
     almacenamiento_cambio = CrianzaAlmacenamiento.query.get(id)
     if not almacenamiento_cambio:
@@ -135,7 +138,8 @@ def modificar_almacenamiento_api(id): # Renombrado para diferenciar de la HTML
         almacenamiento_cambio.notas = data['notas']
 
     db.session.commit()
-    lote_nombre = almacenamiento_cambio.lote_vino.nombre_lote if almacenamiento_cambio.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = almacenamiento_cambio.lote_vino.nombre_identificativo if almacenamiento_cambio.lote_vino else "N/A"
     return jsonify({
         'id': almacenamiento_cambio.id,
         'lote_vino_id': almacenamiento_cambio.lote_vino_id,
@@ -150,7 +154,7 @@ def modificar_almacenamiento_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # DELETE /api/crianza/<id> - Eliminar crianza/almacenamiento (API)
-@crianza_bp.route('/<string:id>', methods=['DELETE'])
+@crianza_bp.route('/api/<string:id>', methods=['DELETE']) # CAMBIO IMPORTANTE AQUÍ
 def borrar_almacenamiento_api(id):
     almacenamiento = CrianzaAlmacenamiento.query.get(id)
     if not almacenamiento:
@@ -298,3 +302,10 @@ def borrar_crianza_html(id):
     db.session.commit()
     flash('Registro de crianza/almacenamiento eliminado exitosamente!', 'success')
     return redirect(url_for('crianza_bp.listar_crianzas_html'))
+
+
+
+# Ruta principal para el blueprint (redirecciona al menú HTML)
+@crianza_bp.route('/', methods=['GET'])
+def index_crianza():
+    return redirect(url_for('crianza_bp.menu_crianzas'))
