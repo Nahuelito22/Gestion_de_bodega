@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block title %}Editar Registro de Embotellado{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center" style="color: #800020;">Editar Registro de Embotellado</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="card shadow p-4 mb-5 bg-white rounded">
+        <div class="card-body">
+            <form action="{{ url_for('embotellado_bp.editar_embotellado_html', id=embotellado.id) }}" method="POST">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="lote_vino_id" class="form-label">Lote Asociado <span class="text-danger">*</span></label>
+                        <select class="form-select" id="lote_vino_id" name="lote_vino_id" required>
+                            <option value="">Selecciona un lote</option>
+                            {% for lote in lotes %}
+                                <option value="{{ lote.id }}" {% if lote.id == embotellado.lote_vino_id %}selected{% endif %}>{{ lote.nombre_lote }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="fecha_embotellado" class="form-label">Fecha de Embotellado <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="fecha_embotellado" name="fecha_embotellado" value="{{ embotellado.fecha_embotellado.strftime('%Y-%m-%d') }}" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="numero_botellas_producidas" class="form-label">Número de Botellas Producidas</label>
+                        <input type="number" class="form-control" id="numero_botellas_producidas" name="numero_botellas_producidas" value="{{ embotellado.numero_botellas_producidas if embotellado.numero_botellas_producidas is not none else '' }}" placeholder="Ej: 750">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="volumen_por_botella_ml" class="form-label">Volumen por Botella (ml)</label>
+                        <input type="number" step="0.01" class="form-control" id="volumen_por_botella_ml" name="volumen_por_botella_ml" value="{{ "%.2f"|format(embotellado.volumen_por_botella_ml) if embotellado.volumen_por_botella_ml is not none else '' }}" placeholder="Ej: 750.00">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="ph_final" class="form-label">pH Final</label>
+                        <input type="number" step="0.01" class="form-control" id="ph_final" name="ph_final" value="{{ "%.2f"|format(embotellado.ph_final) if embotellado.ph_final is not none else '' }}" placeholder="Ej: 3.45">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="acidez_final_g_l" class="form-label">Acidez Final (g/L)</label>
+                        <input type="number" step="0.01" class="form-control" id="acidez_final_g_l" name="acidez_final_g_l" value="{{ "%.2f"|format(embotellado.acidez_final_g_l) if embotellado.acidez_final_g_l is not none else '' }}" placeholder="Ej: 6.05">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="grado_alcoholico_final_porcentaje" class="form-label">Grado Alcohólico Final (%)</label>
+                        <input type="number" step="0.01" class="form-control" id="grado_alcoholico_final_porcentaje" name="grado_alcoholico_final_porcentaje" value="{{ "%.2f"|format(embotellado.grado_alcoholico_final_porcentaje) if embotellado.grado_alcoholico_final_porcentaje is not none else '' }}" placeholder="Ej: 13.5">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="notas" class="form-label">Notas Adicionales</label>
+                    <textarea class="form-control" id="notas" name="notas" rows="3" placeholder="Observaciones sobre el proceso de embotellado...">{{ embotellado.notas if embotellado.notas else '' }}</textarea>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="submit" class="btn btn-primary me-md-2" style="background-color: #800020; border-color: #800020;">Actualizar Registro</button>
+                    <a href="{{ url_for('embotellado_bp.listar_embotellados_html') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock body %}
