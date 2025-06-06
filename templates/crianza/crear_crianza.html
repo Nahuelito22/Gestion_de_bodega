@@ -10,8 +10,6 @@
                 <h2 class="card-title mb-0 display-6 fw-bold">Registrar Nueva Crianza/Almacenamiento</h2>
             </div>
             <div class="card-body p-4">
-                {# Incluye los mensajes flash usando el partial #}
-                {% include 'partials/_message.html' %}
 
                 <form action="{{ url_for('crianza_bp.crear_crianza_html') }}" method="POST">
                     <div class="mb-3">
@@ -20,6 +18,20 @@
                             <option value="">Selecciona un lote</option>
                             {% for lote in lotes %}
                                 <option value="{{ lote.id }}">{{ lote.nombre_identificativo }}</option>
+<<<<<<< HEAD
+=======
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    
+                    <div>
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de Crianza</label>
+                        <select name="estado" class="form-select" required>
+                            <option value="">Selecciona estado de Crianza</option>
+                            {% for estado in estados %}
+                            <option value="{{estado.name}}">{{estado.value | capitalize }}</option>
+>>>>>>> Nahuel_Develop_Test
                             {% endfor %}
                         </select>
                     </div>

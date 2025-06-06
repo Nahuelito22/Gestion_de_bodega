@@ -4,6 +4,8 @@ from datetime import datetime
 from models.fermentacionAlcoholica import FermentacionAlcoholica
 from models.loteVino import LoteVino # Necesitamos importar LoteVino para el dropdown
 from models.db import db
+from flask_login import login_required
+from models.estados.estado_fermentacion import EstadoFermentacion
 
 # Creamos el blueprint para fermentacionAlcoholica
 fermentacion_bp = Blueprint('fermentacion_bp', __name__)
@@ -183,27 +185,38 @@ def borrar_fermentacion_api(id):
 # RUTAS PARA LA INTERFAZ DE USUARIO (HTML) 
 # URL: /fermentacion/menu
 @fermentacion_bp.route('/menu', methods=['GET'])
+@login_required
 def menu_fermentaciones():
     return render_template('fermentacion/menuFermentacion.html')
 
 # Ruta para listar todas las fermentaciones (HTML)
 # URL: /fermentacion/listar
 @fermentacion_bp.route('/listar', methods=['GET'])
+@login_required
 def listar_fermentaciones_html():
     fermentaciones = FermentacionAlcoholica.query.all()
-    return render_template('fermentacion/listar_fermentaciones.html', fermentaciones=fermentaciones)
+    estados=list(EstadoFermentacion)
+
+    return render_template('fermentacion/listar_fermentaciones.html', fermentaciones=fermentaciones, estados=estados)
 
 # Ruta para mostrar el formulario de creación de fermentación (GET HTML)
 # URL: /fermentacion/crear
 @fermentacion_bp.route('/crear', methods=['GET'])
+@login_required
 def mostrar_formulario_fermentacion():
     lotes = LoteVino.query.all() # Necesitamos pasar los lotes para el dropdown
-    return render_template('fermentacion/crear_fermentacion.html', lotes=lotes)
+    estados=list(EstadoFermentacion)# Esto te da [EstadoLote.activo, EstadoLote.finalizada
+    return render_template('fermentacion/crear_fermentacion.html', lotes=lotes, estados=estados)
 
 # Ruta para manejar el envío del formulario de creación de fermentación (POST HTML)
 # URL: /fermentacion/crear
 @fermentacion_bp.route('/crear', methods=['POST'])
+@login_required
 def crear_fermentacion_html():
+    
+    estado=request.form['estado']
+    estado_enum=EstadoFermentacion[estado]
+
     lote_vino_id = request.form.get('lote_vino_id')
     fecha_inicio_str = request.form.get('fecha_inicio')
     fecha_fin_str = request.form.get('fecha_fin') # Opcional, puede estar vacío
@@ -254,7 +267,8 @@ def crear_fermentacion_html():
         ph_medicion=ph_medicion_float,
         acidez_volatil_g_l=acidez_volatil_g_l_float,
         tipo_levadura=tipo_levadura,
-        notas=notas
+        notas=notas,
+        estado=estado_enum
     )
     
     db.session.add(nueva_fermentacion)
@@ -265,6 +279,7 @@ def crear_fermentacion_html():
 # Ruta para mostrar y procesar el formulario de edición de fermentación (GET/POST HTML)
 # URL: /fermentacion/editar/<id>
 @fermentacion_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+@login_required
 def editar_fermentacion_html(id):
     fermentacion = FermentacionAlcoholica.query.get_or_404(id)
     lotes = LoteVino.query.all() # Necesitamos los lotes para el dropdown
@@ -289,6 +304,8 @@ def editar_fermentacion_html(id):
         
         # Convertir a los tipos de datos correctos y manejar errores
         try:
+            estado_str=request.form['estado']
+            fermentacion.estado=EstadoFermentacion[estado_str]
             fermentacion.fecha_inicio = datetime.strptime(fecha_inicio_str, '%Y-%m-%d')
             fermentacion.fecha_fin = datetime.strptime(fecha_fin_str, '%Y-%m-%d') if fecha_fin_str else None
 
@@ -318,11 +335,12 @@ def editar_fermentacion_html(id):
         return redirect(url_for('fermentacion_bp.listar_fermentaciones_html'))
 
     # Si es un GET request, simplemente renderiza el formulario con los datos actuales
-    return render_template('fermentacion/editar_fermentacion.html', fermentacion=fermentacion, lotes=lotes)
+    return render_template('fermentacion/editar_fermentacion.html', fermentacion=fermentacion, lotes=lotes, estado_actual=fermentacion.estado, estados=EstadoFermentacion),200
 
 # Ruta para borrar una fermentación (POST HTML)
 # URL: /fermentacion/borrar/<id>
 @fermentacion_bp.route('/borrar/<string:id>', methods=['POST'])
+@login_required
 def borrar_fermentacion_html(id):
     fermentacion = FermentacionAlcoholica.query.get_or_404(id)
     
@@ -334,5 +352,6 @@ def borrar_fermentacion_html(id):
 
 # Ruta principal para el blueprint (redirecciona al menú HTML)
 @fermentacion_bp.route('/', methods=['GET'])
+@login_required
 def index_fermentacion():
     return redirect(url_for('fermentacion_bp.menu_fermentaciones'))

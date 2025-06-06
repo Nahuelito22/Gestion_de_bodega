@@ -2,7 +2,10 @@
 venv/
 venvGestionBodega/
 images/
+<<<<<<< HEAD
 
+=======
+>>>>>>> Nahuel_Develop_Test
 # Archivos de compilación de Python
 __pycache__/
 *.pyc

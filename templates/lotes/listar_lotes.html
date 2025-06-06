@@ -27,8 +27,6 @@
     </div>
 </div>
 
-{# Incluye los mensajes flash al inicio del contenido principal #}
-{% include 'partials/_message.html' %}
 
 <div class="card shadow-lg border-0 rounded-3 mb-5"> {# Contenedor con estilo de tarjeta #}
     <div class="card-body p-4">
@@ -44,6 +42,7 @@
                         <th scope="col" style="width: 25%;">Nombre Identificativo</th>
                         <th scope="col" style="width: 25%;">Variedad de Uva</th>
                         <th scope="col" style="width: 20%;">Fecha de Creación</th>
+                        <th scope="col" style="width: 20%;">Estado del Lote</th>
                         <th scope="col" class="text-center" style="width: 25%;">Acciones</th>
                     </tr>
                 </thead>
@@ -61,6 +60,8 @@
                         </td>
                         {# Formateamos la fecha para que se vea más amigable #}
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ lote.fecha_creacion.strftime('%d/%m/%Y %H:%M') }}</td>
+
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{lote.estado.value}}</td>
                         <td>
                             <div class="d-flex justify-content-center gap-2"> {# Usa flexbox para alinear y centrar botones #}
                                 {# Botón para Ver Detalle - Usamos 'btn-outline-accent-2' #}

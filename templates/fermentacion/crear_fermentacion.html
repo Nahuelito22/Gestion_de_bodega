@@ -11,7 +11,6 @@
             </div>
             <div class="card-body p-4">
                 {# Incluye los mensajes flash usando el partial #}
-                {% include 'partials/_message.html' %}
 
                 <form method="POST" action="{{ url_for('fermentacion_bp.crear_fermentacion_html') }}">
                     <div class="mb-3">
@@ -23,6 +22,26 @@
                             {% endfor %}
                         </select>
                     </div>
+
+
+
+
+
+                    <div>
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de Fermentacion</label>
+                        <select name="estado" class="form-select" required>
+                            <option value="">Selecciona estado de la fermentacion</option>
+                            {% for estado in estados %}
+                            <option value="{{estado.name}}">{{estado.value | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+
+
+
+
                     <div class="mb-3">
                         <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
