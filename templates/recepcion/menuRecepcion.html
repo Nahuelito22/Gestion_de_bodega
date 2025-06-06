@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block title %}Menú de Recepciones Uva - Gestión de Bodega{% endblock %}
+
+
+{% block body %}
+<div class="row mb-5 mt-4"> {# Fila para el título principal #}
+    <div class="col-12 text-center">
+        <h1 class="display-4 text-primary">Gestión de Recepciones de Uva</h1>
+        <p class="lead text-muted">
+            Administra las recepciones a lo largo de todo el proceso de trazabilidad.
+        </p>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center"> {# Grilla de tarjetas centrada #}
+
+    {# Card para Ver/Editar recepciones #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-list-ol text-primary fs-1 mb-3"></i> {# Ícono de lista/orden #}
+                <h5 class="card-title text-primary">Ver / Editar Recepciones de Uva</h5>
+                <p class="card-text text-muted">Explora el listado completo de recepciones existentes y realiza modificaciones.</p>
+                <a href="/recepcion/listar" class="btn btn-primary mt-3">
+                    <i class="bi bi-eye me-2"></i>Ver Todas las Receciones 
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {# Card para Agregar Nueva recepcion #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body text-center">
+                <i class="bi bi-box-seam-fill text-primary fs-1 mb-3"></i> {# Ícono de caja/lote #}
+                <h5 class="card-title text-primary">Agregar Nueva recepcion </h5>
+                <p class="card-text text-muted">Registra una Nueva Recepcion de Uva para iniciar su trazabilidad.</p>
+                <a href="/recepcion/crear" class="btn btn-success mt-3"> {# Usamos btn-success para "Agregar" #}
+                    <i class="bi bi-plus-circle me-2"></i>Crear recepcion Uva
+                </a>
+            </div>
+        </div>
+    </div>
+
+    </div>
+{% endblock %}

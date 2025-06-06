@@ -175,13 +175,15 @@ def listar_recepciones_html():
 # URL: /recepcion/crear
 @recepcionUva_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_recepcion():
-    lotes = LoteVino.query.all() # Necesitamos pasar todos los lotes existentes para el dropdown
-    return render_template('recepcion/crear_recepcion.html', lotes=lotes)
+    lotes_disponibles  = LoteVino.query.all() # Necesitamos pasar todos los lotes existentes para el dropdown
+    return render_template('recepcion/crear_recepcion.html', lotes_disponibles=lotes_disponibles)
 
 # Ruta para manejar el envío del formulario de creación de recepción (POST HTML)
 # URL: /recepcion/crear
 @recepcionUva_bp.route('/crear', methods=['POST'])
 def crear_recepcion_html():
+    
+    lotes=LoteVino.query.all()
     # Obtener datos del formulario (request.form)
     lote_vino_id = request.form.get('lote_vino_id')
     fecha_recepcion_str = request.form.get('fecha_recepcion')
@@ -235,7 +237,7 @@ def crear_recepcion_html():
 @recepcionUva_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
 def editar_recepcion_html(id):
     recepcion = RecepcionUva.query.get_or_404(id) # Obtiene la recepción o devuelve 404
-    lotes = LoteVino.query.all() # Necesitamos los lotes para el dropdown en el formulario
+    lotes_disponibles = LoteVino.query.all() # Necesitamos los lotes para el dropdown en el formulario
 
     if request.method == 'POST':
         # Obtener datos del formulario (request.form)
@@ -278,7 +280,7 @@ def editar_recepcion_html(id):
         return redirect(url_for('recepcionUva_bp.listar_recepciones_html'))
 
     # Si es un GET request, simplemente renderiza el formulario con los datos actuales
-    return render_template('recepcion/editar_recepcion.html', recepcion=recepcion, lotes=lotes)
+    return render_template('recepcion/editar_recepcion.html', recepcion=recepcion, lotes_disponibles=lotes_disponibles)
 
 # Ruta para borrar una recepción de uva (POST HTML)
 # URL: /recepcion/borrar/<id>

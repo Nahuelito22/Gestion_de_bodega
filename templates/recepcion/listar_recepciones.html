@@ -1,13 +1,12 @@
 {% extends 'layout.html' %}
 
-{% block title %}Listado de Lotes de Vino - Gestión de Bodega{% endblock %}
+{% block title %}Listado Recepciones de Uva - Gestión de Bodega{% endblock %}
 
 {% block body %}
-{# Fila para Título y Botón "Nuevo Lote" #}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 text-primary">Lotes de Vino</h1> {# Usamos text-primary de tu main.css #}
-    <a href="/lotes/crear" class="btn btn-success"> {# Botón para crear con un ícono #}
-        <i class="bi bi-plus-circle me-2"></i>Nuevo Lote
+    <h1 class="mb-0 text-primary">Recepciones de Uva</h1> {# Usamos text-primary de tu main.css #}
+    <a href="/recepcion/crear" class="btn btn-success"> {# Botón para crear con un ícono #}
+        <i class="bi bi-plus-circle me-2"></i>Nueva Recepcion
     </a>
 </div>
 
@@ -17,40 +16,38 @@
 <div class="card shadow-sm border-0 rounded-3"> {# Contenedor con estilo de tarjeta #}
     <div class="card-body p-4">
 
-        {% if lotes %} {# Verifica si hay lotes para mostrar #}
+        {% if recepciones %} {# Verifica si hay recepciones para mostrar #}
         <div class="table-responsive"> {# Hace la tabla scrollable en pantallas pequeñas #}
             <table class="table table-striped table-hover align-middle"> {# Clases de Bootstrap #}
                 <thead class="table-dark"> {# Cabecera oscura para contraste #}
                     <tr>
                         <th scope="col">ID</th> {# Agregamos la columna ID #}
-                        <th scope="col">Nombre Identificativo</th>
-                        <th scope="col">Variedad de Uva</th>
-                        <th scope="col">Fecha de Creación</th>
-                        <th scope="col">Acciones</th>
+                        <th scope="col">lote_vino_id</th>
+                        <th scope="col">fecha_recepcion</th>
+                        <th scope="col">cantidad_kg</th>
+                        <th scope="col">ph</th>
+                        <th scope="col">acidez_total_g_l</th>
+                        <th scope="col">azucar_brix</th>
+                        <th scope="col">notas</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for lote in lotes %}
+                    {% for recepcion in recepciones %}
                     <tr>
-                        <td>{{ lote.id }}</td> {# Mostramos el ID del lote #}
-                        <td>{{ lote.nombre_identificativo }}</td>
-                        <td>
-                            {% if lote.variedad_uva %}
-                                {{ lote.variedad_uva.nombre }}
-                            {% else %}
-                                <span class="text-muted">No asignada</span>
-                            {% endif %}
-                        </td>
+                        <td>{{ recepcion.id }}</td> {# Mostramos el ID del recepcion #}
+                        <td>{{ recepcion.lote_vino_id }}</td>
                         {# Formateamos la fecha para que se vea más amigable (ej: DD/MM/YYYY HH:MM) #}
-                        <td>{{ lote.fecha_creacion.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>{{ recepcion.fecha_recepcion.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>{{ recepcion.cantidad_kg }}</td>
+                        <td>{{ recepcion.ph }}</td>
+                        <td>{{ recepcion.acidez_total_g_l }}</td>
+                        <td>{{ recepcion.azucar_brix }}</td>
+                        <td>{{ recepcion.notas }}</td>
                         <td>
                             <div class="d-flex gap-2"> {# Usa flexbox para alinear botones y darles espacio #}
-                                {# Botón para Ver Detalle (si tienes una ruta de detalle para el lote) #}
-                                <a href="/lotes/{{ lote.id }}" class="btn btn-info btn-sm" title="Ver Detalles">
-                                    <i class="bi bi-eye"></i>
                                 </a>
                                 {# Botón para Editar #}
-                                <a href="{{ url_for('loteVino_bp.editar_lote', id=lote.id) }}" class="btn btn-warning btn-sm" title="Editar">
+                                <a href="{{ url_for('recepcionUva_bp.editar_recepcion_html', id=recepcion.id) }}" class="btn btn-warning btn-sm" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 {# Botón para cambiar estado (ejemplo, si implementas la lógica de estado) #}
@@ -65,13 +62,13 @@
                 </tbody>
             </table>
         </div>
-        {% else %} {# Mensaje si no hay lotes #}
+        {% else %} {# Mensaje si no hay recepciones #}
         <div class="alert alert-info text-center mt-3" role="alert">
-            <h4 class="alert-heading">¡No hay lotes registrados!</h4>
-            <p>Parece que aún no tienes lotes de vino en el sistema.</p>
+            <h4 class="alert-heading">¡No hay recepciones registradas!</h4>
+            <p>Parece que aún no tienes recepciones de uva en el sistema.</p>
             <hr>
             <p class="mb-0">Crea uno para empezar a registrar la trazabilidad.</p>
-            <a href="/lotes/crear" class="btn btn-info mt-3"><i class="bi bi-plus-circle me-2"></i>Crear Primer Lote</a>
+            <a href="/recepcion/crear" class="btn btn-info mt-3"><i class="bi bi-plus-circle me-2"></i>Crear Primer Recepcion</a>
         </div>
         {% endif %}
 

@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block title %}Registrar Recepción de Uva - Gestión de Bodega{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
+                <h2 class="card-title mb-0">Editar Recepción de Uva</h2>
+            </div>
+            <div class="card-body p-4">
+
+                <form 
+                  action="{{ url_for('recepcionUva_bp.editar_recepcion_html',id=recepcion.id )}}" 
+                  method="POST">
+                    <div class="mb-3">
+                        <label for="lote_vino_id" class="form-label">Lote de Vino Asociado:</label>
+                        <select name="lote_vino_id" id="lote_vino_id" class="form-select" required>
+                            <option value="">Selecciona un lote de vino</option>
+                            {% for lote in lotes_disponibles %}
+                            <option value="{{ lote.id }}" {% if lote.id == recepcion.lote_vino_id %}selected{% endif %}>
+                                {{ lote.nombre_identificativo }} (ID: {{ lote.id[:8] }}...)
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <small class="form-text text-muted">Asegúrate de que el lote exista antes de la recepción.</small>
+                    </div>
+                    {# Campo para Fecha de Recepción #}
+                    <div class="mb-3">
+                        <label for="fecha_recepcion" class="form-label">Fecha de Recepción:</label>
+                        <input 
+                          type="date" 
+                          name="fecha_recepcion" 
+                          id="fecha_recepcion" 
+                          class="form-control"
+                          value="{{ fecha_recepcion_formato }}" 
+                        >
+                    </div>
+                    {# Campo para Cantidad en Kg #}
+                    <div class="mb-3">
+                        <label for="cantidad_kg" class="form-label">Cantidad (kg):</label>
+                        <input 
+                          type="number" 
+                          name="cantidad_kg" 
+                          id="cantidad_kg" 
+                          class="form-control" 
+                          step="0.01" {# Permite decimales #}
+                          value="{{ recepcion.cantidad_kg }}"
+                          required
+                        >
+                    </div>
+                    <div class="mb-3">
+                        <label for="ph" class="form-label">PH (opcional):</label>
+                        <input 
+                          type="number" 
+                          name="ph" 
+                          id="ph" 
+                          class="form-control" 
+                          step="0.01" 
+                          value="{{recepcion.ph}}"
+                        >
+                    </div>
+                    <div class="mb-3">
+                        <label for="acidez_total_g_l" class="form-label">Acidez Total (g/L) (opcional):</label>
+                        <input 
+                          type="number" 
+                          name="acidez_total_g_l" 
+                          id="acidez_total_g_l" 
+                          class="form-control" 
+                          step="0.01" 
+                          value="{{recepcion.acidez_total_g_l}}"                        >
+                    </div>
+                    <div class="mb-3">
+                        <label for="azucar_brix" class="form-label">Azúcar Brix (opcional):</label>
+                        <input 
+                          type="number" 
+                          name="azucar_brix" 
+                          id="azucar_brix" 
+                          class="form-control" 
+                          step="0.01" 
+                          value="{{recepcion.azucar_brix}}"                        >
+                    </div>
+                    <div class="mb-3">
+                        <label for="notas" class="form-label">Notas (opcional):</label>
+                        <textarea 
+                          name="notas" 
+                          id="notas" 
+                          rows="3" 
+                          class="form-control" 
+                          value="{{recepcion.notas}}"
+                        ></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-save me-2"></i>Guardar Recepción
+                        </button>
+                        <a href="{{ url_for('recepcionUva_bp.listar_recepciones_html') }}" class="btn btn-secondary btn-lg">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
