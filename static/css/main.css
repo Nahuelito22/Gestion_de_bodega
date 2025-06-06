@@ -1,20 +1,30 @@
-/* Variables CSS (Asegúrate de que estén así) */
+/* Variables CSS */
 :root {
-    --bs-font-sans-serif: 'Open Sans', sans-serif;
-    --bs-primary: #800020; /* Tu color borgoña/granate */
-    --bs-secondary: #D2B48C; /* Tu color beige/dorado */
-    --bs-dark: #343a40; /* Tu gris oscuro */
-    --bs-light: #f8f9fa; /* Tu blanco/gris claro */
+    --bs-font-sans-serif: 'Roboto', sans-serif; /* Cambiado a Roboto para texto general */
+    --bs-heading-font: 'Playfair Display', serif; /* Nueva variable para fuentes de títulos */
+    
+    --bs-primary-custom: #800020; /* Tu color borgoña/granate (principal acción/texto) */
+    --bs-secondary-custom: #D2B48C; /* Tu color beige/dorado (énfasis secundario) */
+    --bs-dark-custom: #343a40; /* Tu gris oscuro (navbar/footer) */
+    --bs-light-custom: #f8f9fa; /* Tu blanco/gris claro (fondo) */
+    --bs-accent-1: #4A2328; /* Marrón oscuro para títulos principales */
+    --bs-accent-2: #D4AF37; /* Dorado para botones de info/secundarios */
+    --bs-danger-custom: #8B0000; /* Rojo oscuro para acciones peligrosas/principales */
+    
     --bs-body-color: #333; /* Color de texto general */
-    --bs-heading-color: var(--bs-primary); /* Color de encabezados por defecto */
+    --bs-heading-color: var(--bs-accent-1); /* Color de encabezados por defecto */
 }
 
-/* Importar Google Fonts (Asegúrate de que esté) */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Merriweather:wght@400;700&display=swap');
+/* Importar Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+/* La URL que tenías importaba Open Sans y Merriweather.
+   La nueva URL importa Playfair Display y Roboto.
+   Asegúrate de que esta URL sea la que está en tu layout.html también. */
+
 
 /* Estilos generales del body */
 body {
-    background-color: var(--bs-light);
+    background-color: var(--bs-light-custom);
     font-family: var(--bs-font-sans-serif);
     color: var(--bs-body-color);
     min-height: 100vh;
@@ -24,24 +34,24 @@ body {
 
 /* Navbar */
 .navbar {
-    background-color: var(--bs-dark) !important;
+    background-color: var(--bs-dark-custom) !important;
 }
 
 .navbar .nav-link,
 .navbar-brand {
-    color: var(--bs-light) !important;
+    color: var(--bs-light-custom) !important;
     transition: color 0.3s ease;
 }
 
 .navbar .nav-link:hover,
 .navbar-brand:hover {
-    color: var(--bs-secondary) !important;
+    color: var(--bs-secondary-custom) !important;
 }
 
 /* Footer */
 footer {
-    background-color: var(--bs-dark) !important;
-    color: var(--bs-light) !important;
+    background-color: var(--bs-dark-custom) !important;
+    color: var(--bs-light-custom) !important;
     padding: 1.5rem;
     text-align: center;
     margin-top: auto;
@@ -50,92 +60,176 @@ footer {
 
 /* Headings (h1, h2, etc.) */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Merriweather', serif;
-    color: var(--bs-heading-color);
+    font-family: var(--bs-heading-font); /* Usa la variable de fuente de encabezado */
+    color: var(--bs-heading-color); /* Usa el color de encabezado por defecto */
     margin-bottom: 1rem;
 }
 
-/* Specific styles for the main title on index.html */
-.display-3 {
-    font-weight: 700; /* Hacer el título más fuerte */
-    letter-spacing: -0.05rem; /* Ajuste fino del espaciado entre letras */
+/* Specific styles for the main title on index.html or hero sections */
+.main-title {
+    font-weight: 700;
+    letter-spacing: -0.05rem;
+    color: var(--bs-accent-1); /* Asegura que el título principal use el color marrón oscuro */
+}
+
+/* Subtítulos descriptivos */
+.lead-description {
+    font-family: var(--bs-font-sans-serif);
+    color: var(--bs-body-color);
 }
 
 /* Main content container for flex-grow */
-.container.mt-5 {
-    flex-grow: 1; /* Para que el contenedor principal ocupe el espacio restante */
+.container.p-4 { /* Asegúrate que esta clase exista en tu layout.html en el div contenedor principal */
+    flex-grow: 1;
 }
 
 /* Card styles */
 .card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Pequeña animación al pasar el ratón */
-    border-radius: 0.75rem !important; /* Bordes un poco más redondeados para las tarjetas */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius: 0.75rem !important;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Ligeramente elevar la tarjeta al pasar el ratón */
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; /* Sombra un poco más pronunciada al hacer hover */
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Button styles (outline-primary specific) */
-.btn-outline-primary {
-    color: var(--bs-primary);
-    border-color: var(--bs-primary);
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+/* Card header colors (clases nuevas para los encabezados de tarjeta) */
+.card-header-primary-custom {
+    background-color: var(--bs-primary-custom) !important; /* Borgoña oscuro */
 }
 
-.btn-outline-primary:hover {
-    background-color: var(--bs-primary);
-    color: var(--bs-light) !important; /* Texto blanco sobre el fondo borgoña */
-    border-color: var(--bs-primary);
+.card-header-accent-1 {
+    background-color: var(--bs-accent-1) !important; /* Marrón oscuro */
 }
 
-.btn-outline-primary:focus, .btn-outline-primary.focus {
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.5); /* Resaltado al enfocar */
+.card-header-accent-2 {
+    background-color: var(--bs-accent-2) !important; /* Dorado */
 }
+
+/* Button styles - usando tus variables */
+
+/* Botones con el color peligroso/principal para acciones */
+.btn-primary-custom {
+    background-color: var(--bs-danger-custom) !important; /* Rojo oscuro */
+    border-color: var(--bs-danger-custom) !important;
+    color: var(--bs-light-custom) !important;
+}
+.btn-primary-custom:hover {
+    background-color: darken(var(--bs-danger-custom), 10%) !important; /* Un poco más oscuro al pasar el ratón */
+    border-color: darken(var(--bs-danger-custom), 10%) !important;
+}
+
+
+/* Botones con el color secundario/cancelar/volver */
+.btn-secondary-custom {
+    background-color: var(--bs-accent-2) !important; /* Dorado */
+    border-color: var(--bs-accent-2) !important;
+    color: var(--bs-light-custom) !important; /* Texto claro */
+}
+.btn-secondary-custom:hover {
+    background-color: darken(var(--bs-accent-2), 10%) !important;
+    border-color: darken(var(--bs-accent-2), 10%) !important;
+}
+
+/* Botones de contorno con el color de acento 2 (info/detalles) */
+.btn-outline-accent-2 {
+    color: var(--bs-accent-2) !important;
+    border-color: var(--bs-accent-2) !important;
+    background-color: transparent !important;
+}
+.btn-outline-accent-2:hover {
+    background-color: var(--bs-accent-2) !important;
+    color: var(--bs-light-custom) !important;
+    border-color: var(--bs-accent-2) !important;
+}
+
+/* Botones de contorno con el color secundario de bootstrap (gris) */
+.btn-outline-secondary-custom {
+    color: var(--bs-body-color) !important; /* Texto oscuro */
+    border-color: var(--bs-body-color) !important;
+    background-color: transparent !important;
+}
+.btn-outline-secondary-custom:hover {
+    background-color: var(--bs-body-color) !important;
+    color: var(--bs-light-custom) !important;
+    border-color: var(--bs-body-color) !important;
+}
+
+/* Botones de contorno con el color rojo oscuro (eliminar) */
+.btn-outline-danger-custom {
+    color: var(--bs-danger-custom) !important;
+    border-color: var(--bs-danger-custom) !important;
+    background-color: transparent !important;
+}
+.btn-outline-danger-custom:hover {
+    background-color: var(--bs-danger-custom) !important;
+    color: var(--bs-light-custom) !important;
+    border-color: var(--bs-danger-custom) !important;
+}
+
 
 /* Rounded buttons */
 .rounded-pill {
-    border-radius: 50rem !important; /* Hacer los botones muy redondeados */
+    border-radius: 50rem !important;
 }
 
-/* Icon size and text size for cards */
+/* Icon size for actions */
+.fs-6 { /* Bootstrap default, pero para asegurar */
+    font-size: 1rem !important;
+}
+
+/* Icon size and text size for cards (si tienes menús con iconos grandes) */
 .fs-2 {
-    font-size: 1.75rem !important; /* Ligeramente más grandes los iconos */
+    font-size: 1.75rem !important;
 }
 
 .small {
-    font-size: 0.875rem; /* Texto de la descripción de la tarjeta un poco más pequeño */
+    font-size: 0.875rem;
 }
 
-/* Alert messages (ensure these are well-defined) */
+/* Alert messages */
 .alert {
     margin-top: 1rem;
-    border-radius: 0.5rem; /* Bordes ligeramente redondeados para las alertas */
+    border-radius: 0.5rem;
 }
 
+/* Ajustes para los colores de alerta con variables */
 .alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border-color: #c3e6cb;
+    background-color: rgba(var(--bs-primary-custom-rgb), 0.1); /* Ligero tinte del color principal */
+    color: var(--bs-primary-custom);
+    border-color: rgba(var(--bs-primary-custom-rgb), 0.2);
 }
 
 .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #f5c6cb;
+    background-color: rgba(var(--bs-danger-custom-rgb), 0.1);
+    color: var(--bs-danger-custom);
+    border-color: rgba(var(--bs-danger-custom-rgb), 0.2);
 }
 
-
-
-/* static/css/main.css */
-
-body {
-    font-family: 'Roboto', sans-serif; /* Fuente para todo el texto general */
+.alert-info {
+    background-color: rgba(var(--bs-accent-2-rgb), 0.1);
+    color: var(--bs-accent-1);
+    border-color: rgba(var(--bs-accent-2-rgb), 0.2);
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand {
-    font-family: 'Playfair Display', serif; /* Fuente para títulos y el logo del navbar */
+/* Asegúrate de añadir las variables RGB para los rgba() si no las tienes */
+:root {
+    /* ... (tus variables existentes) ... */
+    --bs-primary-custom-rgb: 128, 0, 32; /* RGB de #800020 */
+    --bs-danger-custom-rgb: 139, 0, 0; /* RGB de #8B0000 */
+    --bs-accent-2-rgb: 212, 175, 55; /* RGB de #D4AF37 */
 }
 
-/* Otros estilos que ya tengas */
+/* Si tu título de gestión es azul, probablemente viene de una clase de Bootstrap.
+   Puedes añadir una clase específica para esos títulos si quieres que sean del color de acento 1: */
+.section-title {
+    color: var(--bs-accent-1) !important; /* Marrón oscuro */
+    font-family: var(--bs-heading-font);
+}
+
+/* Estilos para el texto descriptivo de las tarjetas (Gestión de X) */
+.card-description-text {
+    font-family: var(--bs-font-sans-serif);
+    color: var(--bs-body-color);
+}

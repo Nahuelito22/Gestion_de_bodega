@@ -3,62 +3,73 @@
 {% block title %}Crear Lote de Vino - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="row justify-content-center"> {# Centra la columna del formulario #}
-  <div class="col-md-8 col-lg-6"> {# Ancho para pantallas medianas y grandes #}
-    <div class="card shadow-lg border-0 rounded-3"> {# Tarjeta con sombra y bordes redondeados #}
-      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3"> {# Cabecera de la tarjeta con color primario #}
-        <h2 class="card-title mb-0">Registrar Nuevo Lote de Vino</h2>
-      </div>
-      <div class="card-body p-4"> {# Padding dentro del cuerpo de la tarjeta #}
-
-        <form 
-          action="{{ url_for('loteVino_bp.crear_lote') }}" 
-          method="POST"
-          enctype="multipart/form-data">
-          
-          <div class="mb-3">
-            <label for="nombre_identificativo" class="form-label">Nombre del Lote:</label>
-            <input 
-              type="text" 
-              name="nombre_identificativo" 
-              class="form-control" {# Elimina bg-dark y text-white para usar los estilos por defecto claros de Bootstrap #}
-              placeholder="Ej: Malbec_2025_L001"
-              required
-            >
-          </div>
-
-          <div class="mb-3">
-            <label for="variedad_uva_id" class="form-label">Variedad de Uva:</label>
-            <select name="variedad_uva_id" class="form-select" required> {# Usa form-select para selects de Bootstrap #}
-              <option value="">Selecciona una variedad</option> {# Opción por defecto #}
-              {% for variedad in variedades %}
-                <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
-              {% endfor %}
-            </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="fecha_creacion" class="form-label">Fecha de Creación:</label>
-            <input 
-              type="date" 
-              name="fecha_creacion" 
-              class="form-control"
-              value="{{ today_date }}" {# Asumiendo que pasas 'today_date' desde Flask #}
-              required
-            >
-          </div>
-
-          <div class="d-grid gap-2 mt-4"> {# Botones de ancho completo y espaciados #}
-            <button type="submit" class="btn btn-primary btn-lg"> {# Botón más grande #}
-              <i class="bi bi-plus-circle me-2"></i>Crear Lote
-            </button>
-            <a href="/lotes/menu" class="btn btn-secondary btn-lg"> {# Botón de cancelar/volver #}
-              <i class="bi bi-x-circle me-2"></i>Cancelar
-            </a>
-          </div>
-        </form>
-      </div>
+<div class="row mb-5 mt-4">
+    <div class="col-12 text-center">
+        {# Usamos la clase 'main-title' y quitamos estilos en línea #}
+        <h1 class="display-4 fw-bold mb-3 main-title">
+            Registrar Nuevo Lote de Vino
+        </h1>
+        {# Usamos la clase 'lead-description' #}
+        <p class="lead text-secondary mb-4 lead-description">
+            Completa el siguiente formulario para añadir un nuevo lote de vino a la bodega.
+        </p>
     </div>
-  </div>
+</div>
+
+<div class="row justify-content-center"> {# Centra la columna del formulario #}
+    <div class="col-md-8 col-lg-6"> {# Ancho para pantallas medianas y grandes #}
+        <div class="card shadow-lg border-0 rounded-3"> {# Tarjeta con sombra y bordes redondeados #}
+            {# Usamos la clase 'card-header-accent-1' para el color del header #}
+            <div class="card-header text-white text-center py-3 rounded-top-3 card-header-accent-1">
+                <h3 class="card-title mb-0" style="font-family: var(--bs-heading-font);">Detalles del Lote</h3>
+            </div>
+            <div class="card-body p-4"> {# Padding dentro del cuerpo de la tarjeta #}
+
+                <form
+                    action="{{ url_for('loteVino_bp.crear_lote') }}"
+                    method="POST"
+                    enctype="multipart/form-data"> {# Mantengo enctype por si acaso, aunque no es necesario sin subida de archivos #}
+
+                    <div class="mb-3">
+                        <label for="nombre_identificativo" class="form-label" style="font-family: var(--bs-font-sans-serif);">Nombre del Lote:</label>
+                        <input
+                            type="text"
+                            name="nombre_identificativo"
+                            class="form-control"
+                            placeholder="Ej: Malbec_2025_L001"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="variedad_uva_id" class="form-label" style="font-family: var(--bs-font-sans-serif);">Variedad de Uva:</label>
+                        <select name="variedad_uva_id" class="form-select" required>
+                            <option value="">Selecciona una variedad</option> {# Opción por defecto #}
+                            {% for variedad in variedades %}
+                                <option value="{{ variedad.id }}">{{ variedad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    {# Se quita el campo 'fecha_creacion' ya que tu backend (routes/loteVino_routes.py)
+                       lo genera automáticamente en la función 'crear_lote'.
+                       Si necesitas que el usuario la ingrese, por favor, me avisas y lo volvemos a añadir
+                       y ajustamos el backend para recibirla.
+                    #}
+                    
+                    <div class="d-grid gap-2 mt-4"> {# Botones de ancho completo y espaciados #}
+                        {# Usamos la clase 'btn-primary-custom' para el botón principal #}
+                        <button type="submit" class="btn btn-lg btn-primary-custom">
+                            <i class="bi bi-plus-circle me-2"></i>Crear Lote
+                        </button>
+                        {# Usamos la clase 'btn-secondary-custom' para el botón secundario #}
+                        <a href="{{ url_for('loteVino_bp.menu_variedades') }}" class="btn btn-lg btn-secondary-custom">
+                            <i class="bi bi-x-circle me-2"></i>Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
