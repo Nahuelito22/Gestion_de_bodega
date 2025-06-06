@@ -21,6 +21,17 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    
+                    <div>
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de Crianza</label>
+                        <select name="estado" class="form-select" required>
+                            <option value="">Selecciona estado de Crianza</option>
+                            {% for estado in estados %}
+                            <option value="{{estado.name}}">{{estado.value | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>

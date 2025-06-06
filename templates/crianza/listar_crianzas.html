@@ -38,6 +38,7 @@
                     <tr>
                         <th scope="col" style="width: 8%;">ID</th>
                         <th scope="col" style="width: 12%;">Lote</th>
+                        <th scope="col" style="width: 10%;">Estado</th>
                         <th scope="col" style="width: 10%;">Fecha Inicio</th>
                         <th scope="col" style="width: 10%;">Fecha Fin</th>
                         <th scope="col" style="width: 12%;">Recipiente</th>
@@ -52,7 +53,8 @@
                     {% for crianza in crianzas %}
                     <tr>
                         <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ crianza.id[:8] }}...</td>
-                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ crianza.lote_vino.nombre_lote if crianza.lote_vino else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ crianza.lote_vino.nombre_identificativo if crianza.lote_vino else 'N/A' }}</td>
+                        <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ crianza.estado.value }}</td>
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ crianza.fecha_inicio.strftime('%d/%m/%Y') }}</td>
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ crianza.fecha_fin.strftime('%d/%m/%Y') if crianza.fecha_fin else 'N/A' }}</td>
                         <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ crianza.tipo_recipiente if crianza.tipo_recipiente else 'N/A' }}</td>

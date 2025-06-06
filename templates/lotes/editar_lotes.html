@@ -64,6 +64,24 @@
                         >
                     </div>
 
+
+
+
+
+                    
+                    <div class="mb-3">
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado del Lote:</label>
+                        <select name="estado" class="form-select" required>
+                            {% for estado in estados %}
+                                <option value="{{ estado.name }}" {% if lote.estado_lote == estado %}selected{% endif %}>
+                                    {{ estado.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>       
+
+
+
                     <div class="d-grid gap-2 mt-4">
                         {# Usamos la clase 'btn-primary-custom' #}
                         <button type="submit" class="btn btn-lg btn-primary-custom">

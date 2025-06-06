@@ -38,6 +38,7 @@
                 <thead class="text-white" style="background-color: var(--bs-accent-1) !important;">
                     <tr>
                         <th scope="col" style="width: 15%;">Lote de Vino</th>
+                        <th scope="col" style="width: 15%;">Estado</th>
                         <th scope="col" style="width: 10%;">Fecha Inicio</th>
                         <th scope="col" style="width: 10%;">Fecha Fin</th>
                         <th scope="col" style="width: 10%;">Temp. Control (°C)</th>
@@ -54,6 +55,7 @@
                     {% for ferm in fermentaciones %}
                     <tr>
                         <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ ferm.lote_vino.nombre_identificativo if ferm.lote_vino else 'N/A' }}</td>
+                        <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ ferm.estado.value }}</td>
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ ferm.fecha_inicio.strftime('%d/%m/%Y') if ferm.fecha_inicio else 'N/A' }}</td>
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ ferm.fecha_fin.strftime('%d/%m/%Y') if ferm.fecha_fin else 'N/A' }}</td>
                         <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.temperatura_control_c if ferm.temperatura_control_c is not none else 'N/A' }}</td>

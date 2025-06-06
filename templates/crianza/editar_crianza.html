@@ -18,10 +18,21 @@
                         <select class="form-select" id="lote_vino_id" name="lote_vino_id" required>
                             <option value="">Selecciona un lote</option>
                             {% for lote in lotes %}
-                                <option value="{{ lote.id }}" {% if lote.id == crianza.lote_vino_id %}selected{% endif %}>{{ lote.nombre_lote }}</option>
+                                <option value="{{ lote.id }}" {% if lote.id == crianza.lote_vino_id %}selected{% endif %}>{{ lote.nombre_identificativo }}</option>
                             {% endfor %}
                         </select>
                     </div>
+
+                    
+                    <div class="mb-3">
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de la Crianza:</label>
+                        <select name="estado" class="form-select" required>
+                            {% for estado in estados %}
+                                <option value="{{ estado.name }}" {% if estado.estado_crianza == estado %}selected{% endif %}>
+                                    {{ estado.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>

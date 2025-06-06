@@ -1,8 +1,8 @@
 import enum
 
 class EstadoLote(enum.Enum):
-    activo= "activo"
-    finalizado="finalizado"
-    en_proceso="en_proceso"
-    cancelado="cancelado"
-    detenido="detenido"
+    activo= "Activo"
+    finalizado="Finalizado"
+    en_proceso="En_proceso"
+    cancelado="Cancelado"
+    detenido="Detenido / Pausado"

@@ -160,6 +160,10 @@ def editar_lote(id):
 
         try:
             lote.variedad_uva_id = request.form['variedad_uva_id']
+            #asigna estao  del lote desde select
+            estado_str=request.form['estado']
+            lote.estado=EstadoLote[estado_str]#convierte a string
+
         except Exception as e:
             # En caso de cualquier error durante la actualización, deshaz la transacción
             db.session.rollback()
@@ -168,4 +172,4 @@ def editar_lote(id):
         flash('Lote actualizado correctamente.', 'success')
         return redirect(url_for('loteVino_bp.listar_lotes'))
 
-    return render_template('/lotes/editar_lotes.html', lote=lote, variedades=variedades), 200
+    return render_template('/lotes/editar_lotes.html', lote=lote, variedades=variedades , estados=EstadoLote, estado_actual=lote.estado), 200

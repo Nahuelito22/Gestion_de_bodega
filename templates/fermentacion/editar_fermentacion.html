@@ -24,6 +24,17 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de la fermentacion:</label>
+                        <select name="estado" class="form-select" required>
+                            {% for estado in estados %}
+                                <option value="{{ estado.name }}" {% if estado.estado_fermentacion == estado %}selected{% endif %}>
+                                    {{ estado.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>   
                     <div class="mb-3">
                         <label for="fecha_inicio" class="form-label">Fecha de Inicio <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ fermentacion.fecha_inicio.strftime('%Y-%m-%d') }}" required>

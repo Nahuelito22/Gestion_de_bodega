@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 from models.db import db
+from sqlalchemy import Enum
+from .estados.estado_crianza import EstadoCrianza
 
 class CrianzaAlmacenamiento(db.Model):
     __tablename__ = 'crianza_almacenamiento'
@@ -19,6 +21,12 @@ class CrianzaAlmacenamiento(db.Model):
     ph_medicion = db.Column(db.Float, nullable=True)
     acidez_medicion_g_l = db.Column(db.Float, nullable=True)
     notas = db.Column(db.String(300), nullable=True)
+
+    estado=db.Column(
+        Enum(EstadoCrianza, name='estado_fermentacion_enum'),
+        nullable=False,
+        default=EstadoCrianza.otros
+    )
 
     # Relación para poder acceder al objeto LoteVino desde un FermentacionAlcoholica
     lote_vino = db.relationship('LoteVino', backref=db.backref('crianzas', lazy=True))
