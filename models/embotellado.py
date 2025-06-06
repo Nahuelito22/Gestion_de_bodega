@@ -1,6 +1,8 @@
 import uuid
 from datetime import datetime
 from models.db import db
+from sqlalchemy import Enum
+from .estados.estado_embotellamiento import EstadoEmbotellado
 
 class Embotellado(db.Model):
     __tablename__ = 'embotellado'
@@ -22,6 +24,11 @@ class Embotellado(db.Model):
     
     #Notas para observaciones
     notas = db.Column(db.String(300), nullable=True)
+    estado=db.Column(
+        Enum(EstadoEmbotellado, name='estado_fermentacion_enum'),
+        nullable=False,
+        default=EstadoEmbotellado.otros
+    )
 
     # Relación para poder acceder al objeto LoteVino desde un recepcionUva
     lote_vino = db.relationship('LoteVino', backref=db.backref('embotellados', lazy=True))

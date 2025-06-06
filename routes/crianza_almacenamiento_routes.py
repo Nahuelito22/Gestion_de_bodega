@@ -4,6 +4,7 @@ from datetime import datetime
 from models.crianza_almacenamiento import CrianzaAlmacenamiento
 from models.loteVino import LoteVino # Necesitamos importar LoteVino para el dropdown
 from models.db import db
+from models.estados.estado_crianza import EstadoCrianza
 
 # Creamos el blueprint para crianza_almacenamiento
 crianza_bp = Blueprint('crianza_bp', __name__)
@@ -175,19 +176,25 @@ def menu_crianzas():
 @crianza_bp.route('/listar', methods=['GET'])
 def listar_crianzas_html():
     crianzas = CrianzaAlmacenamiento.query.all()
-    return render_template('crianza/listar_crianzas.html', crianzas=crianzas)
+    estados=list(EstadoCrianza)
+
+    return render_template('crianza/listar_crianzas.html', crianzas=crianzas , estados=estados)
 
 # Ruta para mostrar el formulario de creación de crianza/almacenamiento (GET HTML)
 # URL: /crianza/crear
 @crianza_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_crianza():
     lotes = LoteVino.query.all() # Necesitamos pasar los lotes para el dropdown
-    return render_template('crianza/crear_crianza.html', lotes=lotes)
+    estados=list(EstadoCrianza)
+    return render_template('crianza/crear_crianza.html', lotes=lotes , estados=estados)
 
 # Ruta para manejar el envío del formulario de creación de crianza/almacenamiento (POST HTML)
 # URL: /crianza/crear
 @crianza_bp.route('/crear', methods=['POST'])
 def crear_crianza_html():
+    estado=request.form['estado']
+    estado_enum=EstadoCrianza[estado]
+
     lote_vino_id = request.form.get('lote_vino_id')
     fecha_inicio_str = request.form.get('fecha_inicio')
     fecha_fin_str = request.form.get('fecha_fin') # Opcional
@@ -230,7 +237,9 @@ def crear_crianza_html():
         volumen_litros=volumen_litros_float,
         ph_medicion=ph_medicion_float,
         acidez_medicion_g_l=acidez_medicion_g_l_float,
-        notas=notas
+        notas=notas,
+
+        estado=estado_enum
     )
     
     db.session.add(nueva_crianza)
@@ -263,6 +272,9 @@ def editar_crianza_html(id):
         
         # Convertir a los tipos de datos correctos y manejar errores
         try:
+            estado_str=request.form['estado']
+            crianza.estado=EstadoCrianza[estado_str]
+
             crianza.fecha_inicio = datetime.strptime(fecha_inicio_str, '%Y-%m-%d')
             crianza.fecha_fin = datetime.strptime(fecha_fin_str, '%Y-%m-%d') if fecha_fin_str else None
 
@@ -290,7 +302,7 @@ def editar_crianza_html(id):
         return redirect(url_for('crianza_bp.listar_crianzas_html'))
 
     # Si es un GET request, simplemente renderiza el formulario con los datos actuales
-    return render_template('crianza/editar_crianza.html', crianza=crianza, lotes=lotes)
+    return render_template('crianza/editar_crianza.html', crianza=crianza, lotes=lotes , estados=EstadoCrianza , estado_actual=crianza.estado)
 
 # Ruta para borrar una crianza/almacenamiento (POST HTML)
 # URL: /crianza/borrar/<id>

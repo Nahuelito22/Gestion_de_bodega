@@ -11,7 +11,6 @@
             </div>
             <div class="card-body p-4">
                 {# Incluye los mensajes flash usando el partial #}
-                {% include 'partials/_message.html' %}
 
                 <form action="{{ url_for('embotellado_bp.editar_embotellado_html', id=embotellado.id) }}" method="POST">
                     <div class="mb-3">
@@ -19,10 +18,21 @@
                         <select class="form-select" id="lote_vino_id" name="lote_vino_id" required>
                             <option value="">Selecciona un lote</option>
                             {% for lote in lotes %}
-                                <option value="{{ lote.id }}" {% if lote.id == embotellado.lote_vino_id %}selected{% endif %}>{{ lote.nombre_lote }}</option>
+                                <option value="{{ lote.id }}" {% if lote.id == embotellado.lote_vino_id %}selected{% endif %}>{{ lote.nombre_identificativo }}</option>
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de embotellado:</label>
+                        <select name="estado" class="form-select" required>
+                            {% for estado in estados %}
+                                <option value="{{ estado.value }}" {% if estado.estado_embotellado == estado %}selected{% endif %}>
+                                    {{ estado.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    <div class="row">
                     <div class="mb-3">
                         <label for="fecha_embotellado" class="form-label">Fecha de Embotellado <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="fecha_embotellado" name="fecha_embotellado" value="{{ embotellado.fecha_embotellado.strftime('%Y-%m-%d') }}" required>
