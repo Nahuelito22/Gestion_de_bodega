@@ -1,338 +1,377 @@
-/* Variables CSS */
+/* ... Tus variables de color existentes ... */
 :root {
-    --bs-font-sans-serif: 'Roboto', sans-serif; /* Cambiado a Roboto para texto general */
-    --bs-heading-font: 'Playfair Display', serif; /* Nueva variable para fuentes de títulos */
+    --bs-primary: #800020; /* Borgoña oscuro, color principal */
+    --bs-secondary: #A52A2A; /* Marrón rojizo, para botones alternativos y acentos */
+    --bs-dark: #343a40; /* Casi negro, para textos principales y fondos oscuros */
+    --bs-light: #f8f9fa; /* Blanco grisáceo, para fondos claros */
+
+    /* Acentos y colores de texto */
+    --bs-accent-1: #800020; /* Color principal para acentos (ej. card headers, theads) */
+    --bs-accent-2: #dc3545; /* Un rojo más vibrante para ciertos hover o elementos de acción/peligro.
+                                 Si quieres un azul para algunos elementos, necesitarías otra variable
+                                 o usar directamente el color de Bootstrap, ej. var(--bs-info) o var(--bs-primary) */
+    --bs-text-light: #f8f9fa; /* Color de texto claro para fondos oscuros */
+    --bs-text-dark: #212529; /* Color de texto oscuro para fondos claros (el gris oscuro de Bootstrap) */
     
-    --bs-primary-custom: #800020; /* Tu color borgoña/granate (principal acción/texto) */
-    --bs-secondary-custom: #D2B48C; /* Tu color beige/dorado (énfasis secundario) */
-    --bs-dark-custom: #343a40; /* Tu gris oscuro (navbar/footer) */
-    --bs-light-custom: #f8f9fa; /* Tu blanco/gris claro (fondo) */
-    --bs-accent-1: #4A2328; /* Marrón oscuro para títulos principales */
-    --bs-accent-2: #D4AF37; /* Dorado para botones de info/secundarios */
-    --bs-danger-custom: #8B0000; /* Rojo oscuro para acciones peligrosas/principales */
-    
-    --bs-body-color: #333; /* Color de texto general */
-    --bs-heading-color: var(--bs-accent-1); /* Color de encabezados por defecto */
+    /* Fuentes */
+    --bs-heading-font: 'Playfair Display', serif; /* Para títulos principales */
+    --bs-font-sans-serif: 'Montserrat', sans-serif; /* Para texto general */
 }
 
-/* Importar Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
-/* La URL que tenías importaba Open Sans y Merriweather.
-   La nueva URL importa Playfair Display y Roboto.
-   Asegúrate de que esta URL sea la que está en tu layout.html también. */
-
-
-/* Estilos generales del body */
+/* ---------------------------------------------------- */
+/* Estilos Generales */
+/* ---------------------------------------------------- */
 body {
-    background-color: var(--bs-light-custom);
+    background-color: var(--bs-light);
     font-family: var(--bs-font-sans-serif);
-    color: var(--bs-body-color);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    color: var(--bs-dark);
 }
 
-/* Navbar */
-.navbar {
-    background-color: var(--bs-dark-custom) !important;
-}
-
-.navbar .nav-link,
-.navbar-brand {
-    color: var(--bs-light-custom) !important;
-    transition: color 0.3s ease;
-}
-
-.navbar .nav-link:hover,
-.navbar-brand:hover {
-    color: var(--bs-secondary-custom) !important;
-}
-
-/* Footer */
-footer {
-    background-color: var(--bs-dark-custom) !important;
-    color: var(--bs-light-custom) !important;
-    padding: 1.5rem;
-    text-align: center;
-    margin-top: auto;
-    font-size: 0.9rem;
-}
-
-/* Headings (h1, h2, etc.) */
+/* Aseguramos que todos los H1, H2, etc. usen el color principal o el color de texto oscuro */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--bs-heading-font); /* Usa la variable de fuente de encabezado */
-    color: var(--bs-heading-color); /* Usa el color de encabezado por defecto */
-    margin-bottom: 1rem;
+    font-family: var(--bs-heading-font);
+    color: var(--bs-accent-1); /* Por defecto, los títulos grandes serán borgoña oscuro */
 }
 
-/* Specific styles for the main title on index.html or hero sections */
+/* El h1 del menú principal */
 .main-title {
-    font-weight: 700;
-    letter-spacing: -0.05rem;
-    color: var(--bs-accent-1); /* Asegura que el título principal use el color marrón oscuro */
+    color: var(--bs-accent-1); /* Asegura que el h1 del menú principal sea borgoña */
 }
 
-/* Subtítulos descriptivos */
 .lead-description {
     font-family: var(--bs-font-sans-serif);
-    color: var(--bs-body-color);
+    color: var(--bs-dark);
+    font-size: 1.15rem;
 }
 
-/* Main content container for flex-grow */
-.container.p-4 { /* Asegúrate que esta clase exista en tu layout.html en el div contenedor principal */
-    flex-grow: 1;
+/* ---------------------------------------------------- */
+/* Componentes Personalizados */
+/* ---------------------------------------------------- */
+
+/* Tarjetas en el menú principal y submenús */
+.custom-card {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background-color: #fff;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
 }
 
-/* Card styles */
-.card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border-radius: 0.75rem !important;
-}
-
-.card:hover {
+.custom-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,.15);
 }
 
-/* Card header colors (clases nuevas para los encabezados de tarjeta) */
-.card-header-primary-custom {
-    background-color: var(--bs-primary-custom) !important; /* Borgoña oscuro */
+.custom-card-body {
+    padding: 2rem;
+    text-align: center;
 }
 
-.card-header-accent-1 {
-    background-color: var(--bs-accent-1) !important; /* Marrón oscuro */
+.custom-card-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--bs-dark); /* Color oscuro para el título de la tarjeta, si está dentro del body blanco */
 }
 
-.card-header-accent-2 {
-    background-color: var(--bs-accent-2) !important; /* Dorado */
-}
-
-/* Button styles - usando tus variables */
-
-/* Botones con el color peligroso/principal para acciones */
-.btn-primary-custom {
-    background-color: var(--bs-danger-custom) !important; /* Rojo oscuro */
-    border-color: var(--bs-danger-custom) !important;
-    color: var(--bs-light-custom) !important;
-}
-.btn-primary-custom:hover {
-    background-color: darken(var(--bs-danger-custom), 10%) !important; /* Un poco más oscuro al pasar el ratón */
-    border-color: darken(var(--bs-danger-custom), 10%) !important;
-}
-
-
-/* Botones con el color secundario/cancelar/volver */
-.btn-secondary-custom {
-    background-color: var(--bs-accent-2) !important; /* Dorado */
-    border-color: var(--bs-accent-2) !important;
-    color: var(--bs-light-custom) !important; /* Texto claro */
-}
-.btn-secondary-custom:hover {
-    background-color: darken(var(--bs-accent-2), 10%) !important;
-    border-color: darken(var(--bs-accent-2), 10%) !important;
-}
-
-/* Botones de contorno con el color de acento 2 (info/detalles) */
-.btn-outline-accent-2 {
-    color: var(--bs-accent-2) !important;
-    border-color: var(--bs-accent-2) !important;
-    background-color: transparent !important;
-}
-.btn-outline-accent-2:hover {
-    background-color: var(--bs-accent-2) !important;
-    color: var(--bs-light-custom) !important;
-    border-color: var(--bs-accent-2) !important;
-}
-
-/* Botones de contorno con el color secundario de bootstrap (gris) */
-.btn-outline-secondary-custom {
-    color: var(--bs-body-color) !important; /* Texto oscuro */
-    border-color: var(--bs-body-color) !important;
-    background-color: transparent !important;
-}
-.btn-outline-secondary-custom:hover {
-    background-color: var(--bs-body-color) !important;
-    color: var(--bs-light-custom) !important;
-    border-color: var(--bs-body-color) !important;
-}
-
-/* Botones de contorno con el color rojo oscuro (eliminar) */
-.btn-outline-danger-custom {
-    color: var(--bs-danger-custom) !important;
-    border-color: var(--bs-danger-custom) !important;
-    background-color: transparent !important;
-}
-.btn-outline-danger-custom:hover {
-    background-color: var(--bs-danger-custom) !important;
-    color: var(--bs-light-custom) !important;
-    border-color: var(--bs-danger-custom) !important;
-}
-
-
-/* Rounded buttons */
-.rounded-pill {
-    border-radius: 50rem !important;
-}
-
-/* Icon size for actions */
-.fs-6 { /* Bootstrap default, pero para asegurar */
-    font-size: 1rem !important;
-}
-
-/* Icon size and text size for cards (si tienes menús con iconos grandes) */
-.fs-2 {
-    font-size: 1.75rem !important;
-}
-
-.small {
-    font-size: 0.875rem;
-}
-
-/* Alert messages */
-.alert {
-    margin-top: 1rem;
-    border-radius: 0.5rem;
-}
-
-/* Ajustes para los colores de alerta con variables */
-.alert-success {
-    background-color: rgba(var(--bs-primary-custom-rgb), 0.1); /* Ligero tinte del color principal */
-    color: var(--bs-primary-custom);
-    border-color: rgba(var(--bs-primary-custom-rgb), 0.2);
-}
-
-.alert-danger {
-    background-color: rgba(var(--bs-danger-custom-rgb), 0.1);
-    color: var(--bs-danger-custom);
-    border-color: rgba(var(--bs-danger-custom-rgb), 0.2);
-}
-
-.alert-info {
-    background-color: rgba(var(--bs-accent-2-rgb), 0.1);
-    color: var(--bs-accent-1);
-    border-color: rgba(var(--bs-accent-2-rgb), 0.2);
-}
-
-/* Asegúrate de añadir las variables RGB para los rgba() si no las tienes */
-:root {
-    /* ... (tus variables existentes) ... */
-    --bs-primary-custom-rgb: 128, 0, 32; /* RGB de #800020 */
-    --bs-danger-custom-rgb: 139, 0, 0; /* RGB de #8B0000 */
-    --bs-accent-2-rgb: 212, 175, 55; /* RGB de #D4AF37 */
-}
-
-/* Si tu título de gestión es azul, probablemente viene de una clase de Bootstrap.
-   Puedes añadir una clase específica para esos títulos si quieres que sean del color de acento 1: */
-.section-title {
-    color: var(--bs-accent-1) !important; /* Marrón oscuro */
-    font-family: var(--bs-heading-font);
-}
-
-/* Estilos para el texto descriptivo de las tarjetas (Gestión de X) */
-.card-description-text {
-    font-family: var(--bs-font-sans-serif);
-    color: var(--bs-body-color);
-}
-
-
-:root {
-    --bs-primary: #5a2c0f; /* Un marrón más oscuro, como un roble viejo */
-    --bs-secondary: #964f1d; /* Un marrón rojizo, como el corcho o el vino joven */
-    --bs-success: #28a745; /* Verde estándar para acciones de éxito */
-    --bs-danger: #dc3545; /* Rojo estándar para acciones de peligro */
-    --bs-warning: #ffc107; /* Amarillo estándar para advertencias */
-    --bs-info: #17a2b8; /* Azul claro estándar para información */
-    --bs-light: #f8f9fa; /* Gris claro para fondos */
-    --bs-dark: #343a40; /* Gris oscuro para texto/fondos */
-
-    /* Colores de tu paleta personalizada */
-    --bs-accent-1: #4A2B1D; /* Marrón oscuro para encabezados de tabla, cards, etc. */
-    --bs-accent-2: #8C563D; /* Marrón medio para detalles, bordes */
-    --bs-accent-3: #D9C3B0; /* Beige/crema claro para fondos suaves */
-    --bs-text-light: #F2F2F2; /* Texto claro para fondos oscuros */
-    --bs-text-dark: #333333; /* Texto oscuro para fondos claros */
-
-    /* Fuentes personalizadas (ejemplos) */
-    --bs-font-sans-serif: 'Roboto', sans-serif;
-    --bs-heading-font: 'Playfair Display', serif; /* Una fuente más elegante para títulos */
-
-    /* Espaciado */
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 0;
-}
-
-/* Estilo para los títulos principales de cada página */
-.main-title {
-    color: var(--bs-accent-1); /* Usar el marrón oscuro de la paleta */
-    font-family: var(--bs-heading-font);
+.custom-card-text {
+    font-size: 0.95rem;
+    color: var(--bs-dark);
     margin-bottom: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Estilo para la descripción bajo el título principal */
-.lead-description {
-    color: var(--bs-accent-2); /* Un color más suave para el texto descriptivo */
-    font-family: var(--bs-font-sans-serif);
-    max-width: 700px; /* Limita el ancho para mejor lectura */
-    margin-left: auto;
-    margin-right: auto;
+.custom-card-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--bs-accent-1); /* Color principal para el icono */
 }
 
-/* Estilo para el encabezado de las tarjetas */
-.card-header-accent-1 {
-    background-color: var(--bs-accent-1) !important;
-    color: var(--bs-text-light) !important;
+/* AJUSTE CLAVE: Para los títulos de las tarjetas de los menús (recepción, lote, fermentación, etc.) */
+/* Asegura que el color sea consistente, usando var(--bs-accent-1) para rojo/borgoña
+   o var(--bs-info) para el azul que mostraste en algunas capturas.
+   Decide qué color quieres para estos títulos. Aquí los pondré en var(--bs-accent-1) (borgoña)
+   para consistencia con el diseño general. */
+.main-title-section { /* Asumo que esta clase se usa en los H1/H2 de los submenús */
     font-family: var(--bs-heading-font);
+    color: var(--bs-accent-1); /* Borgoña para todos los títulos de sección */
 }
 
-/* Botones personalizados */
-.btn-primary-custom {
-    background-color: var(--bs-secondary); /* Marrón rojizo */
-    border-color: var(--bs-secondary);
-    color: var(--bs-text-light);
+/* ---------------------------------------------------- */
+/* Estilos de Botones */
+/* ---------------------------------------------------- */
+
+/* Estilos de botones generales */
+.btn {
+    font-family: var(--bs-font-sans-serif);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
 }
 
-.btn-primary-custom:hover {
-    background-color: #7a421a; /* Un poco más oscuro al pasar el mouse */
-    border-color: #7a421a;
+.btn-primary-custom {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
     color: var(--bs-text-light);
-    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--bs-secondary); /* Un tono de rojo/marrón para el hover */
+    border-color: var(--bs-secondary);
+    color: var(--bs-text-light);
+    transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-primary-rgb),.3);
 }
 
 .btn-outline-secondary-custom {
-    color: var(--bs-secondary); /* Texto marrón rojizo */
+    color: var(--bs-secondary);
     border-color: var(--bs-secondary);
     background-color: transparent;
-    transition: all 0.3s ease;
 }
 
 .btn-outline-secondary-custom:hover {
-    background-color: var(--bs-secondary); /* Fondo marrón rojizo al pasar el mouse */
-    color: var(--bs-text-light); /* Texto blanco */
+    color: var(--bs-text-light);
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
     transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-secondary-rgb),.3);
 }
 
 .btn-outline-danger-custom {
     color: var(--bs-danger);
     border-color: var(--bs-danger);
     background-color: transparent;
-    transition: all 0.3s ease;
 }
 
 .btn-outline-danger-custom:hover {
+    color: var(--bs-text-light);
     background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+    transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-danger-rgb),.3);
+}
+
+.btn-success-custom {
+    background-color: var(--bs-success);
+    border-color: var(--bs-success);
+    color: var(--bs-text-light);
+}
+
+.btn-success-custom:hover {
+    background-color: darken(var(--bs-success), 10%);
+    border-color: darken(var(--bs-success), 10%);
     color: var(--bs-text-light);
     transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-success-rgb),.3);
 }
 
-/* Alerta de información personalizada */
-.alert-info {
-    color: var(--bs-accent-1);
-    background-color: rgba(var(--bs-accent-3-rgb), 0.3); /* Un fondo suave usando el beige */
-    border-color: var(--bs-accent-2);
+/* **AJUSTE CRÍTICO: Para los botones dentro de las tarjetas del menú principal y submenús** */
+/* Este estilo sobrescribe el comportamiento default de Bootstrap para .btn-primary y .btn-outline-primary
+   si los usas directamente sin .*-custom. */
+
+/* Si tus botones "Ver Fermentaciones", "Crear Lote", etc. usan .btn-primary o .btn-outline-primary */
+.custom-card .btn-primary,
+.custom-card .btn-primary-custom { /* Para botones con fondo, como "Crear Recepción" */
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: var(--bs-text-light);
 }
 
-.alert-info .alert-heading {
-    color: var(--bs-accent-1);
+.custom-card .btn-primary:hover,
+.custom-card .btn-primary-custom:hover {
+    background-color: var(--bs-secondary); /* Un tono más suave de rojo al hover */
+    border-color: var(--bs-secondary);
+    color: var(--bs-text-light);
+}
+
+.custom-card .btn-outline-primary,
+.custom-card .btn-outline-secondary-custom { /* Para botones con borde, como "Ver Variedades" */
+    color: var(--bs-primary); /* Texto del color principal */
+    border-color: var(--bs-primary); /* Borde del color principal */
+    background-color: transparent;
+}
+
+.custom-card .btn-outline-primary:hover,
+.custom-card .btn-outline-secondary-custom:hover {
+    color: var(--bs-text-light); /* Texto blanco al hover */
+    background-color: var(--bs-primary); /* Fondo del color principal al hover */
+    border-color: var(--bs-primary);
+}
+
+
+/* Asegura que el botón de "Nueva Variedad" en el listado de variedades se vea verde */
+.btn-success { /* Si usas directamente btn-success de Bootstrap */
+    background-color: var(--bs-success); /* Usar el verde de Bootstrap */
+    border-color: var(--bs-success);
+    color: white;
+}
+.btn-success:hover {
+    background-color: darken(var(--bs-success), 10%);
+    border-color: darken(var(--bs-success), 10%);
+}
+
+/* ---------------------------------------------------- */
+/* Estilos Específicos para Formularios */
+/* ---------------------------------------------------- */
+
+/* AJUSTE CRÍTICO: Aseguramos que el H2 dentro de card-header-accent-1 sea legible */
+.card-header-accent-1 {
+    background-color: var(--bs-accent-1);
+    padding: 1.5rem; /* Ajusta el padding si es necesario */
+    text-align: center;
+    border-top-left-radius: calc(1rem - 1px); /* Redondeo acorde al card */
+    border-top-right-radius: calc(1rem - 1px);
+}
+
+.card-header-accent-1 h1,
+.card-header-accent-1 h2,
+.card-header-accent-1 h3 {
+    color: var(--bs-text-light); /* FUERZA el color blanco/claro para el texto del título dentro del encabezado oscuro */
+    margin-bottom: 0; /* Elimina márgenes extra */
+    font-size: 2.25rem; /* Asegura un buen tamaño */
+    font-weight: 700;
+}
+
+
+.form-label {
+    font-weight: 600;
+    color: var(--bs-dark); /* Asegura que el color de la etiqueta sea oscuro */
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    color: var(--bs-dark); /* Asegura que el texto dentro del input sea oscuro */
+    padding: 0.75rem 1rem;
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 1;
+}
+
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb),.25);
+}
+
+.form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    color: var(--bs-dark);
+    padding: 0.75rem 2.25rem 0.75rem 1rem;
+}
+
+.form-select:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb),.25);
+}
+
+/* ... Tus variables de color existentes ... */
+
+/* ---------------------------------------------------- */
+/* Estilos Generales */
+/* ---------------------------------------------------- */
+/* ... (mantén lo que ya tenías aquí, incluyendo h1, h2, h3 y main-title) ... */
+
+/* Aseguramos que los títulos principales de las secciones (si tienen la clase) sean borgoña */
+.main-title-section { /* Esta clase debe ser aplicada en los H1/H2 de tus menú.html de cada sección */
+    color: var(--bs-accent-1) !important; /* Usamos !important para asegurar que sobrescribe */
+    font-family: var(--bs-heading-font);
+}
+
+/* ---------------------------------------------------- */
+/* Componentes Personalizados (Tarjetas de Menú) */
+/* ---------------------------------------------------- */
+/* ... (mantén lo que ya tenías para .custom-card, .custom-card-body, etc.) ... */
+
+/* Asegura que el color del título de la tarjeta sea el deseado (borgoña) */
+.custom-card-title {
+    color: var(--bs-accent-1) !important; /* Borgoña para los títulos dentro de las tarjetas del menú */
+}
+
+/* Color de los iconos en las tarjetas del menú (si no son botones) */
+.custom-card-icon {
+    color: var(--bs-accent-1) !important; /* Borgoña para los iconos */
+}
+
+
+/* ---------------------------------------------------- */
+/* Estilos de Botones (Reforzados) */
+/* ---------------------------------------------------- */
+
+/* Sobrescribe los colores por defecto de Bootstrap para btn-primary y btn-outline-primary
+   para que siempre sigan tu paleta. */
+
+.btn-primary {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+    color: var(--bs-text-light) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--bs-secondary) !important; /* Un tono más suave de rojo al hover */
+    border-color: var(--bs-secondary) !important;
+    color: var(--bs-text-light) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-primary-rgb),.3);
+}
+
+.btn-outline-primary {
+    color: var(--bs-primary) !important; /* Texto del color principal */
+    border-color: var(--bs-primary) !important; /* Borde del color principal */
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover {
+    color: var(--bs-text-light) !important; /* Texto blanco al hover */
+    background-color: var(--bs-primary) !important; /* Fondo del color principal al hover */
+    border-color: var(--bs-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 .25rem .5rem rgba(var(--bs-primary-rgb),.3);
+}
+
+/* Asegúrate de que tus botones personalizados también tengan !important si es necesario */
+.btn-primary-custom {
+    background-color: var(--bs-primary) !important;
+    border-color: var(--bs-primary) !important;
+    color: var(--bs-text-light) !important;
+    /* ... (resto de tus estilos para btn-primary-custom) ... */
+}
+
+.btn-primary-custom:hover {
+    background-color: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important;
+    color: var(--bs-text-light) !important;
+    /* ... (resto de tus estilos para btn-primary-custom:hover) ... */
+}
+
+.btn-outline-secondary-custom {
+    color: var(--bs-secondary) !important; /* Si quieres que estos sean el rojo secundario */
+    border-color: var(--bs-secondary) !important;
+    background-color: transparent !important;
+    /* ... (resto de tus estilos para btn-outline-secondary-custom) ... */
+}
+
+.btn-outline-secondary-custom:hover {
+    color: var(--bs-text-light) !important;
+    background-color: var(--bs-secondary) !important;
+    border-color: var(--bs-secondary) !important;
+    /* ... (resto de tus estilos para btn-outline-secondary-custom:hover) ... */
+}
+
+.btn-success { /* Para tu botón "Nueva Variedad" */
+    background-color: var(--bs-success) !important;
+    border-color: var(--bs-success) !important;
+    color: white !important;
+}
+.btn-success:hover {
+    background-color: darken(var(--bs-success), 10%) !important;
+    border-color: darken(var(--bs-success), 10%) !important;
 }
