@@ -10,12 +10,13 @@ fermentacion_bp = Blueprint('fermentacion_bp', __name__)
 
 # RUTAS DE API (JSON) - Para Postman
 # GET /api/fermentacion/ - Obtener todas las fermentaciones (API)
-@fermentacion_bp.route('/', methods=['GET'])
+@fermentacion_bp.route('/api/', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_fermentaciones_api(): # Renombrado para diferenciar de la HTML
     fermentaciones = FermentacionAlcoholica.query.all()
     resultados = []
     for res in fermentaciones:
-        lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+        # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+        lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
         resultados.append({
             'id': res.id,
             'lote_vino_id': res.lote_vino_id,
@@ -33,13 +34,14 @@ def get_fermentaciones_api(): # Renombrado para diferenciar de la HTML
     return jsonify(resultados), 200
 
 # GET /api/fermentacion/<id> - Obtener Fermentacion por ID (API)
-@fermentacion_bp.route('/<string:id>', methods=['GET'])
+@fermentacion_bp.route('/api/<string:id>', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_fermentacion_api(id): # Renombrado para diferenciar de la HTML
     res = FermentacionAlcoholica.query.get(id)
     if not res:
         return jsonify({'error': 'Fermentacion no encontrada'}), 404
     
-    lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
     return jsonify({
         'id': res.id,
         'lote_vino_id': res.lote_vino_id,
@@ -56,7 +58,7 @@ def get_fermentacion_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # POST /api/fermentacion/ - Crear nueva fermentación (API)
-@fermentacion_bp.route('/', methods=['POST'])
+@fermentacion_bp.route('/api/', methods=['POST']) # CAMBIO IMPORTANTE AQUÍ
 def crear_fermentacion_api(): # Renombrado para diferenciar de la HTML
     data = request.get_json()
 
@@ -91,7 +93,8 @@ def crear_fermentacion_api(): # Renombrado para diferenciar de la HTML
     db.session.add(nueva_fermentacion)
     db.session.commit()
 
-    lote_nombre = nueva_fermentacion.lote_vino.nombre_lote if nueva_fermentacion.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = nueva_fermentacion.lote_vino.nombre_identificativo if nueva_fermentacion.lote_vino else "N/A"
     return jsonify({
         'id': nueva_fermentacion.id,
         'lote_vino_id': nueva_fermentacion.lote_vino_id,
@@ -108,7 +111,7 @@ def crear_fermentacion_api(): # Renombrado para diferenciar de la HTML
     }), 201
 
 # PATCH /api/fermentacion/<id> - Modificar parcialmente fermentación (API)
-@fermentacion_bp.route('/<string:id>', methods=['PATCH'])
+@fermentacion_bp.route('/api/<string:id>', methods=['PATCH']) # CAMBIO IMPORTANTE AQUÍ
 def modificar_fermentacion_api(id): # Renombrado para diferenciar de la HTML
     fermentacion_cambio = FermentacionAlcoholica.query.get(id)
     if not fermentacion_cambio:
@@ -148,7 +151,8 @@ def modificar_fermentacion_api(id): # Renombrado para diferenciar de la HTML
 
     db.session.commit()
 
-    lote_nombre = fermentacion_cambio.lote_vino.nombre_lote if fermentacion_cambio.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = fermentacion_cambio.lote_vino.nombre_identificativo if fermentacion_cambio.lote_vino else "N/A"
     return jsonify({
         'id': fermentacion_cambio.id,
         'lote_vino_id': fermentacion_cambio.lote_vino_id,
@@ -165,7 +169,7 @@ def modificar_fermentacion_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # DELETE /api/fermentacion/<id> - Eliminar fermentación (API)
-@fermentacion_bp.route('/<string:id>', methods=['DELETE'])
+@fermentacion_bp.route('/api/<string:id>', methods=['DELETE']) # CAMBIO IMPORTANTE AQUÍ
 def borrar_fermentacion_api(id):
     fermentacion = FermentacionAlcoholica.query.get(id)
     if not fermentacion:
@@ -326,3 +330,9 @@ def borrar_fermentacion_html(id):
     db.session.commit()
     flash('Registro de fermentación eliminado exitosamente!', 'success')
     return redirect(url_for('fermentacion_bp.listar_fermentaciones_html'))
+
+
+# Ruta principal para el blueprint (redirecciona al menú HTML)
+@fermentacion_bp.route('/', methods=['GET'])
+def index_fermentacion():
+    return redirect(url_for('fermentacion_bp.menu_fermentaciones'))

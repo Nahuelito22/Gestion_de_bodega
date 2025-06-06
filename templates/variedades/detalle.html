@@ -3,55 +3,56 @@
 {% block title %}Detalle de Variedad: {{ variedad.nombre }} - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="row justify-content-center mt-4">
-    <div class="col-md-8 col-lg-7">
+<div class="row justify-content-center mt-5 mb-5"> {# Ajustado mt-5 y añadido mb-5 para espaciado #}
+    <div class="col-md-9 col-lg-8"> {# Aumentado el ancho de la columna para mejor presentación #}
         <div class="card shadow-lg border-0 rounded-3">
-            <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
-                <h2 class="card-title mb-0">Detalle de la Variedad de Uva</h2>
-                <h3 class="card-subtitle text-white-50 mt-1">{{ variedad.nombre }}</h3> {# Nombre de la variedad #}
+            {# Encabezado de la tarjeta con los colores de la paleta #}
+            <div class="card-header text-white text-center py-4 rounded-top-3" style="background-color: #4A2328;">
+                <h2 class="card-title mb-1 fw-bold" style="font-family: 'Playfair Display', serif; font-size: 2.25rem;">
+                    Detalle de la Variedad de Uva
+                </h2>
+                <h3 class="card-subtitle text-white-50 mt-1" style="font-family: 'Playfair Display', serif; font-size: 1.5rem;">
+                    "{{ variedad.nombre }}"
+                </h3>
             </div>
             <div class="card-body p-4">
                 <div class="text-center mb-4">
                     {% if variedad.foto_ruta %}
-                        {# Imagen principal de la variedad #}
-                        <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
-                             alt="{{ variedad.nombre }}" 
-                             class="img-fluid rounded shadow" 
-                             style="max-width: 300px; height: auto;">
+                        <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}"
+                             alt="{{ variedad.nombre }}"
+                             class="img-fluid rounded shadow-sm" {# Cambiado shadow a shadow-sm #}
+                             style="max-width: 300px; height: auto; border: 2px solid #D4AF37;"> {# Añadido un borde sutil para destacar la imagen #}
                     {% else %}
                         <div class="border p-4 bg-light rounded text-center text-muted">
-                            <i class="bi bi-image-fill fs-1 d-block mb-2"></i>
-                            <p>Sin imagen disponible para esta variedad.</p>
+                            <i class="bi bi-image-fill fs-1 d-block mb-2" style="color: #6c757d;"></i> {# Color sutil para el ícono de imagen #}
+                            <p class="mb-0" style="font-family: 'Roboto', sans-serif;">Sin imagen disponible para esta variedad.</p>
                         </div>
                     {% endif %}
                 </div>
 
-                <hr class="my-4">
+                <hr class="my-4" style="border-top: 1px solid rgba(0, 0, 0, 0.1);"> {# Ajustado el hr #}
 
-                <h4 class="text-secondary mb-3">Información General</h4>
-                <dl class="row"> {# Lista de definiciones para pares clave-valor #}
-                    <dt class="col-sm-3">ID:</dt>
-                    <dd class="col-sm-9">{{ variedad.id }}</dd>
+                <h4 class="text-secondary mb-3 fw-semibold" style="color: #4A2328 !important; font-family: 'Playfair Display', serif;">
+                    Información General
+                </h4>
+                <dl class="row mb-4"> {# Añadido mb-4 para espacio #}
+                    <dt class="col-sm-4 text-dark" style="font-family: 'Roboto', sans-serif;">ID:</dt>
+                    <dd class="col-sm-8 text-muted" style="font-family: 'Roboto', sans-serif;">{{ variedad.id }}</dd>
 
-                    <dt class="col-sm-3">Nombre:</dt>
-                    <dd class="col-sm-9">{{ variedad.nombre }}</dd>
+                    <dt class="col-sm-4 text-dark" style="font-family: 'Roboto', sans-serif;">Nombre:</dt>
+                    <dd class="col-sm-8 text-muted" style="font-family: 'Roboto', sans-serif;">{{ variedad.nombre }}</dd>
 
-                    <dt class="col-sm-3">Origen / Descripción:</dt>
-                    <dd class="col-sm-9">{{ variedad.origen }}</dd>
-                    
-                    <dt class="col-sm-3">Fecha de Registro:</dt>
-                    <dd class="col-sm-9">{{ variedad.fecha_registro.strftime('%d/%m/%Y %H:%M:%S') }}</dd> {# Asumiendo que tienes este campo #}
+                    <dt class="col-sm-4 text-dark" style="font-family: 'Roboto', sans-serif;">Origen / Descripción:</dt>
+                    <dd class="col-sm-8 text-muted" style="font-family: 'Roboto', sans-serif;">{{ variedad.origen }}</dd>
+                </dl>
 
-                    {# Si tu modelo de VariedadUva tiene más atributos, agrégales aquí #}
-                    {# Ejemplo: #}
-                    </dl>
-
-                {# Sección para lotes asociados a esta variedad (opcional pero útil) #}
-                <div class="d-grid gap-2 mt-4">
-                    <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-warning btn-lg">
+                <div class="d-grid gap-3 mt-4"> {# Ajustado el gap #}
+                    {# Botón Editar con color principal del proyecto #}
+                    <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-primary btn-lg rounded-pill px-4 py-2" style="background-color: #D4AF37; border-color: #D4AF37;">
                         <i class="bi bi-pencil-fill me-2"></i>Editar Variedad
                     </a>
-                    <a href="{{ url_for('variedadUva_bp.listar_variedades') }}" class="btn btn-secondary btn-lg">
+                    {# Botón Volver al Listado con color secundario del proyecto #}
+                    <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2" style="color: #8B0000; border-color: #8B0000;">
                         <i class="bi bi-arrow-left-circle me-2"></i>Volver al Listado
                     </a>
                 </div>

@@ -1,23 +1,48 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-  About Us
+    Acerca de - Gestión de Bodega
 {% endblock %}
 
 {% block body %}
-<div class="container p-5">
-  <div class="card bg-dark text-white">
-    <div class="card-body">
-      <h1 class="card-title">About This Project</h1>
-      <p class="card-text">
-        This is a simple Flask CRUD application using SQLAlchemy.
-        It was built to practice the basics of creating, reading, updating and deleting records from a database.
-      </p>
-      <p class="card-text">
-        Created by Ghilardi/Garcia.
-      </p>
-      <a href="/" class="btn btn-primary">Back</a>
+<div class="container py-5"> {# Usamos py-5 para un padding vertical #}
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10"> {# Centramos la tarjeta y le damos un ancho máximo #}
+            <div class="card shadow-lg border-0 rounded-3"> {# Sombra, sin borde y bordes redondeados #}
+                <div class="card-body p-5"> {# Más padding dentro de la tarjeta #}
+                    {# Título principal con la fuente y color del resto de títulos #}
+                    <h1 class="card-title text-center mb-4" style="color: #4A2328; font-family: 'Playfair Display', serif; font-weight: 700;">
+                        Acerca de este Proyecto
+                    </h1>
+                    <hr class="mb-4" style="border-top: 2px solid #ccc;"> {# Separador #}
+
+                    <p class="card-text lead text-secondary mb-4" style="font-family: 'Roboto', sans-serif;">
+                        Esta aplicación web está diseñada para ofrecer una **gestión integral y una trazabilidad completa** del proceso de producción vinícola. Desde la recepción de la uva hasta el embotellado final, nuestra plataforma permite un monitoreo detallado de cada etapa, asegurando la calidad y el control de cada lote de vino.
+                    </p>
+                    <p class="card-text text-muted mb-4" style="font-family: 'Roboto', sans-serif;">
+                        Ha sido desarrollada como un proyecto práctico, enfocándose en la implementación de una arquitectura **CRUD (Crear, Leer, Actualizar, Eliminar)** utilizando el framework Flask en Python y SQLAlchemy para la gestión de la base de datos.
+                    </p>
+                    <p class="card-text text-muted mb-4" style="font-family: 'Roboto', sans-serif;">
+                        Nuestro objetivo es proporcionar una herramienta robusta y fácil de usar para bodegas, que facilite la toma de decisiones basada en datos y optimice la cadena de valor del vino.
+                    </p>
+
+                    <hr class="mb-4" style="border-top: 1px solid #eee;"> {# Separador más fino #}
+
+                    <p class="card-text text-center text-muted small mt-4" style="font-family: 'Roboto', sans-serif;">
+                        Desarrollado por: Gustavo García y Nahuel Ghilardi.
+                    </p>
+                    <p class="card-text text-center text-muted small" style="font-family: 'Roboto', sans-serif;">
+                        Este proyecto es una muestra de nuestras habilidades Programacion Full Stack y nuestro compromiso con la excelencia en el desarrollo de software.
+                    </p>
+
+                    <div class="text-center mt-4">
+                        <a href="/" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #8B0000; border-color: #8B0000;">
+                            Volver al Inicio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}

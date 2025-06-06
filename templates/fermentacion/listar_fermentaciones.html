@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block title %}Listado de Fermentaciones - Gestión de Bodega{% endblock %}
+
+{% block body %}
+<div class="row mb-5 mt-4">
+    <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold mb-3 main-title">
+            Fermentaciones Alcohólicas
+        </h1>
+        <p class="lead text-secondary mb-4 lead-description">
+            Gestiona los registros de las fermentaciones de tus lotes de vino.
+        </p>
+    </div>
+</div>
+
+{# Fila para los botones superiores #}
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+        <a href="{{ url_for('fermentacion_bp.mostrar_formulario_fermentacion') }}" class="btn rounded-pill px-4 py-2 btn-primary-custom">
+            <i class="bi bi-plus-circle me-2"></i>Registrar Nueva Fermentación
+        </a>
+        {# Volver al menú de Fermentaciones (asumiendo que este es el menú principal de fermentaciones) #}
+        <a href="{{ url_for('fermentacion_bp.menu_fermentaciones') }}" class="btn rounded-pill px-4 py-2 btn-outline-secondary-custom">
+            <i class="bi bi-arrow-left-circle me-2"></i>Volver al Menú
+        </a>
+    </div>
+</div>
+
+{# Incluye los mensajes flash usando el partial #}
+{% include 'partials/_message.html' %}
+
+{% if fermentaciones %}
+<div class="card shadow-lg border-0 rounded-3 mb-5">
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle caption-top">
+                <caption>Listado de todas las fermentaciones registradas.</caption>
+                <thead class="text-white" style="background-color: var(--bs-accent-1) !important;">
+                    <tr>
+                        <th scope="col" style="width: 15%;">Lote de Vino</th>
+                        <th scope="col" style="width: 10%;">Fecha Inicio</th>
+                        <th scope="col" style="width: 10%;">Fecha Fin</th>
+                        <th scope="col" style="width: 10%;">Temp. Control (°C)</th>
+                        <th scope="col" style="width: 8%;">Densidad Inicial</th>
+                        <th scope="col" style="width: 8%;">Densidad Final</th>
+                        <th scope="col" style="width: 5%;">pH</th>
+                        <th scope="col" style="width: 10%;">Acidez Volátil (g/L)</th>
+                        <th scope="col" style="width: 10%;">Tipo Levadura</th>
+                        <th scope="col" style="width: 15%;">Notas</th>
+                        <th scope="col" class="text-center" style="width: 10%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ferm in fermentaciones %}
+                    <tr>
+                        <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ ferm.lote_vino.nombre_identificativo if ferm.lote_vino else 'N/A' }}</td>
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ ferm.fecha_inicio.strftime('%d/%m/%Y') if ferm.fecha_inicio else 'N/A' }}</td>
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ ferm.fecha_fin.strftime('%d/%m/%Y') if ferm.fecha_fin else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.temperatura_control_c if ferm.temperatura_control_c is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.densidad_inicial if ferm.densidad_inicial is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.densidad_final if ferm.densidad_final is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.ph_medicion if ferm.ph_medicion is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.acidez_volatil_g_l if ferm.acidez_volatil_g_l is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ ferm.tipo_levadura if ferm.tipo_levadura else 'N/A' }}</td>
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ ferm.notas if ferm.notas else 'Sin notas' }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ url_for('fermentacion_bp.editar_fermentacion_html', id=ferm.id) }}" class="btn btn-outline-secondary-custom btn-sm rounded-circle p-2" title="Editar">
+                                    <i class="bi bi-pencil fs-6"></i>
+                                </a>
+                                <form action="{{ url_for('fermentacion_bp.borrar_fermentacion_html', id=ferm.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta fermentación? Esta acción es irreversible.');">
+                                    <button type="submit" class="btn btn-outline-danger-custom btn-sm rounded-circle p-2" title="Eliminar">
+                                        <i class="bi bi-trash fs-6"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info text-center py-4 rounded-3 border-0 shadow-sm" role="alert">
+    <h4 class="alert-heading fw-bold" style="font-family: var(--bs-heading-font); color: var(--bs-accent-1);">
+        <i class="bi bi-info-circle me-2"></i>¡No hay fermentaciones registradas!
+    </h4>
+    <p class="mb-3" style="font-family: var(--bs-font-sans-serif);">
+        Parece que aún no tienes registros de fermentación alcohólica en el sistema. ¡Crea uno para empezar!
+    </p>
+    <hr class="my-3" style="border-top: 1px solid rgba(var(--bs-accent-2-rgb), 0.5);">
+    <a href="{{ url_for('fermentacion_bp.mostrar_formulario_fermentacion') }}" class="btn rounded-pill px-4 py-2 mt-2 btn-secondary-custom">
+        <i class="bi bi-plus-circle me-2"></i>Registrar Primera Fermentación
+    </a>
+</div>
+{% endif %}
+
+{# Botón "Volver al Menú Principal" en la parte inferior #}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('fermentacion_bp.menu_fermentaciones') }}" class="btn rounded-pill px-4 py-2 btn-outline-secondary-custom">
+            <i class="bi bi-arrow-left-circle me-2"></i> Volver al Menú de Fermentaciones
+        </a>
+    </div>
+</div>
+{% endblock body %}

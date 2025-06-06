@@ -1,65 +1,58 @@
 {% extends 'layout.html' %}
 
-{% block title %}Crear Variedad de Uva - Gestión de Bodega{% endblock %} 
+{% block title %}Registrar Nueva Variedad - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="row justify-content-center"> 
-  <div class="col-md-8 col-lg-6"> 
-    <div class="card shadow-lg border-0 rounded-3"> 
-      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3"> 
-        <h2 class="card-title mb-0">Registrar Nueva Variedad de Uva</h2> 
-      </div>
-      <div class="card-body p-4"> 
+<div class="row justify-content-center mt-5 mb-5"> {# Ajustado mt-5 y añadido mb-5 #}
+    <div class="col-md-8 col-lg-7"> {# Ancho para el formulario #}
+        {# Título principal con la fuente y color del resto de títulos #}
+        <h1 class="display-5 fw-bold text-center mb-4" style="color: #4A2328; font-family: 'Playfair Display', serif;">
+            Registrar Nueva Variedad de Uva
+        </h1>
 
-        <form 
-          action="{{ url_for('variedadUva_bp.crear_variedad') }}" 
-          method="POST"
-          enctype="multipart/form-data">
-          
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre de la Variedad:</label>
-            <input 
-              type="text" 
-              name="nombre" 
-              class="form-control" 
-              placeholder="Ej: Malbec"
-              autofocus
-              required
-            >
-          </div>
+        {# Mensajes Flash para notificaciones #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-          <div class="mb-3">
-            <label for="origen" class="form-label">Origen / Descripción Corta:</label>
-            <textarea 
-              name="origen" 
-              rows="3" 
-              class="form-control" 
-              placeholder="Ej: Burdeos, Francia. Uva de piel oscura..."
-              required
-            ></textarea>
-          </div>
+        <div class="card shadow-lg border-0 rounded-3"> {# Cambiado shadow a shadow-lg, border-0 #}
+            <div class="card-body p-4 p-md-5"> {# Más padding en pantallas medianas #}
+                <form action="{{ url_for('variedadUva_bp.crear_variedad') }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="nombre" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Nombre de la Variedad: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-lg" id="nombre" name="nombre" placeholder="Ej: Malbec" autofocus required> {# form-control-lg para inputs más grandes #}
+                    </div>
+                    
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="origen" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Origen / Descripción Corta:</label>
+                        <textarea class="form-control" id="origen" name="origen" rows="3" placeholder="Ej: Burdeos, Francia. Uva de piel oscura con aromas a ciruela y chocolate..."></textarea> {# Aumentado rows a 3 #}
+                    </div>
 
-          <div class="mb-3">
-            <label for="foto_ruta" class="form-label">Imagen de la Variedad (opcional):</label>
-            <input 
-              type="file" 
-              name="foto_ruta" 
-              class="form-control" 
-              accept="image/*" 
-            >
-          </div>
-
-          <div class="d-grid gap-2 mt-4"> 
-            <button type="submit" class="btn btn-primary btn-lg"> 
-              <i class="bi bi-save me-2"></i>Guardar Variedad
-            </button>
-            <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary btn-lg"> {# <-- CORREGIDO AQUÍ #}
-              <i class="bi bi-x-circle me-2"></i>Cancelar
-            </a>
-          </div>
-        </form>
-      </div>
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="foto_ruta" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Imagen de la Variedad (opcional):</label>
+                        <input type="file" class="form-control" id="foto_ruta" name="foto_ruta" accept="image/*">
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        {# Botón Guardar con color principal del proyecto (dorado) #}
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4 py-2" style="background-color: #D4AF37; border-color: #D4AF37;">
+                            <i class="bi bi-save me-2"></i> Guardar Variedad
+                        </button>
+                        {# Botón Cancelar con color secundario del proyecto (rojo vino) #}
+                        <a href="{{ url_for('variedadUva_bp.menu_variedades') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2" style="color: #8B0000; border-color: #8B0000;">
+                            <i class="bi bi-x-circle me-2"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-{% endblock %}
+{% endblock body %}

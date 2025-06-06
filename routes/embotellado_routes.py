@@ -10,12 +10,13 @@ embotellado_bp = Blueprint('embotellado_bp', __name__)
 
 # RUTAS DE API (JSON) - Para Postman
 # GET /api/embotellado/ - Obtener todos los embotellados (API)
-@embotellado_bp.route('/', methods=['GET'])
+@embotellado_bp.route('/api/', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_embotellamientos_api(): # Renombrado para diferenciar de la HTML
     embotellamientos = Embotellado.query.all()
     resultados = []
     for res in embotellamientos:
-        lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+        # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+        lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
         resultados.append({
             'id': res.id,
             'lote_vino_id': res.lote_vino_id,
@@ -31,13 +32,14 @@ def get_embotellamientos_api(): # Renombrado para diferenciar de la HTML
     return jsonify(resultados), 200
 
 # GET /api/embotellado/<id> - Obtener Embotellado por ID (API)
-@embotellado_bp.route('/<string:id>', methods=['GET'])
+@embotellado_bp.route('/api/<string:id>', methods=['GET']) # CAMBIO IMPORTANTE AQUÍ
 def get_embotellamiento_api(id): # Renombrado para diferenciar de la HTML
     res = Embotellado.query.get(id)
     if not res:
         return jsonify({'error': 'Embotellamiento no encontrado'}), 404 # Añadido 404
     
-    lote_nombre = res.lote_vino.nombre_lote if res.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = res.lote_vino.nombre_identificativo if res.lote_vino else "N/A"
     return jsonify({
         'id': res.id,
         'lote_vino_id': res.lote_vino_id,
@@ -52,7 +54,7 @@ def get_embotellamiento_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # POST /api/embotellado/ - Crear nuevo embotellado (API)
-@embotellado_bp.route('/', methods=['POST'])
+@embotellado_bp.route('/api/', methods=['POST']) # CAMBIO IMPORTANTE AQUÍ
 def crear_embotellamiento_api(): # Renombrado para diferenciar de la HTML
     data = request.get_json()
 
@@ -67,7 +69,7 @@ def crear_embotellamiento_api(): # Renombrado para diferenciar de la HTML
     try:
         fecha_embotellado_dt = datetime.fromisoformat(data['fecha_embotellado'])
     except ValueError:
-        return jsonify({'error': 'Formato de fecha inválido. Usar Jamboree-MM-DD o Jamboree-MM-DDTHH:MM:SS'}), 400
+        return jsonify({'error': 'Formato de fecha inválido. Usar YYYY-MM-DD o YYYY-MM-DDTHH:MM:SS'}), 400
     
     nuevo_embotellado = Embotellado(
         lote_vino_id=data['lote_vino_id'],
@@ -83,7 +85,8 @@ def crear_embotellamiento_api(): # Renombrado para diferenciar de la HTML
     db.session.add(nuevo_embotellado)
     db.session.commit()
 
-    lote_nombre = nuevo_embotellado.lote_vino.nombre_lote if nuevo_embotellado.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = nuevo_embotellado.lote_vino.nombre_identificativo if nuevo_embotellado.lote_vino else "N/A"
     return jsonify({
         'id': nuevo_embotellado.id,
         'lote_vino_id': nuevo_embotellado.lote_vino_id,
@@ -98,7 +101,7 @@ def crear_embotellamiento_api(): # Renombrado para diferenciar de la HTML
     }), 201
 
 # PATCH /api/embotellado/<id> - Modificar parcialmente embotellado (API)
-@embotellado_bp.route('/<string:id>', methods=['PATCH'])
+@embotellado_bp.route('/api/<string:id>', methods=['PATCH']) # CAMBIO IMPORTANTE AQUÍ
 def modificar_embotellado_api(id): # Renombrado para diferenciar de la HTML
     cambio_embotellado = Embotellado.query.get(id)
     if not cambio_embotellado:
@@ -117,7 +120,7 @@ def modificar_embotellado_api(id): # Renombrado para diferenciar de la HTML
         if 'fecha_embotellado' in data:
             cambio_embotellado.fecha_embotellado = datetime.fromisoformat(data['fecha_embotellado'])
     except ValueError:
-        return jsonify({'error': 'Formato de fecha inválido. Usar Jamboree-MM-DD o Jamboree-MM-DDTHH:MM:SS'}), 400
+        return jsonify({'error': 'Formato de fecha inválido. Usar YYYY-MM-DD o YYYY-MM-DDTHH:MM:SS'}), 400
     
     if 'numero_botellas_producidas' in data:
         cambio_embotellado.numero_botellas_producidas = data['numero_botellas_producidas']
@@ -133,7 +136,8 @@ def modificar_embotellado_api(id): # Renombrado para diferenciar de la HTML
         cambio_embotellado.notas = data['notas']
 
     db.session.commit()
-    lote_nombre = cambio_embotellado.lote_vino.nombre_lote if cambio_embotellado.lote_vino else "N/A"
+    # CORREGIDO: Usar 'nombre_identificativo' en lugar de 'nombre_lote'
+    lote_nombre = cambio_embotellado.lote_vino.nombre_identificativo if cambio_embotellado.lote_vino else "N/A"
     return jsonify({
         'id': cambio_embotellado.id,
         'lote_vino_id': cambio_embotellado.lote_vino_id,
@@ -148,7 +152,7 @@ def modificar_embotellado_api(id): # Renombrado para diferenciar de la HTML
     }), 200
 
 # DELETE /api/embotellado/<id> - Eliminar embotellado (API)
-@embotellado_bp.route('/<string:id>', methods=['DELETE'])
+@embotellado_bp.route('/api/<string:id>', methods=['DELETE']) # CAMBIO IMPORTANTE AQUÍ
 def borrar_embotellado_api(id):
     embotellado = Embotellado.query.get(id)
     if not embotellado:
@@ -299,3 +303,9 @@ def borrar_embotellado_html(id):
     db.session.commit()
     flash('Registro de embotellado eliminado exitosamente!', 'success')
     return redirect(url_for('embotellado_bp.listar_embotellados_html'))
+
+
+# Ruta principal para el blueprint (redirecciona al menú HTML)
+@embotellado_bp.route('/', methods=['GET'])
+def index_embotellado():
+    return redirect(url_for('embotellado_bp.menu_embotellados'))
