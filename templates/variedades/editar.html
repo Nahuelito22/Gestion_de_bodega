@@ -3,57 +3,65 @@
 {% block title %}Editar Variedad de Uva - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center" style="color: #800020;">Editar Variedad de Uva</h1>
+<div class="row justify-content-center mt-5 mb-5"> {# Ajustado mt-5 y añadido mb-5 #}
+    <div class="col-md-8 col-lg-7"> {# Ancho para el formulario #}
+        {# Título principal con la fuente y color del resto de títulos #}
+        <h1 class="display-5 fw-bold text-center mb-4" style="color: #4A2328; font-family: 'Playfair Display', serif;">
+            Editar Variedad de Uva
+        </h1>
 
-    {# Mensajes Flash para notificaciones #}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+        {# Mensajes Flash para notificaciones #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-    <div class="card shadow p-4 mb-5 bg-white rounded">
-        <div class="card-body">
-            <form action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" method="POST" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre de la Variedad: <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ variedad.nombre }}" required>
-                </div>
+        <div class="card shadow-lg border-0 rounded-3"> {# Cambiado shadow a shadow-lg, border-0 #}
+            <div class="card-body p-4 p-md-5"> {# Más padding en pantallas medianas #}
+                <form action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="nombre" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Nombre de la Variedad: <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-lg" id="nombre" name="nombre" value="{{ variedad.nombre }}" required> {# form-control-lg #}
+                    </div>
 
-                {# Elimino el campo tipo_uva ya que no está en tu modelo actual #}
-                {# Elimino el campo descripcion ya que no está en tu modelo actual #}
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="origen" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Origen / Descripción Corta:</label>
+                        <textarea class="form-control" id="origen" name="origen" rows="3" required>{{ variedad.origen }}</textarea> {# Aumentado rows a 3 #}
+                    </div>
 
-                <div class="mb-3">
-                    <label for="origen" class="form-label">Origen / Descripción Corta:</label>
-                    <textarea class="form-control" id="origen" name="origen" rows="2" required>{{ variedad.origen }}</textarea>
-                </div>
+                    <div class="mb-4"> {# Mayor mb #}
+                        <label for="foto_ruta" class="form-label fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Cambiar Imagen (opcional):</label>
+                        <input type="file" class="form-control" id="foto_ruta" name="foto_ruta" accept="image/*">
+                    </div>
 
-                <div class="mb-3">
-                    <label for="foto_ruta" class="form-label">Cambiar Imagen (opcional):</label>
-                    <input type="file" class="form-control" id="foto_ruta" name="foto_ruta" accept="image/*">
-                </div>
+                    {% if variedad.foto_ruta %}
+                    <div class="mb-4 text-center"> {# Mayor mb y text-center #}
+                        <label class="form-label d-block mb-3 fw-semibold" style="color: #4A2328; font-family: 'Roboto', sans-serif;">Imagen actual:</label> {# Estilo para label #}
+                        <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}"
+                             alt="{{ variedad.nombre }}"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-width: 180px; height: auto; border: 2px solid #D4AF37;"> {# Aumentado max-width y añadido borde #}
+                    </div>
+                    {% endif %}
 
-                {% if variedad.foto_ruta %}
-                <div class="mb-3 text-center">
-                    <label class="form-label d-block mb-2">Imagen actual:</label>
-                    <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}"
-                         alt="{{ variedad.nombre }}"
-                         class="img-fluid rounded shadow-sm"
-                         style="max-width: 150px; height: auto;">
-                </div>
-                {% endif %}
-
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                    <button type="submit" class="btn btn-primary me-md-2" style="background-color: #800020; border-color: #800020;"><i class="fas fa-check-circle me-2"></i> Actualizar Variedad</button>
-                    <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        {# Botón Actualizar con color principal del proyecto (dorado) #}
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill px-4 py-2" style="background-color: #D4AF37; border-color: #D4AF37;">
+                            <i class="bi bi-check-circle me-2"></i> Actualizar Variedad
+                        </button>
+                        {# Botón Cancelar con color secundario del proyecto (rojo vino) #}
+                        <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-2" style="color: #8B0000; border-color: #8B0000;">
+                            <i class="bi bi-x-circle me-2"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
