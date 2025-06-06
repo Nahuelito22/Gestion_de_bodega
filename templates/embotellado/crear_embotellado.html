@@ -22,6 +22,15 @@
                             {% endfor %}
                         </select>
                     </div>
+
+                    <div>
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado de embotellado</label>
+                        <select name="estado" class="form-select" required>
+                            <option value="">Seleccione estado </option>
+                            {% for estado in estados %}
+                            <option value="{{estado.name}}">{{estado.value | capitalize }}</option>
+                            {% endfor %}
+                        </select>
                     <div class="mb-3">
                         <label for="fecha_embotellado" class="form-label">Fecha de Embotellado <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" id="fecha_embotellado" name="fecha_embotellado" required>

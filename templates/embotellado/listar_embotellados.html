@@ -38,6 +38,8 @@
                     <tr>
                         <th scope="col" style="width: 8%;">ID</th>
                         <th scope="col" style="width: 12%;">Lote</th>
+                        <th scope="col" style="width: 10%;">Estado</th>
+
                         <th scope="col" style="width: 10%;">Fecha</th>
                         <th scope="col" style="width: 10%;"># Botellas</th>
                         <th scope="col" style="width: 12%;">Vol. Botella (ml)</th>
@@ -52,7 +54,8 @@
                     {% for embotellado in embotellados %}
                     <tr>
                         <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.id[:8] }}...</td>
-                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.lote_vino.nombre_lote if embotellado.lote_vino else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.lote_vino.nombre_identificativo if embotellado.lote_vino else 'N/A' }}</td>
+                        <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.estado.value }}</td>
                         <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.fecha_embotellado.strftime('%d/%m/%Y') }}</td>
                         <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.numero_botellas_producidas if embotellado.numero_botellas_producidas is not none else 'N/A' }}</td>
                         <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ "%.2f"|format(embotellado.volumen_por_botella_ml) if embotellado.volumen_por_botella_ml is not none else 'N/A' }}</td>

@@ -4,7 +4,7 @@ from datetime import datetime
 from models.embotellado import Embotellado
 from models.loteVino import LoteVino # Necesitamos importar LoteVino para el dropdown
 from models.db import db
-
+from models.estados.estado_embotellamiento import EstadoEmbotellado
 # Creamos el blueprint para embotellado
 embotellado_bp = Blueprint('embotellado_bp', __name__)
 
@@ -174,19 +174,25 @@ def menu_embotellados():
 @embotellado_bp.route('/listar', methods=['GET'])
 def listar_embotellados_html():
     embotellados = Embotellado.query.all()
-    return render_template('embotellado/listar_embotellados.html', embotellados=embotellados)
+    estados=list(EstadoEmbotellado)
+
+    return render_template('embotellado/listar_embotellados.html', embotellados=embotellados, estados=estados)
 
 # Ruta para mostrar el formulario de creación de embotellado (GET HTML)
 # URL: /embotellado/crear
 @embotellado_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_embotellado():
     lotes = LoteVino.query.all() # Necesitamos pasar los lotes para el dropdown
-    return render_template('embotellado/crear_embotellado.html', lotes=lotes)
+    estados=list(EstadoEmbotellado)
+    return render_template('embotellado/crear_embotellado.html', lotes=lotes, estados=estados)
 
 # Ruta para manejar el envío del formulario de creación de embotellado (POST HTML)
 # URL: /embotellado/crear
 @embotellado_bp.route('/crear', methods=['POST'])
 def crear_embotellado_html():
+    estado=request.form['estado']
+    estado_enum=EstadoEmbotellado[estado]
+
     lote_vino_id = request.form.get('lote_vino_id')
     fecha_embotellado_str = request.form.get('fecha_embotellado')
     numero_botellas_producidas = request.form.get('numero_botellas_producidas')
@@ -231,7 +237,8 @@ def crear_embotellado_html():
         ph_final=ph_final_float,
         acidez_final_g_l=acidez_final_g_l_float,
         grado_alcoholico_final_porcentaje=grado_alcoholico_final_porcentaje_float,
-        notas=notas
+        notas=notas,
+        estado=estado_enum
     )
     
     db.session.add(nuevo_embotellado)
@@ -247,6 +254,8 @@ def editar_embotellado_html(id):
     lotes = LoteVino.query.all() # Necesitamos los lotes para el dropdown
 
     if request.method == 'POST':
+        estado_str=request.form['estado']
+        embotellado.estado=EstadoEmbotellado(estado_str)
         # Obtener datos del formulario (request.form)
         lote_vino_id = request.form.get('lote_vino_id')
         fecha_embotellado_str = request.form.get('fecha_embotellado')
@@ -291,7 +300,7 @@ def editar_embotellado_html(id):
         return redirect(url_for('embotellado_bp.listar_embotellados_html'))
 
     # Si es un GET request, simplemente renderiza el formulario con los datos actuales
-    return render_template('embotellado/editar_embotellado.html', embotellado=embotellado, lotes=lotes)
+    return render_template('embotellado/editar_embotellado.html', embotellado=embotellado, lotes=lotes , estado_actual=embotellado.estado, estados=EstadoEmbotellado),200
 
 # Ruta para borrar un embotellado (POST HTML)
 # URL: /embotellado/borrar/<id>
