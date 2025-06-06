@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}Menú de Crianza y Almacenamiento{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center" style="color: #800020;">Gestión de Crianza y Almacenamiento</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card text-center shadow border-danger">
+                <div class="card-body">
+                    <h5 class="card-title text-danger">Registrar Nueva Crianza/Almacenamiento</h5>
+                    <p class="card-text">Añade un nuevo registro de crianza o almacenamiento de vino.</p>
+                    <a href="{{ url_for('crianza_bp.mostrar_formulario_crianza') }}" class="btn btn-primary" style="background-color: #800020; border-color: #800020;">Crear Registro</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card text-center shadow border-info">
+                <div class="card-body">
+                    <h5 class="card-title text-info">Ver Registros Existentes</h5>
+                    <p class="card-text">Consulta y gestiona todos los registros de crianza y almacenamiento.</p>
+                    <a href="{{ url_for('crianza_bp.listar_crianzas_html') }}" class="btn btn-info" style="background-color: #A52A2A; border-color: #A52A2A;">Listar Registros</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+</div>
+{% endblock body %}
