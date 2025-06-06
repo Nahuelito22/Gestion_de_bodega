@@ -4,6 +4,7 @@ from datetime import datetime
 from models.RecepcionUva import RecepcionUva
 from models.loteVino import LoteVino # Necesitas importar LoteVino para usarlo en los formularios HTML
 from models.db import db # Asumiendo que tu objeto db está en models/db.py
+from flask_login import login_required
 
 # Creamos el blueprint para recepcionUva
 recepcionUva_bp = Blueprint('recepcionUva_bp', __name__)
@@ -160,12 +161,14 @@ def borrar_recepcion_api(id):
 # Ruta para el menú principal de Recepción
 # URL: /recepcion/menu
 @recepcionUva_bp.route('/menu', methods=['GET'])
+@login_required
 def menu_recepciones():
     return render_template('recepcion/menuRecepcion.html')
 
 # Ruta para listar todas las recepciones de uva (HTML)
 # URL: /recepcion/listar
 @recepcionUva_bp.route('/listar', methods=['GET'])
+@login_required
 def listar_recepciones_html():
     recepciones = RecepcionUva.query.all()
     # Las relaciones en SQLAlchemy permiten acceder al lote_vino directamente
@@ -174,6 +177,7 @@ def listar_recepciones_html():
 # Ruta para mostrar el formulario de creación de recepción (GET HTML)
 # URL: /recepcion/crear
 @recepcionUva_bp.route('/crear', methods=['GET'])
+@login_required
 def mostrar_formulario_recepcion():
     lotes_disponibles  = LoteVino.query.all() # Necesitamos pasar todos los lotes existentes para el dropdown
     return render_template('recepcion/crear_recepcion.html', lotes_disponibles=lotes_disponibles)
@@ -181,6 +185,7 @@ def mostrar_formulario_recepcion():
 # Ruta para manejar el envío del formulario de creación de recepción (POST HTML)
 # URL: /recepcion/crear
 @recepcionUva_bp.route('/crear', methods=['POST'])
+@login_required
 def crear_recepcion_html():
     
     lotes=LoteVino.query.all()
@@ -235,6 +240,7 @@ def crear_recepcion_html():
 # Ruta para mostrar y procesar el formulario de edición de recepción (GET/POST HTML)
 # URL: /recepcion/editar/<id>
 @recepcionUva_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+@login_required
 def editar_recepcion_html(id):
     recepcion = RecepcionUva.query.get_or_404(id) # Obtiene la recepción o devuelve 404
     lotes_disponibles = LoteVino.query.all() # Necesitamos los lotes para el dropdown en el formulario
@@ -285,6 +291,7 @@ def editar_recepcion_html(id):
 # Ruta para borrar una recepción de uva (POST HTML)
 # URL: /recepcion/borrar/<id>
 @recepcionUva_bp.route('/borrar/<string:id>', methods=['POST'])
+@login_required
 def borrar_recepcion_html(id):
     recepcion = RecepcionUva.query.get_or_404(id) # Obtiene la recepción o devuelve 404
     

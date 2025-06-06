@@ -4,6 +4,7 @@ from datetime import datetime
 from models.embotellado import Embotellado
 from models.loteVino import LoteVino # Necesitamos importar LoteVino para el dropdown
 from models.db import db
+from flask_login import login_required
 
 # Creamos el blueprint para embotellado
 embotellado_bp = Blueprint('embotellado_bp', __name__)
@@ -166,12 +167,14 @@ def borrar_embotellado_api(id):
 # RUTAS PARA LA INTERFAZ DE USUARIO (HTML)
 # URL: /embotellado/menu
 @embotellado_bp.route('/menu', methods=['GET'])
+@login_required
 def menu_embotellados():
     return render_template('embotellado/menuEmbotellado.html')
 
 # Ruta para listar todos los embotellados (HTML)
 # URL: /embotellado/listar
 @embotellado_bp.route('/listar', methods=['GET'])
+@login_required
 def listar_embotellados_html():
     embotellados = Embotellado.query.all()
     return render_template('embotellado/listar_embotellados.html', embotellados=embotellados)
@@ -179,6 +182,7 @@ def listar_embotellados_html():
 # Ruta para mostrar el formulario de creación de embotellado (GET HTML)
 # URL: /embotellado/crear
 @embotellado_bp.route('/crear', methods=['GET'])
+@login_required
 def mostrar_formulario_embotellado():
     lotes = LoteVino.query.all() # Necesitamos pasar los lotes para el dropdown
     return render_template('embotellado/crear_embotellado.html', lotes=lotes)
@@ -186,6 +190,7 @@ def mostrar_formulario_embotellado():
 # Ruta para manejar el envío del formulario de creación de embotellado (POST HTML)
 # URL: /embotellado/crear
 @embotellado_bp.route('/crear', methods=['POST'])
+@login_required
 def crear_embotellado_html():
     lote_vino_id = request.form.get('lote_vino_id')
     fecha_embotellado_str = request.form.get('fecha_embotellado')
@@ -242,6 +247,7 @@ def crear_embotellado_html():
 # Ruta para mostrar y procesar el formulario de edición de embotellado (GET/POST HTML)
 # URL: /embotellado/editar/<id>
 @embotellado_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+@login_required
 def editar_embotellado_html(id):
     embotellado = Embotellado.query.get_or_404(id)
     lotes = LoteVino.query.all() # Necesitamos los lotes para el dropdown
@@ -296,6 +302,7 @@ def editar_embotellado_html(id):
 # Ruta para borrar un embotellado (POST HTML)
 # URL: /embotellado/borrar/<id>
 @embotellado_bp.route('/borrar/<string:id>', methods=['POST'])
+@login_required
 def borrar_embotellado_html(id):
     embotellado = Embotellado.query.get_or_404(id)
     
@@ -307,5 +314,6 @@ def borrar_embotellado_html(id):
 
 # Ruta principal para el blueprint (redirecciona al menú HTML)
 @embotellado_bp.route('/', methods=['GET'])
+@login_required
 def index_embotellado():
     return redirect(url_for('embotellado_bp.menu_embotellados'))

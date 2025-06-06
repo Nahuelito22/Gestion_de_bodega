@@ -4,6 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, jsonify,
 from models.loteVino import LoteVino  # importamos el modelo
 from models.db import db
 from models.variedadUva import VariedadUva
+from flask_login import login_required
 
 # Creamos el blueprint para LoteVino
 loteVino_bp = Blueprint('loteVino_bp', __name__)
@@ -96,12 +97,14 @@ def modificar_lote(id):
 
 #metodo para renderizar el formulario de html
 @loteVino_bp.route('/crear', methods=['GET'])
+@login_required
 def mostrar_formulario_crear_lote():
     variedades = VariedadUva.query.all()
 
     return render_template('lotes/crear_lote.html', variedades= variedades) 
 
 @loteVino_bp.route('/crear_lote', methods = ['POST'])
+@login_required
 def crear_lote():
     nombre_identificatorio= request.form['nombre_identificativo']
     variedad_uva_id = request.form['variedad_uva_id']
@@ -119,6 +122,7 @@ def crear_lote():
 
 
 @loteVino_bp.route('/listar', methods=['GET']) # Puse '/listar' como ejemplo de URL
+@login_required
 def listar_lotes():
     # Obtener todas las variedades de uva de la base de datos como objetos VariedadUva
     lotes = LoteVino.query.all()  
@@ -128,11 +132,13 @@ def listar_lotes():
 
 
 @loteVino_bp.route('/menu', methods=['GET'])
+@login_required
 def menu_variedades():
     return render_template('lotes/lotes_menu.html')
 
 
 @loteVino_bp.route('/editar_lote/<string:id>', methods=['GET', 'POST'])
+@login_required
 def editar_lote(id):
     lote = LoteVino.query.get_or_404(id)
     variedades = VariedadUva.query.all()

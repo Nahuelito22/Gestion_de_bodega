@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from flask import Blueprint, current_app, flash, redirect, render_template, request, jsonify, abort, url_for
 from models.variedadUva import VariedadUva
 from models.db import db
+from flask_login import login_required
 
 # Define la carpeta de subida de imágenes
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static', 'images')
@@ -115,19 +116,23 @@ def eliminar_variedad_api(id):
 # --- Rutas para la Interfaz de Usuario (HTML) ---
 
 @variedadUva_bp.route('/listar', methods=['GET'])
+@login_required
 def get_variedadesHtml():
     variedades = VariedadUva.query.all()
     return render_template('variedades/variedades.html', variedades=variedades), 200
 
 @variedadUva_bp.route('/menu', methods=['GET'])
+@login_required
 def menu_variedades():
     return render_template('variedades/menuVariedad.html')
 
 @variedadUva_bp.route('/crear', methods=['GET'])
+@login_required
 def mostrar_formulario_variedad():
     return render_template('variedades/crear.html')
 
 @variedadUva_bp.route('/crear', methods=['POST'])
+@login_required
 def crear_variedad():
     nombre = request.form.get('nombre')
     origen = request.form.get('origen')
@@ -169,6 +174,7 @@ def crear_variedad():
     return redirect(url_for('variedadUva_bp.get_variedadesHtml'))
 
 @variedadUva_bp.route('/editar/<string:id>', methods=['GET', 'POST'])
+@login_required
 def editar_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
 
@@ -203,6 +209,7 @@ def editar_variedad(id):
     return render_template('variedades/editar.html', variedad=variedad)
 
 @variedadUva_bp.route('/delete/<string:id>', methods=['POST'])
+@login_required
 def borrar_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
 
@@ -220,6 +227,7 @@ def borrar_variedad(id):
 
 # NUEVA RUTA: Para ver detalles de una variedad en HTML
 @variedadUva_bp.route('/<string:id>/detalle', methods=['GET'])
+@login_required
 def detalle_variedad(id):
     variedad = VariedadUva.query.get_or_404(id)
     return render_template('variedades/detalle.html', variedad=variedad), 200
