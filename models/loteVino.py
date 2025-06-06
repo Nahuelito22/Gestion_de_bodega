@@ -2,7 +2,8 @@ import uuid
 from datetime import datetime
 from models.db import db
 from models.variedadUva import VariedadUva  # Importamos para la relación
-
+from sqlalchemy import Enum
+from .estados.estado_lote import EstadoLote
 class LoteVino(db.Model):
     __tablename__ = 'lote_vino'
 
@@ -15,6 +16,11 @@ class LoteVino(db.Model):
 
     # Relación para poder acceder al objeto VariedadUva desde un LoteVino
     variedad_uva = db.relationship('VariedadUva', backref=db.backref('lotes_vino', lazy='dynamic'))
+    estado= db.Column(
+        Enum(EstadoLote, name='estado_lote_enum'),
+        nullable=False,
+        default=EstadoLote.activo
+    )
 
     def __repr__(self):
         return f"<LoteVino {self.nombre_identificativo} (id={self.id}) - Variedad: {self.variedad_uva.nombre}>"

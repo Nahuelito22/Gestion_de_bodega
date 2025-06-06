@@ -4,6 +4,7 @@ from flask import Blueprint, flash, redirect, render_template, request, jsonify,
 from models.loteVino import LoteVino  # importamos el modelo
 from models.db import db
 from models.variedadUva import VariedadUva
+from models.estados.estado_lote import EstadoLote
 
 # Creamos el blueprint para LoteVino
 loteVino_bp = Blueprint('loteVino_bp', __name__)
@@ -98,16 +99,21 @@ def modificar_lote(id):
 @loteVino_bp.route('/crear', methods=['GET'])
 def mostrar_formulario_crear_lote():
     variedades = VariedadUva.query.all()
+    estados = list(EstadoLote)  # Esto te da [EstadoLote.activo, EstadoLote.finalizado, ...]
 
-    return render_template('lotes/crear_lote.html', variedades= variedades) 
+    return render_template('lotes/crear_lote.html', variedades= variedades , estados=estados) 
 
 @loteVino_bp.route('/crear_lote', methods = ['POST'])
 def crear_lote():
     nombre_identificatorio= request.form['nombre_identificativo']
     variedad_uva_id = request.form['variedad_uva_id']
+    estado=request.form['estado']
+    estado_enum=EstadoLote[estado]
+
     nuevo_lote = LoteVino(
         nombre_identificativo=nombre_identificatorio,
-        variedad_uva_id=variedad_uva_id
+        variedad_uva_id=variedad_uva_id,
+        estado=estado_enum
     )
 
     db.session.add(nuevo_lote)
@@ -121,10 +127,20 @@ def crear_lote():
 @loteVino_bp.route('/listar', methods=['GET']) # Puse '/listar' como ejemplo de URL
 def listar_lotes():
     # Obtener todas las variedades de uva de la base de datos como objetos VariedadUva
-    lotes = LoteVino.query.all()  
+    estado=request.args.get('estado')
+    if estado:
+        try:
+            estado_enum=EstadoLote[estado]
+        except KeyError:
+            estado_enum=None
+    else:
+        estado_enum=None
+    
+    lotes = LoteVino.query.all()
+
     
     # Renderiza la plantilla 'variedades.html' y pasa la lista de objetos 'lotes'
-    return render_template('/lotes/listar_lotes.html', lotes=lotes), 200
+    return render_template('/lotes/listar_lotes.html', lotes=lotes, estado=estado_enum), 200
 
 
 @loteVino_bp.route('/menu', methods=['GET'])
@@ -149,7 +165,7 @@ def editar_lote(id):
             db.session.rollback()
             flash(f'Error al actualizar el lote: {e}', 'danger')
         db.session.commit()
-        flash('Variedad actualizada correctamente.', 'success')
+        flash('Lote actualizado correctamente.', 'success')
         return redirect(url_for('loteVino_bp.listar_lotes'))
 
     return render_template('/lotes/editar_lotes.html', lote=lote, variedades=variedades), 200

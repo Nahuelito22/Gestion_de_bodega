@@ -11,7 +11,6 @@
             </div>
             <div class="card-body p-4">
                 {# Incluye los mensajes flash usando el partial #}
-                {% include 'partials/_message.html' %}
 
                 <form action="{{ url_for('crianza_bp.editar_crianza_html', id=crianza.id) }}" method="POST">
                     <div class="mb-3">

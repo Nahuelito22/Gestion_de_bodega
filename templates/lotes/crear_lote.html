@@ -50,12 +50,16 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <div>
+                        <label for="estado" class="form-label" style="font-family: var(--bs-font-sans-serif);">Estado del Lote</label>
+                        <select name="estado" class="form-select" required>
+                            <option value="">Selecciona estado del Lote</option>
+                            {% for estado in estados %}
+                            <option value="{{estado.name}}">{{estado.value | capitalize }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-                    {# Se quita el campo 'fecha_creacion' ya que tu backend (routes/loteVino_routes.py)
-                       lo genera automáticamente en la función 'crear_lote'.
-                       Si necesitas que el usuario la ingrese, por favor, me avisas y lo volvemos a añadir
-                       y ajustamos el backend para recibirla.
-                    #}
                     
                     <div class="d-grid gap-2 mt-4"> {# Botones de ancho completo y espaciados #}
                         {# Usamos la clase 'btn-primary-custom' para el botón principal #}

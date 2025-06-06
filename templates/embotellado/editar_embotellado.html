@@ -11,7 +11,6 @@
             </div>
             <div class="card-body p-4">
                 {# Incluye los mensajes flash usando el partial #}
-                {% include 'partials/_message.html' %}
 
                 <form action="{{ url_for('embotellado_bp.editar_embotellado_html', id=embotellado.id) }}" method="POST">
                     <div class="mb-3">
