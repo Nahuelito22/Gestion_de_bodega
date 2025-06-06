@@ -19,7 +19,7 @@
                         <select class="form-select" id="lote_vino_id" name="lote_vino_id" required>
                             <option value="">Selecciona un lote</option>
                             {% for lote in lotes %}
-                                <option value="{{ lote.id }}">{{ lote.nombre_lote }}</option>
+                                <option value="{{ lote.id }}">{{ lote.nombre_identificativo }}</option>
                             {% endfor %}
                         </select>
                     </div>
