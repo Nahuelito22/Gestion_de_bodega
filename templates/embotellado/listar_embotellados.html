@@ -1,71 +1,106 @@
 {% extends 'layout.html' %}
 
-{% block title %}Listado de Embotellados{% endblock %}
+{% block title %}Listado de Embotellados - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center" style="color: #800020;">Registros de Embotellado</h1>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    {% if embotellados %}
-    <div class="table-responsive shadow p-3 mb-5 bg-white rounded">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark" style="background-color: #800020 !important;">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Lote</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col"># Botellas</th>
-                    <th scope="col">Vol. Botella (ml)</th>
-                    <th scope="col">pH Final</th>
-                    <th scope="col">Acidez Final (g/L)</th>
-                    <th scope="col">Grad. Alc. (%)</th>
-                    <th scope="col">Notas</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for embotellado in embotellados %}
-                <tr>
-                    <td>{{ embotellado.id[:8] }}...</td> {# Mostrar solo los primeros 8 caracteres del UUID #}
-                    <td>{{ embotellado.lote_vino.nombre_lote if embotellado.lote_vino else 'N/A' }}</td>
-                    <td>{{ embotellado.fecha_embotellado.strftime('%Y-%m-%d') }}</td>
-                    <td>{{ embotellado.numero_botellas_producidas if embotellado.numero_botellas_producidas is not none else 'N/A' }}</td>
-                    <td>{{ "%.2f"|format(embotellado.volumen_por_botella_ml) if embotellado.volumen_por_botella_ml is not none else 'N/A' }}</td>
-                    <td>{{ "%.2f"|format(embotellado.ph_final) if embotellado.ph_final is not none else 'N/A' }}</td>
-                    <td>{{ "%.2f"|format(embotellado.acidez_final_g_l) if embotellado.acidez_final_g_l is not none else 'N/A' }}</td>
-                    <td>{{ "%.2f"|format(embotellado.grado_alcoholico_final_porcentaje) if embotellado.grado_alcoholico_final_porcentaje is not none else 'N/A' }}</td>
-                    <td>{{ embotellado.notas if embotellado.notas else 'N/A' }}</td>
-                    <td>
-                        <a href="{{ url_for('embotellado_bp.editar_embotellado_html', id=embotellado.id) }}" class="btn btn-warning btn-sm me-1">Editar</a>
-                        <form action="{{ url_for('embotellado_bp.borrar_embotellado_html', id=embotellado.id) }}" method="POST" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que quieres eliminar este registro de embotellado?');">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="row mb-5 mt-4">
+    <div class="col-12 text-center">
+        <h1 class="display-4 fw-bold mb-3 main-title">
+            Embotellados
+        </h1>
+        <p class="lead text-secondary mb-4 lead-description">
+            Consulta y gestiona los registros de tus lotes de vino embotellados.
+        </p>
     </div>
-    {% else %}
-    <div class="alert alert-info text-center" role="alert">
-        No hay registros de embotellado aún.
-    </div>
-    {% endif %}
+</div>
 
-    <div class="text-center mt-4">
-        <a href="{{ url_for('embotellado_bp.mostrar_formulario_embotellado') }}" class="btn btn-success me-2" style="background-color: #A52A2A; border-color: #A52A2A;">Nuevo Registro</a>
-        <a href="{{ url_for('embotellado_bp.menu_embotellados') }}" class="btn btn-secondary">Volver al Menú</a>
+{# Fila para los botones superiores #}
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+        <a href="{{ url_for('embotellado_bp.mostrar_formulario_embotellado') }}" class="btn rounded-pill px-4 py-2 btn-primary-custom">
+            <i class="bi bi-plus-circle me-2"></i>Registrar Nuevo Embotellado
+        </a>
+        <a href="{{ url_for('embotellado_bp.menu_embotellados') }}" class="btn rounded-pill px-4 py-2 btn-outline-secondary-custom">
+            <i class="bi bi-arrow-left-circle me-2"></i>Volver al Menú
+        </a>
+    </div>
+</div>
+
+{# Incluye los mensajes flash usando el partial #}
+{% include 'partials/_message.html' %}
+
+{% if embotellados %}
+<div class="card shadow-lg border-0 rounded-3 mb-5">
+    <div class="card-body p-4">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle caption-top">
+                <caption>Listado de todos los registros de embotellado.</caption>
+                <thead class="text-white" style="background-color: var(--bs-accent-1) !important;">
+                    <tr>
+                        <th scope="col" style="width: 8%;">ID</th>
+                        <th scope="col" style="width: 12%;">Lote</th>
+                        <th scope="col" style="width: 10%;">Fecha</th>
+                        <th scope="col" style="width: 10%;"># Botellas</th>
+                        <th scope="col" style="width: 12%;">Vol. Botella (ml)</th>
+                        <th scope="col" style="width: 7%;">pH Final</th>
+                        <th scope="col" style="width: 10%;">Acidez Final (g/L)</th>
+                        <th scope="col" style="width: 10%;">Grad. Alc. (%)</th>
+                        <th scope="col" style="width: 15%;">Notas</th>
+                        <th scope="col" class="text-center" style="width: 10%;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for embotellado in embotellados %}
+                    <tr>
+                        <td class="fw-semibold text-dark" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.id[:8] }}...</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.lote_vino.nombre_lote if embotellado.lote_vino else 'N/A' }}</td>
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.fecha_embotellado.strftime('%d/%m/%Y') }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.numero_botellas_producidas if embotellado.numero_botellas_producidas is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ "%.2f"|format(embotellado.volumen_por_botella_ml) if embotellado.volumen_por_botella_ml is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ "%.2f"|format(embotellado.ph_final) if embotellado.ph_final is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ "%.2f"|format(embotellado.acidez_final_g_l) if embotellado.acidez_final_g_l is not none else 'N/A' }}</td>
+                        <td class="text-muted" style="font-family: var(--bs-font-sans-serif);">{{ "%.2f"|format(embotellado.grado_alcoholico_final_porcentaje) if embotellado.grado_alcoholico_final_porcentaje is not none else 'N/A' }}</td>
+                        <td class="text-muted small" style="font-family: var(--bs-font-sans-serif);">{{ embotellado.notas if embotellado.notas else 'Sin notas' }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="{{ url_for('embotellado_bp.editar_embotellado_html', id=embotellado.id) }}" class="btn btn-outline-secondary-custom btn-sm rounded-circle p-2" title="Editar">
+                                    <i class="bi bi-pencil fs-6"></i>
+                                </a>
+                                <form action="{{ url_for('embotellado_bp.borrar_embotellado_html', id=embotellado.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este registro de embotellado? Esta acción es irreversible.');">
+                                    <button type="submit" class="btn btn-outline-danger-custom btn-sm rounded-circle p-2" title="Eliminar">
+                                        <i class="bi bi-trash fs-6"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info text-center py-4 rounded-3 border-0 shadow-sm" role="alert">
+    <h4 class="alert-heading fw-bold" style="font-family: var(--bs-heading-font); color: var(--bs-accent-1);">
+        <i class="bi bi-info-circle me-2"></i>¡No hay registros de embotellado!
+    </h4>
+    <p class="mb-3" style="font-family: var(--bs-font-sans-serif);">
+        Aún no se han añadido registros de embotellado. ¡Añade el primero para empezar a llevar el control!
+    </p>
+    <hr class="my-3" style="border-top: 1px solid rgba(var(--bs-accent-2-rgb), 0.5);">
+    <a href="{{ url_for('embotellado_bp.mostrar_formulario_embotellado') }}" class="btn rounded-pill px-4 py-2 mt-2 btn-secondary-custom">
+        <i class="bi bi-plus-circle me-2"></i>Registrar Primer Embotellado
+    </a>
+</div>
+{% endif %}
+
+{# Botón "Volver al Menú Principal" en la parte inferior #}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <a href="{{ url_for('embotellado_bp.menu_embotellados') }}" class="btn rounded-pill px-4 py-2 btn-outline-secondary-custom">
+            <i class="bi bi-arrow-left-circle me-2"></i> Volver al Menú de Embotellado
+        </a>
     </div>
 </div>
 {% endblock body %}
