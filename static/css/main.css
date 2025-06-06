@@ -233,3 +233,106 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--bs-font-sans-serif);
     color: var(--bs-body-color);
 }
+
+
+:root {
+    --bs-primary: #5a2c0f; /* Un marrón más oscuro, como un roble viejo */
+    --bs-secondary: #964f1d; /* Un marrón rojizo, como el corcho o el vino joven */
+    --bs-success: #28a745; /* Verde estándar para acciones de éxito */
+    --bs-danger: #dc3545; /* Rojo estándar para acciones de peligro */
+    --bs-warning: #ffc107; /* Amarillo estándar para advertencias */
+    --bs-info: #17a2b8; /* Azul claro estándar para información */
+    --bs-light: #f8f9fa; /* Gris claro para fondos */
+    --bs-dark: #343a40; /* Gris oscuro para texto/fondos */
+
+    /* Colores de tu paleta personalizada */
+    --bs-accent-1: #4A2B1D; /* Marrón oscuro para encabezados de tabla, cards, etc. */
+    --bs-accent-2: #8C563D; /* Marrón medio para detalles, bordes */
+    --bs-accent-3: #D9C3B0; /* Beige/crema claro para fondos suaves */
+    --bs-text-light: #F2F2F2; /* Texto claro para fondos oscuros */
+    --bs-text-dark: #333333; /* Texto oscuro para fondos claros */
+
+    /* Fuentes personalizadas (ejemplos) */
+    --bs-font-sans-serif: 'Roboto', sans-serif;
+    --bs-heading-font: 'Playfair Display', serif; /* Una fuente más elegante para títulos */
+
+    /* Espaciado */
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+}
+
+/* Estilo para los títulos principales de cada página */
+.main-title {
+    color: var(--bs-accent-1); /* Usar el marrón oscuro de la paleta */
+    font-family: var(--bs-heading-font);
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Estilo para la descripción bajo el título principal */
+.lead-description {
+    color: var(--bs-accent-2); /* Un color más suave para el texto descriptivo */
+    font-family: var(--bs-font-sans-serif);
+    max-width: 700px; /* Limita el ancho para mejor lectura */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo para el encabezado de las tarjetas */
+.card-header-accent-1 {
+    background-color: var(--bs-accent-1) !important;
+    color: var(--bs-text-light) !important;
+    font-family: var(--bs-heading-font);
+}
+
+/* Botones personalizados */
+.btn-primary-custom {
+    background-color: var(--bs-secondary); /* Marrón rojizo */
+    border-color: var(--bs-secondary);
+    color: var(--bs-text-light);
+    transition: all 0.3s ease;
+}
+
+.btn-primary-custom:hover {
+    background-color: #7a421a; /* Un poco más oscuro al pasar el mouse */
+    border-color: #7a421a;
+    color: var(--bs-text-light);
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+}
+
+.btn-outline-secondary-custom {
+    color: var(--bs-secondary); /* Texto marrón rojizo */
+    border-color: var(--bs-secondary);
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary-custom:hover {
+    background-color: var(--bs-secondary); /* Fondo marrón rojizo al pasar el mouse */
+    color: var(--bs-text-light); /* Texto blanco */
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger-custom {
+    color: var(--bs-danger);
+    border-color: var(--bs-danger);
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger-custom:hover {
+    background-color: var(--bs-danger);
+    color: var(--bs-text-light);
+    transform: translateY(-2px);
+}
+
+/* Alerta de información personalizada */
+.alert-info {
+    color: var(--bs-accent-1);
+    background-color: rgba(var(--bs-accent-3-rgb), 0.3); /* Un fondo suave usando el beige */
+    border-color: var(--bs-accent-2);
+}
+
+.alert-info .alert-heading {
+    color: var(--bs-accent-1);
+}
