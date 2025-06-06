@@ -1,32 +1,60 @@
 {% extends 'layout.html' %}
 
-{% block title %}Menú de Embotellado{% endblock %}
+{% block title %}Menú de Embotellado - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <h1 class="mb-4 text-center" style="color: #800020;">Gestión de Embotellado</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card text-center shadow border-danger">
-                <div class="card-body">
-                    <h5 class="card-title text-danger">Registrar Nuevo Embotellado</h5>
-                    <p class="card-text">Añade un nuevo registro del proceso de embotellado del vino.</p>
-                    <a href="{{ url_for('embotellado_bp.mostrar_formulario_embotellado') }}" class="btn btn-primary" style="background-color: #800020; border-color: #800020;">Crear Registro</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="card text-center shadow border-info">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Ver Registros Existentes</h5>
-                    <p class="card-text">Consulta y gestiona todos los registros de embotellado.</p>
-                    <a href="{{ url_for('embotellado_bp.listar_embotellados_html') }}" class="btn btn-info" style="background-color: #A52A2A; border-color: #A52A2A;">Listar Registros</a>
-                </div>
+<div class="row mb-5 mt-4">
+    <div class="col-12 text-center">
+        {# Título principal con la fuente y color del resto de títulos #}
+        <h1 class="display-4 fw-bold mb-3" style="color: #4A2328; font-family: 'Playfair Display', serif;">
+            Gestión de Embotellado
+        </h1>
+        <p class="lead text-secondary mb-4" style="font-family: 'Roboto', sans-serif;">
+            Documenta y controla el proceso final de embotellado y el stock.
+        </p>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center"> {# Ajustado a col-md-2 para que se vea bien con 2 tarjetas #}
+
+    {# Card para Registrar Nuevo Embotellado #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3"> {# Eliminado border-danger #}
+            <div class="card-body text-center py-4"> {# Añadido py-4 para padding vertical #}
+                {# Ícono con el color del título y tamaño #}
+                <i class="bi bi-wine fs-1 mb-3" style="color: #4A2328;"></i> {# Ícono de copa de vino, representativo de embotellado #}
+                <h5 class="card-title fw-semibold text-dark" style="font-family: 'Playfair Display', serif;">Registrar Nuevo Embotellado</h5>
+                <p class="card-text text-muted small" style="font-family: 'Roboto', sans-serif;">Añade un nuevo registro del proceso de embotellado del vino.</p>
+                <a href="{{ url_for('embotellado_bp.mostrar_formulario_embotellado') }}" class="btn btn-outline-primary rounded-pill mt-3" style="color: #8B0000; border-color: #8B0000;">
+                    <i class="bi bi-plus-circle me-2"></i>Crear Registro
+                </a>
             </div>
         </div>
     </div>
-    <div class="text-center mt-4">
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">Volver al Inicio</a>
+
+    {# Card para Ver Registros Existentes #}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-3"> {# Eliminado border-info #}
+            <div class="card-body text-center py-4"> {# Añadido py-4 para padding vertical #}
+                {# Ícono con el color del título y tamaño #}
+                <i class="bi bi-boxes fs-1 mb-3" style="color: #4A2328;"></i> {# Ícono de cajas, representativo de stock o registros #}
+                <h5 class="card-title fw-semibold text-dark" style="font-family: 'Playfair Display', serif;">Ver Registros Existentes</h5>
+                <p class="card-text text-muted small" style="font-family: 'Roboto', sans-serif;">Consulta y gestiona todos los registros de embotellado.</p>
+                <a href="{{ url_for('embotellado_bp.listar_embotellados_html') }}" class="btn btn-outline-primary rounded-pill mt-3" style="color: #8B0000; border-color: #8B0000;">
+                    <i class="bi bi-eye me-2"></i>Listar Registros
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{# Botón "Volver al Inicio" en la parte inferior, consistente con los demás menús #}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <a href="/" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #8B0000; border-color: #8B0000;">
+            <i class="bi bi-house-door me-2"></i> Volver al Inicio
+        </a>
     </div>
 </div>
 {% endblock body %}

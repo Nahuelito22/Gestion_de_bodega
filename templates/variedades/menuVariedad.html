@@ -5,24 +5,28 @@
 {% block body %}
 <div class="row mb-5 mt-4">
     <div class="col-12 text-center">
-        <h1 class="display-4" style="color: #800020;">Gestión de Variedades de Uva</h1>
-        <p class="lead text-muted">
+        {# Título principal con la fuente y color del resto de títulos #}
+        <h1 class="display-4 fw-bold mb-3" style="color: #4A2328; font-family: 'Playfair Display', serif;">
+            Gestión de Variedades de Uva
+        </h1>
+        <p class="lead text-secondary mb-4" style="font-family: 'Roboto', sans-serif;">
             Administra el catálogo de variedades de uva que utilizas en tu producción.
         </p>
     </div>
 </div>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+<div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center"> {# Ajustado a col-md-2 para que se vea bien con 2 tarjetas #}
 
     {# Card para Ver/Editar Variedades #}
     <div class="col">
         <div class="card h-100 shadow-sm border-0 rounded-3">
-            <div class="card-body text-center">
-                <i class="bi bi-grape-fill" style="color: #800020; font-size: 3rem; margin-bottom: 1rem;"></i>
-                <h5 class="card-title" style="color: #800020;">Ver / Editar Variedades</h5>
-                <p class="card-text text-muted">Explora el listado completo de variedades y realiza modificaciones.</p>
-                <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn mt-3" style="background-color: #800020; border-color: #800020; color: white;">
-                    <i class="bi bi-list-ul me-2"></i>Ver Todas las Variedades
+            <div class="card-body text-center py-4"> {# Añadido py-4 para padding vertical #}
+                {# Ícono con el color del título y tamaño #}
+                <i class="bi bi-list-ul fs-1 mb-3" style="color: #4A2328;"></i> {# Usamos el ícono de lista que te gusta para este, y el color del título #}
+                <h5 class="card-title fw-semibold text-dark" style="font-family: 'Playfair Display', serif;">Ver / Editar Variedades</h5> {# Usamos text-dark de Bootstrap #}
+                <p class="card-text text-muted small" style="font-family: 'Roboto', sans-serif;">Explora el listado completo de variedades y realiza modificaciones.</p>
+                <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-outline-primary rounded-pill mt-3" style="color: #8B0000; border-color: #8B0000;">
+                    <i class="bi bi-eye me-2"></i>Ver Todas las Variedades
                 </a>
             </div>
         </div>
@@ -31,16 +35,27 @@
     {# Card para Agregar Nueva Variedad #}
     <div class="col">
         <div class="card h-100 shadow-sm border-0 rounded-3">
-            <div class="card-body text-center">
-                <i class="bi bi-plus-circle" style="color: #800020; font-size: 3rem; margin-bottom: 1rem;"></i>
-                <h5 class="card-title" style="color: #800020;">Agregar Nueva Variedad</h5>
-                <p class="card-text text-muted">Registra una nueva variedad de uva a tu catálogo.</p>
-                <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-success mt-3">
-                    <i class="bi bi-file-earmark-plus me-2"></i>Crear Nueva Variedad
+            <div class="card-body text-center py-4"> {# Añadido py-4 para padding vertical #}
+                {# Ícono con el color del título y tamaño #}
+                <i class="bi bi-plus-circle fs-1 mb-3" style="color: #4A2328;"></i> {# Mismo estilo de ícono que el anterior #}
+                <h5 class="card-title fw-semibold text-dark" style="font-family: 'Playfair Display', serif;">Agregar Nueva Variedad</h5>
+                <p class="card-text text-muted small" style="font-family: 'Roboto', sans-serif;">Registra una nueva variedad de uva a tu catálogo.</p>
+                <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-outline-primary rounded-pill mt-3" style="color: #8B0000; border-color: #8B0000;">
+                    <i class="bi bi-plus me-2"></i>Crear Nueva Variedad
                 </a>
             </div>
         </div>
     </div>
 
 </div>
+
+{# Botón "Volver al Inicio" en la parte inferior, similar al de "Acerca de" #}
+<div class="row mt-5">
+    <div class="col-12 text-center">
+        <a href="/" class="btn btn-primary rounded-pill px-4 py-2" style="background-color: #8B0000; border-color: #8B0000;">
+            <i class="bi bi-house-door me-2"></i> Volver al Inicio
+        </a>
+    </div>
+</div>
+
 {% endblock %}
