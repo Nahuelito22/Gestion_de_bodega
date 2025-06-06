@@ -2,27 +2,26 @@
 
 {% block title %}Menú de Variedades de Uva - Gestión de Bodega{% endblock %}
 
-
 {% block body %}
-<div class="row mb-5 mt-4"> {# Fila para el título principal #}
+<div class="row mb-5 mt-4">
     <div class="col-12 text-center">
-        <h1 class="display-4 text-primary">Gestión de Variedades de Uva</h1>
+        <h1 class="display-4" style="color: #800020;">Gestión de Variedades de Uva</h1>
         <p class="lead text-muted">
             Administra el catálogo de variedades de uva que utilizas en tu producción.
         </p>
     </div>
 </div>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center"> {# Grilla de tarjetas centrada #}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
 
     {# Card para Ver/Editar Variedades #}
     <div class="col">
         <div class="card h-100 shadow-sm border-0 rounded-3">
             <div class="card-body text-center">
-                <i class="bi bi-grape-fill text-primary fs-1 mb-3"></i> {# Ícono de uva #}
-                <h5 class="card-title text-primary">Ver / Editar Variedades</h5>
+                <i class="bi bi-grape-fill" style="color: #800020; font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h5 class="card-title" style="color: #800020;">Ver / Editar Variedades</h5>
                 <p class="card-text text-muted">Explora el listado completo de variedades y realiza modificaciones.</p>
-                <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-primary mt-3"> {# <-- CORREGIDO AQUÍ #}
+                <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn mt-3" style="background-color: #800020; border-color: #800020; color: white;">
                     <i class="bi bi-list-ul me-2"></i>Ver Todas las Variedades
                 </a>
             </div>
@@ -33,10 +32,10 @@
     <div class="col">
         <div class="card h-100 shadow-sm border-0 rounded-3">
             <div class="card-body text-center">
-                <i class="bi bi-plus-circle text-primary fs-1 mb-3"></i> {# Ícono de añadir #}
-                <h5 class="card-title text-primary">Agregar Nueva Variedad</h5>
+                <i class="bi bi-plus-circle" style="color: #800020; font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h5 class="card-title" style="color: #800020;">Agregar Nueva Variedad</h5>
                 <p class="card-text text-muted">Registra una nueva variedad de uva a tu catálogo.</p>
-                <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-success mt-3"> {# Ya que tienes una ruta GET específica para el formulario de crear #}
+                <a href="{{ url_for('variedadUva_bp.mostrar_formulario_variedad') }}" class="btn btn-success mt-3">
                     <i class="bi bi-file-earmark-plus me-2"></i>Crear Nueva Variedad
                 </a>
             </div>

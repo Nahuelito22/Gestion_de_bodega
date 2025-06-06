@@ -6,17 +6,16 @@
 <div class="row justify-content-center mt-4">
     <div class="col-md-8 col-lg-7">
         <div class="card shadow-lg border-0 rounded-3">
-            <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
+            <div class="card-header text-white text-center py-3 rounded-top-3" style="background-color: #800020;">
                 <h2 class="card-title mb-0">Detalle de la Variedad de Uva</h2>
-                <h3 class="card-subtitle text-white-50 mt-1">{{ variedad.nombre }}</h3> {# Nombre de la variedad #}
+                <h3 class="card-subtitle text-white-50 mt-1">{{ variedad.nombre }}</h3>
             </div>
             <div class="card-body p-4">
                 <div class="text-center mb-4">
                     {% if variedad.foto_ruta %}
-                        {# Imagen principal de la variedad #}
-                        <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
-                             alt="{{ variedad.nombre }}" 
-                             class="img-fluid rounded shadow" 
+                        <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}"
+                             alt="{{ variedad.nombre }}"
+                             class="img-fluid rounded shadow"
                              style="max-width: 300px; height: auto;">
                     {% else %}
                         <div class="border p-4 bg-light rounded text-center text-muted">
@@ -29,7 +28,7 @@
                 <hr class="my-4">
 
                 <h4 class="text-secondary mb-3">Información General</h4>
-                <dl class="row"> {# Lista de definiciones para pares clave-valor #}
+                <dl class="row">
                     <dt class="col-sm-3">ID:</dt>
                     <dd class="col-sm-9">{{ variedad.id }}</dd>
 
@@ -39,19 +38,15 @@
                     <dt class="col-sm-3">Origen / Descripción:</dt>
                     <dd class="col-sm-9">{{ variedad.origen }}</dd>
                     
-                    <dt class="col-sm-3">Fecha de Registro:</dt>
-                    <dd class="col-sm-9">{{ variedad.fecha_registro.strftime('%d/%m/%Y %H:%M:%S') }}</dd> {# Asumiendo que tienes este campo #}
+                    {# Eliminado el campo fecha_registro ya que no está en tu modelo actual #}
+                    {# Si lo agregas en el futuro, recuerda también actualizar tu modelo y ejecutar migraciones #}
+                </dl>
 
-                    {# Si tu modelo de VariedadUva tiene más atributos, agrégales aquí #}
-                    {# Ejemplo: #}
-                    </dl>
-
-                {# Sección para lotes asociados a esta variedad (opcional pero útil) #}
                 <div class="d-grid gap-2 mt-4">
                     <a href="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" class="btn btn-warning btn-lg">
                         <i class="bi bi-pencil-fill me-2"></i>Editar Variedad
                     </a>
-                    <a href="{{ url_for('variedadUva_bp.listar_variedades') }}" class="btn btn-secondary btn-lg">
+                    <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary btn-lg">
                         <i class="bi bi-arrow-left-circle me-2"></i>Volver al Listado
                     </a>
                 </div>

@@ -1,75 +1,60 @@
 {% extends "layout.html" %}
 
-{% block title %}Editar Variedad de Uva - Gestión de Bodega{% endblock %} 
+{% block title %}Editar Variedad de Uva - Gestión de Bodega{% endblock %}
 
 {% block body %}
-<div class="row justify-content-center">
-  <div class="col-md-8 col-lg-6">
-    <div class="card shadow-lg border-0 rounded-3">
-      <div class="card-header bg-primary text-white text-center py-3 rounded-top-3">
-        <h2 class="card-title mb-0">Editar Variedad de Uva</h2>
-      </div>
-      <div class="card-body p-4">
+<div class="container mt-5">
+    <h1 class="mb-4 text-center" style="color: #800020;">Editar Variedad de Uva</h1>
 
-        <form 
-          action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" 
-          method="POST" 
-          enctype="multipart/form-data">
-          
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre de la Variedad:</label>
-            <input
-              type="text"
-              name="nombre"
-              value="{{ variedad.nombre }}"
-              class="form-control" 
-              required
-            />
-          </div>
+    {# Mensajes Flash para notificaciones #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-          <div class="mb-3">
-            <label for="origen" class="form-label">Origen / Descripción Corta:</label>
-            <textarea
-              name="origen"
-              rows="3"
-              class="form-control" 
-              required
-            >{{ variedad.origen }}</textarea>
-          </div>
+    <div class="card shadow p-4 mb-5 bg-white rounded">
+        <div class="card-body">
+            <form action="{{ url_for('variedadUva_bp.editar_variedad', id=variedad.id) }}" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre de la Variedad: <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" value="{{ variedad.nombre }}" required>
+                </div>
 
-          <div class="mb-3">
-            <label for="foto_ruta" class="form-label">Cambiar Imagen (opcional):</label> 
-            <input
-              type="file"
-              name="foto_ruta"
-              accept="image/*"
-              class="form-control" 
-            />
-          </div>
+                {# Elimino el campo tipo_uva ya que no está en tu modelo actual #}
+                {# Elimino el campo descripcion ya que no está en tu modelo actual #}
 
-          {% if variedad.foto_ruta %}
-          <div class="mb-3 text-center"> 
-            <label class="form-label d-block mb-2">Imagen actual:</label> 
-            <img 
-              src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}" 
-              alt="{{ variedad.nombre }}" 
-              class="img-fluid rounded shadow-sm" 
-              style="max-width: 150px; height: auto;" 
-            >
-          </div>
-          {% endif %}
+                <div class="mb-3">
+                    <label for="origen" class="form-label">Origen / Descripción Corta:</label>
+                    <textarea class="form-control" id="origen" name="origen" rows="2" required>{{ variedad.origen }}</textarea>
+                </div>
 
-          <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">
-              <i class="bi bi-check-circle me-2"></i>Actualizar Variedad
-            </button>
-            <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary btn-lg"> {# <-- CORREGIDO AQUÍ #}
-              <i class="bi bi-arrow-left-circle me-2"></i>Volver al Listado
-            </a>
-          </div>
-        </form>
-      </div>
+                <div class="mb-3">
+                    <label for="foto_ruta" class="form-label">Cambiar Imagen (opcional):</label>
+                    <input type="file" class="form-control" id="foto_ruta" name="foto_ruta" accept="image/*">
+                </div>
+
+                {% if variedad.foto_ruta %}
+                <div class="mb-3 text-center">
+                    <label class="form-label d-block mb-2">Imagen actual:</label>
+                    <img src="{{ url_for('static', filename='images/' + variedad.foto_ruta) }}"
+                         alt="{{ variedad.nombre }}"
+                         class="img-fluid rounded shadow-sm"
+                         style="max-width: 150px; height: auto;">
+                </div>
+                {% endif %}
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <button type="submit" class="btn btn-primary me-md-2" style="background-color: #800020; border-color: #800020;"><i class="fas fa-check-circle me-2"></i> Actualizar Variedad</button>
+                    <a href="{{ url_for('variedadUva_bp.get_variedadesHtml') }}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
 </div>
 {% endblock %}
